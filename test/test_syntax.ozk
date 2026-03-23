@@ -1,0 +1,200 @@
+local X Y Z U V W in
+  skip
+  %show full
+  local E1_ in
+    E1_ = 'Syntax Test Start'()
+    {Browse E1_}
+  end
+  X = 10
+  Y = 20
+  Z = X
+  {Browse X}
+  local E2_ E3_ in
+    {Plus_ X Y E2_}
+    E3_ = 2
+    {Multiply_ E2_ E3_ U}
+  end
+  {Browse U}
+  local E2_ in
+    local E3_ E4_ in
+      E3_ = 10
+      E4_ = 3
+      {Div_ E3_ E4_ E2_}
+    end
+    {Browse E2_}
+  end
+  local E3_ in
+    local E4_ E5_ in
+      E4_ = 10
+      E5_ = 3
+      {Mod_ E4_ E5_ E3_}
+    end
+    {Browse E3_}
+  end
+  local E4_ in
+    {LT_ X Y E4_}
+    if E4_ then local E4_ in
+      E4_ = 'If < OK'()
+      {Browse E4_}
+    end
+     else local E4_ in
+      E4_ = 'If < FAIL'()
+      {Browse E4_}
+    end
+     end
+  end
+  local E5_ in
+    {GT_ X Y E5_}
+    if E5_ then local E5_ in
+      E5_ = 'If > FAIL'()
+      {Browse E5_}
+    end
+     else local E6_ in
+      {LTE_ X Y E6_}
+      if E6_ then local E6_ in
+        E6_ = 'If <= OK'()
+        {Browse E6_}
+      end
+       else skip
+       end
+    end
+     end
+  end
+  local E6_ in
+    {GTE_ X Y E6_}
+    if E6_ then local E6_ in
+      E6_ = 'If >= FAIL'()
+      {Browse E6_}
+    end
+     else skip
+     end
+  end
+  local E7_ in
+    {NotEQ_ X Y E7_}
+    if E7_ then local E7_ in
+      E7_ = 'If != OK'()
+      {Browse E7_}
+    end
+     else skip
+     end
+  end
+  local E8_ in
+    {EQ_ X Y E8_}
+    if E8_ then local E8_ in
+      E8_ = 'If == FAIL'()
+      {Browse E8_}
+    end
+     else local E8_ in
+      E8_ = 'Else OK'()
+      {Browse E8_}
+    end
+     end
+  end
+  local E9_ E10_ in
+    E9_ = 1
+    E10_ = 2
+    V = rec(a:E9_ b:E10_)
+  end
+  case V of rec(a:A b:B) then {Browse A}
+   else local E9_ in
+    E9_ = 'Case FAIL'()
+    {Browse E9_}
+  end
+   end
+  local L in
+    local E10_ E11_ in
+      E10_ = 10
+      E11_ = 20
+      local E13_ in
+        local E15_ in
+          E15_ = nil()
+          E13_ = '|'(1:E11_ 2:E15_)
+        end
+        L = '|'(1:E10_ 2:E13_)
+      end
+    end
+    case L of '|'(1:H 2:T) then {Browse H}
+     else skip
+     end
+  end
+  local P F R in
+    P = proc {$ A Res}
+      local E10_ in
+        E10_ = 2
+        {Multiply_ A E10_ Res}
+      end
+    end
+    local E10_ in
+      E10_ = 10
+      {P E10_ R}
+    end
+    {Browse R}
+    F = proc {$ A E11_}
+      local E12_ in
+        E12_ = 1
+        {Plus_ A E12_ E11_}
+      end
+    end
+    local E12_ in
+      local E13_ in
+        E13_ = 10
+        {F E13_ E12_}
+      end
+      {Browse E12_}
+    end
+  end
+  local P2 F2 VRes in
+    P2 = proc {$ A Res}
+      {Plus_ A A Res}
+    end
+    local E10_ in
+      E10_ = 5
+      {P2 E10_ VRes}
+    end
+    {Browse VRes}
+    F2 = proc {$ A E11_}
+      {Multiply_ A A E11_}
+    end
+    local E11_ in
+      local E12_ in
+        E12_ = 5
+        {F2 E12_ E11_}
+      end
+      {Browse E11_}
+    end
+  end
+  local E10_ in
+    local E11_ in
+      E11_ = true()
+      if E11_ then E10_ = true()
+       else local E12_ in
+        E12_ = 'OrElse FAIL'()
+        {Browse E12_ E10_}
+      end
+       end
+    end
+    if E10_ then local E10_ in
+      E10_ = 'OrElse OK'()
+      {Browse E10_}
+    end
+     else skip
+     end
+  end
+  local E11_ in
+    local E12_ in
+      E12_ = false()
+      if E12_ then local E13_ in
+        E13_ = 'AndThen FAIL'()
+        {Browse E13_ E11_}
+      end
+       else E11_ = false()
+       end
+    end
+    if E11_ then skip
+     else local E11_ in
+      E11_ = 'AndThen OK'()
+      {Browse E11_}
+    end
+     end
+  end
+end

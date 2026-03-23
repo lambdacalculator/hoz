@@ -1,0 +1,1400 @@
+local Filter in
+  Filter = proc {$ Xs F E1_}
+    local F1 in
+      F1 = proc {$ }
+        case Xs of '|'(1:X 2:Xr) then local E3_ in
+          {F X E3_}
+          if E3_ then local E5_ in
+            {Filter Xr F E5_}
+            E1_ = '|'(1:X 2:E5_)
+          end
+           else {Filter Xr F E1_}
+           end
+        end
+         else skip
+         end
+      end
+      case Xs of nil() then E1_ = nil()
+       else {F1 }
+       end
+    end
+  end
+  local Generate Sum IsOdd Xs Ys S in
+    Generate = proc {$ N Limit E2_}
+      local E3_ in
+        {LT_ N Limit E3_}
+        if E3_ then local E5_ in
+          local E6_ in
+            local E7_ in
+              E7_ = 1
+              {Plus_ N E7_ E6_}
+            end
+            {Generate E6_ Limit E5_}
+          end
+          E2_ = '|'(1:N 2:E5_)
+        end
+         else E2_ = nil()
+         end
+      end
+    end
+    Sum = proc {$ Xs A E3_}
+      case Xs of '|'(1:X 2:Xr) then local E5_ in
+        {Plus_ A X E5_}
+        {Sum Xr E5_ E3_}
+      end
+       else case Xs of nil() then E3_ = A
+       else skip
+       end
+       end
+    end
+    IsOdd = proc {$ X E4_}
+      local E5_ E6_ in
+        local E8_ in
+          E8_ = 2
+          {Mod_ X E8_ E5_}
+        end
+        E6_ = 0
+        {NotEQ_ E5_ E6_ E4_}
+      end
+    end
+    thread
+      local E5_ E6_ in
+        E5_ = 0
+        E6_ = 50
+        {Generate E5_ E6_ Xs}
+      end
+    end
+    thread
+      {Filter Xs IsOdd Ys}
+    end
+    thread
+      local E6_ in
+        E6_ = 0
+        {Sum Ys E6_ S}
+      end
+    end
+    {Browse S}
+  end
+  local Generate Sieve in
+    Generate = proc {$ N Limit E2_}
+      local E3_ in
+        {LT_ N Limit E3_}
+        if E3_ then local E5_ in
+          local E6_ in
+            local E7_ in
+              E7_ = 1
+              {Plus_ N E7_ E6_}
+            end
+            {Generate E6_ Limit E5_}
+          end
+          E2_ = '|'(1:N 2:E5_)
+        end
+         else E2_ = nil()
+         end
+      end
+    end
+    local Sieve Xs Ys in
+      Sieve = proc {$ Xs E3_}
+        local F3 in
+          F3 = proc {$ }
+            case Xs of '|'(1:X 2:Xr) then local Ys in
+              thread
+                local E6_ in
+                  E6_ = proc {$ Y E7_}
+                    local E8_ E9_ in
+                      {Mod_ Y X E8_}
+                      E9_ = 0
+                      {NotEQ_ E8_ E9_ E7_}
+                    end
+                  end
+                  {Filter Xr E6_ Ys}
+                end
+              end
+              local E6_ in
+                {Sieve Ys E6_}
+                E3_ = '|'(1:X 2:E6_)
+              end
+            end
+             else skip
+             end
+          end
+          case Xs of nil() then E3_ = nil()
+           else {F3 }
+           end
+        end
+      end
+      thread
+        local E4_ E5_ in
+          E4_ = 2
+          E5_ = 30
+          {Generate E4_ E5_ Xs}
+        end
+      end
+      thread
+        {Sieve Xs Ys}
+      end
+      {Browse Ys}
+    end
+    local Sieve Xs Ys in
+      Sieve = proc {$ Xs M E3_}
+        local F3 in
+          F3 = proc {$ }
+            case Xs of '|'(1:X 2:Xr) then local Ys in
+              local E5_ in
+                {LTE_ X M E5_}
+                if E5_ then thread
+                  local E6_ in
+                    E6_ = proc {$ Y E7_}
+                      local E8_ E9_ in
+                        {Mod_ Y X E8_}
+                        E9_ = 0
+                        {NotEQ_ E8_ E9_ E7_}
+                      end
+                    end
+                    {Filter Xr E6_ Ys}
+                  end
+                end
+                 else Ys = Xr
+                 end
+              end
+              local E7_ in
+                {Sieve Ys M E7_}
+                E3_ = '|'(1:X 2:E7_)
+              end
+            end
+             else skip
+             end
+          end
+          case Xs of nil() then E3_ = nil()
+           else {F3 }
+           end
+        end
+      end
+      thread
+        local E4_ E5_ in
+          E4_ = 2
+          E5_ = 100
+          {Generate E4_ E5_ Xs}
+        end
+      end
+      thread
+        local E5_ in
+          E5_ = 10
+          {Sieve Xs E5_ Ys}
+        end
+      end
+      {Browse Ys}
+    end
+  end
+end
+local E1_ in
+  E1_ = 'Dataflow Consumer/Producer'()
+  {Browse E1_}
+end
+local DGenerate DSum Xs S Buffer XsB YsB SB in
+  DGenerate = proc {$ N Xs}
+    case Xs of '|'(1:X 2:Xr) then X = N
+    local E2_ in
+      local E3_ in
+        E3_ = 1
+        {Plus_ N E3_ E2_}
+      end
+      {DGenerate E2_ Xr}
+    end
+     else skip
+     end
+  end
+  DSum = proc {$ Xs A Limit E2_}
+    local E3_ in
+      local E4_ in
+        E4_ = 0
+        {GT_ Limit E4_ E3_}
+      end
+      if E3_ then local X Xr P3_ in
+        P3_ = '|'(1:X 2:Xr)
+        P3_ = Xs
+        local E5_ E6_ in
+          {Plus_ A X E5_}
+          local E7_ in
+            E7_ = 1
+            {Minus_ Limit E7_ E6_}
+          end
+          {DSum Xr E5_ E6_ E2_}
+        end
+      end
+       else E2_ = A
+       end
+    end
+  end
+  thread
+    local E3_ in
+      E3_ = 0
+      {DGenerate E3_ Xs}
+    end
+  end
+  thread
+    local E4_ E5_ in
+      E4_ = 0
+      E5_ = 50
+      {DSum Xs E4_ E5_ S}
+    end
+  end
+  {Browse S}
+  Buffer = proc {$ N Xs Ys}
+    local Startup in
+      Startup = proc {$ N Xs E3_}
+        local E4_ in
+          local E5_ in
+            E5_ = 0
+            {EQ_ N E5_ E4_}
+          end
+          if E4_ then E3_ = Xs
+           else local Xr in
+            local E5_ in
+              local N6_ in
+                E5_ = N6_
+              end
+              Xs = '|'(1:E5_ 2:Xr)
+            end
+            local E5_ in
+              local E6_ in
+                E6_ = 1
+                {Minus_ N E6_ E5_}
+              end
+              {Startup E5_ Xr E3_}
+            end
+          end
+           end
+        end
+      end
+      local AskLoop in
+        AskLoop = proc {$ Ys Xs End}
+          case Ys of '|'(1:Y 2:Yr) then local Xr End2 in
+            Xs = '|'(1:Y 2:Xr)
+            local E4_ in
+              local N5_ in
+                E4_ = N5_
+              end
+              End = '|'(1:E4_ 2:End2)
+            end
+            {AskLoop Yr Xr End2}
+          end
+           else skip
+           end
+        end
+        local End in
+          {Startup N Xs End}
+          {AskLoop Ys Xs End}
+        end
+      end
+    end
+  end
+  thread
+    local E3_ in
+      E3_ = 0
+      {DGenerate E3_ XsB}
+    end
+  end
+  thread
+    local E3_ in
+      E3_ = 4
+      {Buffer E3_ XsB YsB}
+    end
+  end
+  thread
+    local E4_ E5_ in
+      E4_ = 0
+      E5_ = 50
+      {DSum YsB E4_ E5_ SB}
+    end
+  end
+  {Browse XsB}
+  {Browse YsB}
+  {Browse SB}
+end
+local NotLoop NotG in
+  local NotLoop in
+    NotLoop = proc {$ Xs E2_}
+      case Xs of '|'(1:X 2:Xr) then local E3_ E4_ in
+        local E4_ in
+          E4_ = 1
+          {Minus_ E4_ X E3_}
+        end
+        {NotLoop Xr E4_}
+        E2_ = '|'(1:E3_ 2:E4_)
+      end
+       else skip
+       end
+    end
+    NotG = proc {$ Xs E2_}
+      thread
+        {NotLoop Xs E2_}
+      end
+    end
+  end
+end
+local E2_ in
+  E2_ = 'Logic Gates'()
+  {Browse E2_}
+end
+local GateMaker AndG OrG NandG NorG XorG NotLoop NotG FullAdder DelayG Latch Clock X Y Z C S in
+  GateMaker = proc {$ F E3_}
+    E3_ = proc {$ Xs Ys E4_}
+      local GateLoop in
+        GateLoop = proc {$ Xs Ys E5_}
+          local E6_ in
+            E6_ = '#'(1:Xs 2:Ys)
+            case E6_ of '#'(1:P6_ 2:P7_) then case P7_ of '|'(1:Y 2:Yr) then case P6_ of '|'(1:X 2:Xr) then local E7_ E8_ in
+              {F X Y E7_}
+              {GateLoop Xr Yr E8_}
+              E5_ = '|'(1:E7_ 2:E8_)
+            end
+             else skip
+             end
+             else skip
+             end
+             else skip
+             end
+          end
+        end
+        thread
+          {GateLoop Xs Ys E4_}
+        end
+      end
+    end
+  end
+  local E4_ in
+    E4_ = proc {$ X Y E5_}
+      {Multiply_ X Y E5_}
+    end
+    {GateMaker E4_ AndG}
+  end
+  local E4_ in
+    E4_ = proc {$ X Y E5_}
+      local E6_ E7_ in
+        {Plus_ X Y E6_}
+        {Multiply_ X Y E7_}
+        {Minus_ E6_ E7_ E5_}
+      end
+    end
+    {GateMaker E4_ OrG}
+  end
+  local E4_ in
+    E4_ = proc {$ X Y E5_}
+      local E6_ E7_ in
+        E6_ = 1
+        {Multiply_ X Y E7_}
+        {Minus_ E6_ E7_ E5_}
+      end
+    end
+    {GateMaker E4_ NandG}
+  end
+  local E4_ in
+    E4_ = proc {$ X Y E5_}
+      local E6_ E7_ in
+        local E9_ in
+          local E11_ in
+            E11_ = 1
+            {Minus_ E11_ X E9_}
+          end
+          {Minus_ E9_ Y E6_}
+        end
+        {Multiply_ X Y E7_}
+        {Plus_ E6_ E7_ E5_}
+      end
+    end
+    {GateMaker E4_ NorG}
+  end
+  local E4_ in
+    E4_ = proc {$ X Y E5_}
+      local E6_ E7_ in
+        {Plus_ X Y E6_}
+        local E9_ in
+          local E11_ in
+            E11_ = 2
+            {Multiply_ E11_ X E9_}
+          end
+          {Multiply_ E9_ Y E7_}
+        end
+        {Minus_ E6_ E7_ E5_}
+      end
+    end
+    {GateMaker E4_ XorG}
+  end
+  FullAdder = proc {$ X Y Z C S}
+    local K L M in
+      {AndG X Y K}
+      {AndG Y Z L}
+      {AndG X Z M}
+      local E5_ in
+        {OrG L M E5_}
+        {OrG K E5_ C}
+      end
+      local E5_ in
+        {XorG X Y E5_}
+        {XorG Z E5_ S}
+      end
+    end
+  end
+  local E4_ E5_ in
+    E4_ = 1
+    local E6_ E7_ in
+      E6_ = 1
+      local E8_ E9_ in
+        E8_ = 0
+        local N10_ in
+          E9_ = N10_
+        end
+        E7_ = '|'(1:E8_ 2:E9_)
+      end
+      E5_ = '|'(1:E6_ 2:E7_)
+    end
+    X = '|'(1:E4_ 2:E5_)
+  end
+  local E4_ E5_ in
+    E4_ = 0
+    local E6_ E7_ in
+      E6_ = 1
+      local E8_ E9_ in
+        E8_ = 0
+        local N10_ in
+          E9_ = N10_
+        end
+        E7_ = '|'(1:E8_ 2:E9_)
+      end
+      E5_ = '|'(1:E6_ 2:E7_)
+    end
+    Y = '|'(1:E4_ 2:E5_)
+  end
+  local E4_ E5_ in
+    E4_ = 1
+    local E6_ E7_ in
+      E6_ = 1
+      local E8_ E9_ in
+        E8_ = 1
+        local N10_ in
+          E9_ = N10_
+        end
+        E7_ = '|'(1:E8_ 2:E9_)
+      end
+      E5_ = '|'(1:E6_ 2:E7_)
+    end
+    Z = '|'(1:E4_ 2:E5_)
+  end
+  {FullAdder X Y Z C S}
+  local E4_ in
+    local E5_ E6_ in
+      E5_ = inp(1:X 2:Y 3:Z)
+      E6_ = sum(1:C 2:S)
+      E4_ = '#'(1:E5_ 2:E6_)
+    end
+    {Browse E4_}
+  end
+  NotLoop = proc {$ Xs E5_}
+    case Xs of '|'(1:X 2:Xr) then local E6_ E7_ in
+      local E7_ in
+        E7_ = 1
+        {Minus_ E7_ X E6_}
+      end
+      {NotLoop Xr E7_}
+      E5_ = '|'(1:E6_ 2:E7_)
+    end
+     else skip
+     end
+  end
+  NotG = proc {$ Xs E6_}
+    thread
+      {NotLoop Xs E6_}
+    end
+  end
+  DelayG = proc {$ Xs E7_}
+    local E8_ in
+      E8_ = 0
+      E7_ = '|'(1:E8_ 2:Xs)
+    end
+  end
+  Latch = proc {$ C DI E8_}
+    local DO X Y Z F in
+      {DelayG DO F}
+      {AndG F C X}
+      {NotG C Z}
+      {AndG Z DI Y}
+      {OrG X Y DO}
+      E8_ = DO
+    end
+  end
+  Clock = proc {$ E9_}
+    local Loop in
+      Loop = proc {$ B E10_}
+        local E11_ in
+          E11_ = 5
+          {Delay E11_}
+        end
+        local E13_ in
+          {Loop B E13_}
+          E10_ = '|'(1:B 2:E13_)
+        end
+      end
+      thread
+        local E10_ in
+          E10_ = 1
+          {Loop E10_ E9_}
+        end
+      end
+    end
+  end
+end
+local E3_ in
+  E3_ = 'Section 4.5'()
+  {Browse E3_}
+end
+local F1 F2 F3 A B C D X Y Z in
+  F1 = proc {$ X E4_}
+    local E5_ in
+      E5_ = proc {$ E6_}
+        local E7_ E8_ in
+          E7_ = 1
+          local E10_ in
+            local E12_ E13_ in
+              E12_ = 3
+              local E15_ in
+                local E17_ in
+                  E17_ = 3
+                  {Plus_ E17_ X E15_}
+                end
+                {Multiply_ X E15_ E13_}
+              end
+              {Plus_ E12_ E13_ E10_}
+            end
+            {Multiply_ X E10_ E8_}
+          end
+          {Plus_ E7_ E8_ E6_}
+        end
+      end
+      {ByNeed E5_ E4_}
+    end
+  end
+  F2 = proc {$ X E5_}
+    local E6_ in
+      E6_ = proc {$ E7_}
+        local Y in
+          {Multiply_ X X Y}
+          {Multiply_ Y Y E7_}
+        end
+      end
+      {ByNeed E6_ E5_}
+    end
+  end
+  F3 = proc {$ X E6_}
+    local E7_ in
+      E7_ = proc {$ E8_}
+        local E9_ E10_ in
+          local E12_ in
+            E12_ = 1
+            {Plus_ X E12_ E9_}
+          end
+          local E12_ in
+            E12_ = 1
+            {Plus_ X E12_ E10_}
+          end
+          {Multiply_ E9_ E10_ E8_}
+        end
+      end
+      {ByNeed E7_ E6_}
+    end
+  end
+  local E7_ in
+    E7_ = 10
+    {F1 E7_ A}
+  end
+  local E7_ in
+    E7_ = 20
+    {F2 E7_ B}
+  end
+  local E7_ in
+    E7_ = 30
+    {F3 E7_ C}
+  end
+  {Plus_ A B D}
+  thread
+    local E7_ in
+      E7_ = proc {$ E8_}
+        E8_ = 3
+      end
+      {ByNeed E7_ X}
+    end
+  end
+  thread
+    local E7_ in
+      E7_ = proc {$ E8_}
+        E8_ = 4
+      end
+      {ByNeed E7_ Y}
+    end
+  end
+  thread
+    {Plus_ X Y Z}
+  end
+end
+local X Z in
+  thread
+    local E4_ in
+      E4_ = proc {$ E5_}
+        E5_ = 3
+      end
+      {ByNeed E4_ X}
+    end
+  end
+  thread
+    X = 3
+  end
+  thread
+    local E4_ in
+      E4_ = 4
+      {Plus_ X E4_ Z}
+    end
+  end
+end
+local X Y Z in
+  thread
+    local E4_ in
+      E4_ = proc {$ E5_}
+        E5_ = 3
+      end
+      {ByNeed E4_ X}
+    end
+  end
+  thread
+    X = Y
+  end
+  thread
+    local E4_ in
+      {EQ_ X Y E4_}
+      if E4_ then Z = 10
+       else skip
+       end
+    end
+  end
+end
+local Generate Sum Xs S in
+  Generate = proc {$ N E4_}
+    local E5_ in
+      E5_ = proc {$ E6_}
+        local E8_ in
+          local E9_ in
+            local E10_ in
+              E10_ = 1
+              {Plus_ N E10_ E9_}
+            end
+            {Generate E9_ E8_}
+          end
+          E6_ = '|'(1:N 2:E8_)
+        end
+      end
+      {ByNeed E5_ E4_}
+    end
+  end
+  Sum = proc {$ Xs A Limit E5_}
+    local E6_ in
+      local E7_ in
+        E7_ = 0
+        {GT_ Limit E7_ E6_}
+      end
+      if E6_ then case Xs of '|'(1:X 2:Xr) then local E8_ E9_ in
+        {Plus_ A X E8_}
+        local E10_ in
+          E10_ = 1
+          {Minus_ Limit E10_ E9_}
+        end
+        {Sum Xr E8_ E9_ E5_}
+      end
+       else skip
+       end
+       else E5_ = A
+       end
+    end
+  end
+  local E6_ in
+    E6_ = 0
+    {Generate E6_ Xs}
+  end
+  local E7_ E8_ in
+    E7_ = 0
+    E8_ = 50
+    {Sum Xs E7_ E8_ S}
+  end
+  {Browse S}
+end
+local Generate Sum Xs S1 S2 S3 in
+  Generate = proc {$ N E4_}
+    local E5_ in
+      E5_ = proc {$ E6_}
+        local E8_ in
+          local E9_ in
+            local E10_ in
+              E10_ = 1
+              {Plus_ N E10_ E9_}
+            end
+            {Generate E9_ E8_}
+          end
+          E6_ = '|'(1:N 2:E8_)
+        end
+      end
+      {ByNeed E5_ E4_}
+    end
+  end
+  Sum = proc {$ Xs A Limit E5_}
+    local E6_ in
+      local E7_ in
+        E7_ = 0
+        {GT_ Limit E7_ E6_}
+      end
+      if E6_ then case Xs of '|'(1:X 2:Xr) then local E8_ E9_ in
+        {Plus_ A X E8_}
+        local E10_ in
+          E10_ = 1
+          {Minus_ Limit E10_ E9_}
+        end
+        {Sum Xr E8_ E9_ E5_}
+      end
+       else skip
+       end
+       else E5_ = A
+       end
+    end
+  end
+  local E6_ in
+    E6_ = 0
+    {Generate E6_ Xs}
+  end
+  thread
+    local E7_ E8_ in
+      E7_ = 0
+      E8_ = 30
+      {Sum Xs E7_ E8_ S1}
+    end
+  end
+  thread
+    local E7_ E8_ in
+      E7_ = 0
+      E8_ = 20
+      {Sum Xs E7_ E8_ S2}
+    end
+  end
+  thread
+    local E7_ E8_ in
+      E7_ = 0
+      E8_ = 10
+      {Sum Xs E7_ E8_ S3}
+    end
+  end
+end
+local Drop Buffer1 Buffer2 in
+  Drop = proc {$ Xs N E4_}
+    local E5_ in
+      local E6_ in
+        E6_ = 0
+        {LTE_ N E6_ E5_}
+      end
+      if E5_ then E4_ = Xs
+       else local F5 in
+        F5 = proc {$ }
+          case Xs of '|'(1:N6_ 2:Xr) then local E8_ in
+            local E9_ in
+              E9_ = 1
+              {Minus_ N E9_ E8_}
+            end
+            {Drop Xr E8_ E4_}
+          end
+           else skip
+           end
+        end
+        case Xs of nil() then E4_ = nil()
+         else {F5 }
+         end
+      end
+       end
+    end
+  end
+  Buffer1 = proc {$ In N E5_}
+    local End in
+      {Drop In N End}
+      local Loop in
+        Loop = proc {$ In End E7_}
+          local E8_ in
+            E8_ = proc {$ E9_}
+              case In of '|'(1:I 2:In2) then local E11_ in
+                local E13_ in
+                  local E14_ in
+                    E14_ = 2
+                    {RecordAccess_ End E14_ E13_}
+                  end
+                  {Loop In2 E13_ E11_}
+                end
+                E9_ = '|'(1:I 2:E11_)
+              end
+               else skip
+               end
+            end
+            {ByNeed E8_ E7_}
+          end
+        end
+        {Loop In End E5_}
+      end
+    end
+  end
+  Buffer2 = proc {$ In N E6_}
+    local End in
+      thread
+        {Drop In N End}
+      end
+      local Loop in
+        Loop = proc {$ In End E8_}
+          local E9_ in
+            E9_ = proc {$ E10_}
+              case In of '|'(1:I 2:In2) then local E12_ in
+                local E14_ in
+                  thread
+                    local E15_ in
+                      E15_ = 2
+                      {RecordAccess_ End E15_ E14_}
+                    end
+                  end
+                  {Loop In2 E14_ E12_}
+                end
+                E10_ = '|'(1:I 2:E12_)
+              end
+               else skip
+               end
+            end
+            {ByNeed E9_ E8_}
+          end
+        end
+        {Loop In End E6_}
+      end
+    end
+  end
+end
+local E4_ in
+  E4_ = 'Hamming Sequence'()
+  {Browse E4_}
+end
+local Times Merge H Touch in
+  Times = proc {$ N H E5_}
+    local E6_ in
+      E6_ = proc {$ E7_}
+        case H of '|'(1:X 2:H2) then local E8_ E9_ in
+          {Multiply_ N X E8_}
+          {Times N H2 E9_}
+          E7_ = '|'(1:E8_ 2:E9_)
+        end
+         else skip
+         end
+      end
+      {ByNeed E6_ E5_}
+    end
+  end
+  Merge = proc {$ Xs Ys E6_}
+    local E7_ in
+      E7_ = proc {$ E8_}
+        local E9_ in
+          E9_ = '#'(1:Xs 2:Ys)
+          case E9_ of '#'(1:P9_ 2:P10_) then case P10_ of '|'(1:Y 2:Yr) then case P9_ of '|'(1:X 2:Xr) then local E10_ in
+            {LT_ X Y E10_}
+            if E10_ then local E12_ in
+              {Merge Xr Ys E12_}
+              E8_ = '|'(1:X 2:E12_)
+            end
+             else local E11_ in
+              {GT_ X Y E11_}
+              if E11_ then local E13_ in
+                {Merge Xs Yr E13_}
+                E8_ = '|'(1:Y 2:E13_)
+              end
+               else local E13_ in
+                {Merge Xr Yr E13_}
+                E8_ = '|'(1:X 2:E13_)
+              end
+               end
+            end
+             end
+          end
+           else skip
+           end
+           else skip
+           end
+           else skip
+           end
+        end
+      end
+      {ByNeed E7_ E6_}
+    end
+  end
+  local E7_ E8_ in
+    E7_ = 1
+    local E9_ E10_ in
+      local E10_ in
+        E10_ = 2
+        {Times E10_ H E9_}
+      end
+      local E11_ E12_ in
+        local E12_ in
+          E12_ = 3
+          {Times E12_ H E11_}
+        end
+        local E13_ in
+          E13_ = 5
+          {Times E13_ H E12_}
+        end
+        {Merge E11_ E12_ E10_}
+      end
+      {Merge E9_ E10_ E8_}
+    end
+    H = '|'(1:E7_ 2:E8_)
+  end
+  {Browse H}
+  Touch = proc {$ N H}
+    local E7_ in
+      local E8_ in
+        E8_ = 0
+        {GT_ N E8_ E7_}
+      end
+      if E7_ then local E7_ E8_ in
+        local E8_ in
+          E8_ = 1
+          {Minus_ N E8_ E7_}
+        end
+        local E9_ in
+          E9_ = 2
+          {RecordAccess_ H E9_ E8_}
+        end
+        {Touch E7_ E8_}
+      end
+       else skip
+       end
+    end
+  end
+  local E7_ in
+    E7_ = 20
+    {Touch E7_ H}
+  end
+end
+local LAppend MakeLazy LMap LFrom LFlatten LReverse L LFilter in
+  LAppend = proc {$ As Bs E5_}
+    local E6_ in
+      E6_ = proc {$ E7_}
+        local F7 in
+          F7 = proc {$ }
+            case As of '|'(1:A 2:Ar) then local E10_ in
+              {LAppend Ar Bs E10_}
+              E7_ = '|'(1:A 2:E10_)
+            end
+             else skip
+             end
+          end
+          case As of nil() then E7_ = Bs
+           else {F7 }
+           end
+        end
+      end
+      {ByNeed E6_ E5_}
+    end
+  end
+  MakeLazy = proc {$ Ls E6_}
+    local E7_ in
+      E7_ = proc {$ E8_}
+        case Ls of '|'(1:X 2:Lr) then local E10_ in
+          {MakeLazy Lr E10_}
+          E8_ = '|'(1:X 2:E10_)
+        end
+         else E8_ = nil()
+         end
+      end
+      {ByNeed E7_ E6_}
+    end
+  end
+  LMap = proc {$ Xs F E7_}
+    local E8_ in
+      E8_ = proc {$ E9_}
+        local F9 in
+          F9 = proc {$ }
+            case Xs of '|'(1:X 2:Xr) then local E11_ E12_ in
+              {F X E11_}
+              {LMap Xr F E12_}
+              E9_ = '|'(1:E11_ 2:E12_)
+            end
+             else skip
+             end
+          end
+          case Xs of nil() then E9_ = nil()
+           else {F9 }
+           end
+        end
+      end
+      {ByNeed E8_ E7_}
+    end
+  end
+  LFrom = proc {$ I J E8_}
+    local LFromLoop in
+      LFromLoop = proc {$ I E9_}
+        local E10_ in
+          E10_ = proc {$ E11_}
+            local E12_ in
+              {GT_ I J E12_}
+              if E12_ then E11_ = nil()
+               else local E14_ in
+                local E15_ in
+                  local E16_ in
+                    E16_ = 1
+                    {Plus_ I E16_ E15_}
+                  end
+                  {LFromLoop E15_ E14_}
+                end
+                E11_ = '|'(1:I 2:E14_)
+              end
+               end
+            end
+          end
+          {ByNeed E10_ E9_}
+        end
+      end
+      local LFromInf in
+        LFromInf = proc {$ I E10_}
+          local E11_ in
+            E11_ = proc {$ E12_}
+              local E14_ in
+                local E15_ in
+                  local E16_ in
+                    E16_ = 1
+                    {Plus_ I E16_ E15_}
+                  end
+                  {LFromInf E15_ E14_}
+                end
+                E12_ = '|'(1:I 2:E14_)
+              end
+            end
+            {ByNeed E11_ E10_}
+          end
+        end
+        local E9_ in
+          local E10_ in
+            E10_ = inf()
+            {EQ_ J E10_ E9_}
+          end
+          if E9_ then {LFromInf I E8_}
+           else {LFromLoop I E8_}
+           end
+        end
+      end
+    end
+  end
+  LFlatten = proc {$ Xs E9_}
+    local LFlattenD in
+      LFlattenD = proc {$ Xs E E10_}
+        local E11_ in
+          E11_ = proc {$ E12_}
+            local F12 in
+              F12 = proc {$ }
+                case Xs of '|'(1:X 2:Xr) then local E15_ in
+                  {LFlattenD Xr E E15_}
+                  {LFlattenD X E15_ E12_}
+                end
+                 else local X in
+                  E12_ = '|'(1:X 2:E)
+                end
+                 end
+              end
+              case Xs of nil() then E12_ = E
+               else {F12 }
+               end
+            end
+          end
+          {ByNeed E11_ E10_}
+        end
+      end
+      local E11_ in
+        E11_ = nil()
+        {LFlattenD Xs E11_ E9_}
+      end
+    end
+  end
+  LReverse = proc {$ S E10_}
+    local Rev in
+      Rev = proc {$ S R E11_}
+        local E12_ in
+          E12_ = proc {$ E13_}
+            local F13 in
+              F13 = proc {$ }
+                case S of '|'(1:X 2:S2) then local E16_ in
+                  E16_ = '|'(1:X 2:R)
+                  {Rev S2 E16_ E13_}
+                end
+                 else skip
+                 end
+              end
+              case S of nil() then E13_ = R
+               else {F13 }
+               end
+            end
+          end
+          {ByNeed E12_ E11_}
+        end
+      end
+      local E12_ in
+        E12_ = nil()
+        {Rev S E12_ E10_}
+      end
+    end
+  end
+  local E11_ in
+    local E12_ E13_ E14_ in
+      E12_ = a()
+      E13_ = b()
+      E14_ = c()
+      local E16_ in
+        local E18_ in
+          local E20_ in
+            E20_ = nil()
+            E18_ = '|'(1:E14_ 2:E20_)
+          end
+          E16_ = '|'(1:E13_ 2:E18_)
+        end
+        E11_ = '|'(1:E12_ 2:E16_)
+      end
+    end
+    {LReverse E11_ L}
+  end
+  {Browse L}
+  LFilter = proc {$ L F E11_}
+    local E12_ in
+      E12_ = proc {$ E13_}
+        local F13 in
+          F13 = proc {$ }
+            case L of '|'(1:X 2:L2) then local E15_ in
+              {F X E15_}
+              if E15_ then local E17_ in
+                {LFilter L2 F E17_}
+                E13_ = '|'(1:X 2:E17_)
+              end
+               else {LFilter L2 F E13_}
+               end
+            end
+             else skip
+             end
+          end
+          case L of nil() then E13_ = nil()
+           else {F13 }
+           end
+        end
+      end
+      {ByNeed E12_ E11_}
+    end
+  end
+end
+local NewQueue Check Insert Delete LAppend Reverse in
+  NewQueue = proc {$ E5_}
+    local E6_ E7_ E8_ E9_ in
+      E6_ = 0
+      E7_ = nil()
+      E8_ = 0
+      E9_ = nil()
+      E5_ = q(1:E6_ 2:E7_ 3:E8_ 4:E9_)
+    end
+  end
+  Check = proc {$ Q E6_}
+    case Q of q(1:LenF 2:F 3:LenR 4:R) then local E7_ in
+      {GTE_ LenF LenR E7_}
+      if E7_ then E6_ = Q
+       else local E8_ E9_ E10_ E11_ in
+        {Plus_ LenF LenR E8_}
+        local E11_ in
+          {Reverse R E11_}
+          {LAppend F E11_ E9_}
+        end
+        E10_ = 0
+        E11_ = nil()
+        E6_ = q(1:E8_ 2:E9_ 3:E10_ 4:E11_)
+      end
+       end
+    end
+     else skip
+     end
+  end
+  Insert = proc {$ Q X E7_}
+    case Q of q(1:LenF 2:F 3:LenR 4:R) then local E8_ in
+      local E11_ E12_ in
+        local E12_ in
+          E12_ = 1
+          {Plus_ LenR E12_ E11_}
+        end
+        E12_ = '|'(1:X 2:R)
+        E8_ = q(1:LenF 2:F 3:E11_ 4:E12_)
+      end
+      {Check E8_ E7_}
+    end
+     else skip
+     end
+  end
+  Delete = proc {$ Q X E8_}
+    case Q of q(1:LenF 2:F 3:LenR 4:R) then local F1 in
+      F = '|'(1:X 2:F1)
+      local E9_ in
+        local E10_ in
+          local E11_ in
+            E11_ = 1
+            {Minus_ LenF E11_ E10_}
+          end
+          E9_ = q(1:E10_ 2:F1 3:LenR 4:R)
+        end
+        {Check E9_ E8_}
+      end
+    end
+     else skip
+     end
+  end
+  LAppend = proc {$ As Bs E9_}
+    local E10_ in
+      E10_ = proc {$ E11_}
+        local F11 in
+          F11 = proc {$ }
+            case As of '|'(1:A 2:Ar) then local E14_ in
+              {LAppend Ar Bs E14_}
+              E11_ = '|'(1:A 2:E14_)
+            end
+             else skip
+             end
+          end
+          case As of nil() then E11_ = Bs
+           else {F11 }
+           end
+        end
+      end
+      {ByNeed E10_ E9_}
+    end
+  end
+  Reverse = proc {$ R E10_}
+    local Rev in
+      Rev = proc {$ R A E11_}
+        local F11 in
+          F11 = proc {$ }
+            case R of '|'(1:X 2:R2) then local E14_ in
+              E14_ = '|'(1:X 2:A)
+              {Rev R2 E14_ E11_}
+            end
+             else skip
+             end
+          end
+          case R of nil() then E11_ = A
+           else {F11 }
+           end
+        end
+      end
+      local E12_ in
+        E12_ = nil()
+        {Rev R E12_ E10_}
+      end
+    end
+  end
+end
+local Reverse in
+  Reverse = proc {$ R E5_}
+    local Rev in
+      Rev = proc {$ R A E6_}
+        local F6 in
+          F6 = proc {$ }
+            case R of '|'(1:X 2:R2) then local E9_ in
+              E9_ = '|'(1:X 2:A)
+              {Rev R2 E9_ E6_}
+            end
+             else skip
+             end
+          end
+          case R of nil() then E6_ = A
+           else {F6 }
+           end
+        end
+      end
+      local E7_ in
+        E7_ = nil()
+        {Rev R E7_ E5_}
+      end
+    end
+  end
+end
+local LAppend LAppRev Check in
+  LAppend = proc {$ F B E5_}
+    local E6_ in
+      E6_ = proc {$ E7_}
+        local F7 in
+          F7 = proc {$ }
+            case F of '|'(1:X 2:F2) then local E10_ in
+              {LAppend F2 B E10_}
+              E7_ = '|'(1:X 2:E10_)
+            end
+             else skip
+             end
+          end
+          case F of nil() then E7_ = B
+           else {F7 }
+           end
+        end
+      end
+      {ByNeed E6_ E5_}
+    end
+  end
+  LAppRev = proc {$ F R B E6_}
+    local E7_ in
+      E7_ = proc {$ E8_}
+        local E9_ in
+          E9_ = '#'(1:F 2:R)
+          local F9 in
+            F9 = proc {$ }
+              case E9_ of '#'(1:P13_ 2:P14_) then case P14_ of '|'(1:Y 2:R2) then case P13_ of '|'(1:X 2:F2) then local E15_ in
+                local E18_ in
+                  E18_ = '|'(1:Y 2:B)
+                  {LAppRev F2 R2 E18_ E15_}
+                end
+                E8_ = '|'(1:X 2:E15_)
+              end
+               else skip
+               end
+               else skip
+               end
+               else skip
+               end
+            end
+            case E9_ of '#'(1:P9_ 2:P11_) then case P11_ of '|'(1:Y 2:P10_) then case P10_ of nil() then case P9_ of nil() then E8_ = '|'(1:Y 2:B)
+             else {F9 }
+             end
+             else {F9 }
+             end
+             else {F9 }
+             end
+             else {F9 }
+             end
+          end
+        end
+      end
+      {ByNeed E7_ E6_}
+    end
+  end
+  Check = proc {$ Q E7_}
+    case Q of q(1:LenF 2:F 3:LenR 4:R) then local E8_ in
+      {LTE_ LenR LenF E8_}
+      if E8_ then E7_ = Q
+       else local E9_ E10_ E11_ E12_ in
+        {Plus_ LenF LenR E9_}
+        local E13_ in
+          E13_ = nil()
+          {LAppRev F R E13_ E10_}
+        end
+        E11_ = 0
+        E12_ = nil()
+        E7_ = q(1:E9_ 2:E10_ 3:E11_ 4:E12_)
+      end
+       end
+    end
+     else skip
+     end
+  end
+end

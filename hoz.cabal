@@ -1,0 +1,29 @@
+cabal-version:      2.4
+name:               hoz
+version:            0.2.0.0
+synopsis:           A Haskell implementation of the Oz programming language interpreter.
+description:        Hoz is an interpreter for a subset of the Oz programming language, supporting declarative, functional, stateful, and threaded paradigms.
+license:            BSD-3-Clause
+author:             The Hoz Project
+maintainer:         hoz@example.com
+extra-source-files: README.md,
+                    examples/*.oz
+
+executable hoz
+    main-is:          hoz.hs
+    other-modules:    Parser,
+                      Elab,
+                      Interp,
+                      Kernel,
+                      Semantics,
+                      Primitives,
+                      Full
+    build-depends:    base >= 4.7 && < 5,
+                      megaparsec,
+                      mtl,
+                      text,
+                      containers,
+                      parser-combinators,
+    hs-source-dirs:   .
+    ghc-options:      -main-is Hoz
+    default-language: Haskell2010

@@ -1,0 +1,635 @@
+local V Fact Comb in
+  local E1_ in
+    local E2_ E3_ in
+      E2_ = 9999
+      E3_ = 9999
+      {Multiply_ E2_ E3_ E1_}
+    end
+    {Browse E1_}
+  end
+  local E2_ E3_ in
+    E2_ = 9999
+    E3_ = 9999
+    {Multiply_ E2_ E3_ V}
+  end
+  local E2_ in
+    {Multiply_ V V E2_}
+    {Browse E2_}
+  end
+  local E3_ in
+    local E4_ E5_ in
+      local E7_ E8_ in
+        local E10_ E11_ in
+          local E13_ E14_ in
+            local E16_ E17_ in
+              local E19_ E20_ in
+                local E22_ E23_ in
+                  local E25_ E26_ in
+                    local E28_ E29_ in
+                      E28_ = 1
+                      E29_ = 2
+                      {Multiply_ E28_ E29_ E25_}
+                    end
+                    E26_ = 3
+                    {Multiply_ E25_ E26_ E22_}
+                  end
+                  E23_ = 4
+                  {Multiply_ E22_ E23_ E19_}
+                end
+                E20_ = 5
+                {Multiply_ E19_ E20_ E16_}
+              end
+              E17_ = 6
+              {Multiply_ E16_ E17_ E13_}
+            end
+            E14_ = 7
+            {Multiply_ E13_ E14_ E10_}
+          end
+          E11_ = 8
+          {Multiply_ E10_ E11_ E7_}
+        end
+        E8_ = 9
+        {Multiply_ E7_ E8_ E4_}
+      end
+      E5_ = 10
+      {Multiply_ E4_ E5_ E3_}
+    end
+    {Browse E3_}
+  end
+  Fact = proc {$ N E4_ } in
+    local E5_ in
+      local E6_ in
+        E6_ = 0
+        {EQ_ N E6_ E5_}
+      end
+      if E5_ then E4_ = 1
+       else local E6_ in
+        local E8_ in
+          local E9_ in
+            E9_ = 1
+            {Minus_ N E9_ E8_}
+          end
+          {Fact E8_ E6_}
+        end
+        {Multiply_ N E6_ E4_}
+      end
+       end
+    end
+  end
+  local E5_ in
+    local E6_ in
+      E6_ = 10
+      {Fact E6_ E5_}
+    end
+    {Browse E5_}
+  end
+  local E6_ in
+    local E7_ in
+      E7_ = 100
+      {Fact E7_ E6_}
+    end
+    {Browse E6_}
+  end
+  Comb = proc {$ N R E7_ } in
+    local E8_ E9_ in
+      {Fact N E8_}
+      local E11_ E12_ in
+        {Fact R E11_}
+        local E14_ in
+          {Minus_ N R E14_}
+          {Fact E14_ E12_}
+        end
+        {Multiply_ E11_ E12_ E9_}
+      end
+      {Div_ E8_ E9_ E7_}
+    end
+  end
+  local E8_ in
+    local E9_ E10_ in
+      E9_ = 10
+      E10_ = 3
+      {Comb E9_ E10_ E8_}
+    end
+    {Browse E8_}
+  end
+end
+local H T L in
+  local E1_ in
+    local E2_ E3_ E4_ E5_ in
+      E2_ = 5
+      E3_ = 6
+      E4_ = 7
+      E5_ = 8
+      local E7_ in
+        local E9_ in
+          local E11_ in
+            local E13_ in
+              E13_ = nil()
+              E11_ = '|'(1:E5_ 2:E13_)
+            end
+            E9_ = '|'(1:E4_ 2:E11_)
+          end
+          E7_ = '|'(1:E3_ 2:E9_)
+        end
+        E1_ = '|'(1:E2_ 2:E7_)
+      end
+    end
+    {Browse E1_}
+  end
+  H = 5
+  local E2_ E3_ E4_ in
+    E2_ = 6
+    E3_ = 7
+    E4_ = 8
+    local E6_ in
+      local E8_ in
+        local E10_ in
+          E10_ = nil()
+          E8_ = '|'(1:E4_ 2:E10_)
+        end
+        E6_ = '|'(1:E3_ 2:E8_)
+      end
+      T = '|'(1:E2_ 2:E6_)
+    end
+  end
+  local E2_ in
+    E2_ = '|'(1:H 2:T)
+    {Browse E2_}
+  end
+  local E3_ E4_ E5_ E6_ in
+    E3_ = 5
+    E4_ = 6
+    E5_ = 7
+    E6_ = 8
+    local E8_ in
+      local E10_ in
+        local E12_ in
+          local E14_ in
+            E14_ = nil()
+            E12_ = '|'(1:E6_ 2:E14_)
+          end
+          E10_ = '|'(1:E5_ 2:E12_)
+        end
+        E8_ = '|'(1:E4_ 2:E10_)
+      end
+      L = '|'(1:E3_ 2:E8_)
+    end
+  end
+  local E3_ in
+    local E4_ in
+      E4_ = 1
+      {RecordAccess_ L E4_ E3_}
+    end
+    {Browse E3_}
+  end
+  local E4_ in
+    local E5_ in
+      E5_ = 2
+      {RecordAccess_ L E5_ E4_}
+    end
+    {Browse E4_}
+  end
+  case L of '|'(1:H1 2:T1) then {Browse H1}
+  {Browse T1}
+   else skip
+   end
+end
+local ShiftLeft ShiftRight AddList Pascal FastPascal Ints PascalList PascalList2 GenericPascal OpList Add Xor in
+  ShiftLeft = proc {$ L E1_ } in
+    local F1 in
+      F1 = proc {$  } in
+        local E3_ in
+          E3_ = 0
+          local E5_ in
+            E5_ = nil()
+            E1_ = '|'(1:E3_ 2:E5_)
+          end
+        end
+      end
+      case L of '|'(1:H 2:T) then local E3_ in
+        {ShiftLeft T E3_}
+        E1_ = '|'(1:H 2:E3_)
+      end
+       else {F1 }
+       end
+    end
+  end
+  ShiftRight = proc {$ L E2_ } in
+    local E3_ in
+      E3_ = 0
+      E2_ = '|'(1:E3_ 2:L)
+    end
+  end
+  AddList = proc {$ L1 L2 E3_ } in
+    case L1 of '|'(1:H1 2:T1) then case L2 of '|'(1:H2 2:T2) then local E4_ E5_ in
+      {Plus_ H1 H2 E4_}
+      {AddList T1 T2 E5_}
+      E3_ = '|'(1:E4_ 2:E5_)
+    end
+     else skip
+     end
+     else E3_ = nil()
+     end
+  end
+  Pascal = proc {$ N E4_ } in
+    local E5_ in
+      local E6_ in
+        E6_ = 1
+        {EQ_ N E6_ E5_}
+      end
+      if E5_ then local E6_ in
+        E6_ = 1
+        local E8_ in
+          E8_ = nil()
+          E4_ = '|'(1:E6_ 2:E8_)
+        end
+      end
+       else local E6_ E7_ in
+        local E7_ in
+          local E8_ in
+            local E9_ in
+              E9_ = 1
+              {Minus_ N E9_ E8_}
+            end
+            {Pascal E8_ E7_}
+          end
+          {ShiftLeft E7_ E6_}
+        end
+        local E8_ in
+          local E9_ in
+            local E10_ in
+              E10_ = 1
+              {Minus_ N E10_ E9_}
+            end
+            {Pascal E9_ E8_}
+          end
+          {ShiftRight E8_ E7_}
+        end
+        {AddList E6_ E7_ E4_}
+      end
+       end
+    end
+  end
+  local FastPascal in
+    FastPascal = proc {$ N E5_ } in
+      local E6_ in
+        local E7_ in
+          E7_ = 1
+          {EQ_ N E7_ E6_}
+        end
+        if E6_ then local E7_ in
+          E7_ = 1
+          local E9_ in
+            E9_ = nil()
+            E5_ = '|'(1:E7_ 2:E9_)
+          end
+        end
+         else local L in
+          local E7_ in
+            local E8_ in
+              E8_ = 1
+              {Minus_ N E8_ E7_}
+            end
+            {FastPascal E7_ L}
+          end
+          local E7_ E8_ in
+            {ShiftLeft L E7_}
+            {ShiftRight L E8_}
+            {AddList E7_ E8_ E5_}
+          end
+        end
+         end
+      end
+    end
+    local E6_ in
+      local E7_ in
+        E7_ = 20
+        {FastPascal E7_ E6_}
+      end
+      {Browse E6_}
+    end
+    local E7_ in
+      local E8_ in
+        E8_ = 30
+        {FastPascal E8_ E7_}
+      end
+      {Browse E7_}
+    end
+  end
+  local Ints PascalList PascalList2 L in
+    Ints = proc {$ N E5_ } in
+      local E6_ in
+        E6_ = proc {$ E7_ } in
+          local E9_ in
+            local E10_ in
+              local E11_ in
+                E11_ = 1
+                {Plus_ N E11_ E10_}
+              end
+              {Ints E10_ E9_}
+            end
+            E7_ = '|'(1:N 2:E9_)
+          end
+        end
+        {ByNeed E6_ E5_}
+      end
+    end
+    local E6_ in
+      E6_ = 0
+      {Ints E6_ L}
+    end
+    {Browse L}
+    local E6_ in
+      local E7_ in
+        E7_ = 1
+        {RecordAccess_ L E7_ E6_}
+      end
+      {Browse E6_}
+    end
+    case L of '|'(1:A 2:P8_) then case P8_ of '|'(1:B 2:P7_) then case P7_ of '|'(1:C 2:N6_) then local E7_ in
+      local E8_ in
+        {Plus_ A B E8_}
+        {Plus_ E8_ C E7_}
+      end
+      {Browse E7_}
+    end
+     else skip
+     end
+     else skip
+     end
+     else skip
+     end
+    PascalList = proc {$ Row E11_ } in
+      local E12_ in
+        E12_ = proc {$ E13_ } in
+          local E15_ in
+            local E16_ in
+              local E17_ E18_ in
+                {ShiftLeft Row E17_}
+                {ShiftRight Row E18_}
+                {AddList E17_ E18_ E16_}
+              end
+              {PascalList E16_ E15_}
+            end
+            E13_ = '|'(1:Row 2:E15_)
+          end
+        end
+        {ByNeed E12_ E11_}
+      end
+    end
+    local L2 in
+      local E12_ in
+        local E13_ in
+          E13_ = 1
+          local E15_ in
+            E15_ = nil()
+            E12_ = '|'(1:E13_ 2:E15_)
+          end
+        end
+        {PascalList E12_ L2}
+      end
+      {Browse L2}
+      local E12_ in
+        local E13_ in
+          E13_ = 1
+          {RecordAccess_ L2 E13_ E12_}
+        end
+        {Browse E12_}
+      end
+      local E13_ in
+        local E14_ E15_ in
+          local E17_ in
+            E17_ = 2
+            {RecordAccess_ L2 E17_ E14_}
+          end
+          E15_ = 1
+          {RecordAccess_ E14_ E15_ E13_}
+        end
+        {Browse E13_}
+      end
+    end
+    PascalList2 = proc {$ N Row E12_ } in
+      local E13_ in
+        local E14_ in
+          E14_ = 1
+          {EQ_ N E14_ E13_}
+        end
+        if E13_ then local E14_ in
+          E14_ = Row
+          local E16_ in
+            E16_ = nil()
+            E12_ = '|'(1:E14_ 2:E16_)
+          end
+        end
+         else local E15_ in
+          local E16_ E17_ in
+            local E17_ in
+              E17_ = 1
+              {Minus_ N E17_ E16_}
+            end
+            local E18_ E19_ in
+              {ShiftLeft Row E18_}
+              {ShiftRight Row E19_}
+              {AddList E18_ E19_ E17_}
+            end
+            {PascalList2 E16_ E17_ E15_}
+          end
+          E12_ = '|'(1:Row 2:E15_)
+        end
+         end
+      end
+    end
+    local E13_ in
+      local E14_ E15_ in
+        E14_ = 10
+        local E16_ in
+          E16_ = 1
+          local E18_ in
+            E18_ = nil()
+            E15_ = '|'(1:E16_ 2:E18_)
+          end
+        end
+        {PascalList2 E14_ E15_ E13_}
+      end
+      {Browse E13_}
+    end
+  end
+  local GenericPascal OpList Add FastPascal Xor in
+    GenericPascal = proc {$ Op N E5_ } in
+      local E6_ in
+        local E7_ in
+          E7_ = 1
+          {EQ_ N E7_ E6_}
+        end
+        if E6_ then local E7_ in
+          E7_ = 1
+          local E9_ in
+            E9_ = nil()
+            E5_ = '|'(1:E7_ 2:E9_)
+          end
+        end
+         else local L in
+          local E8_ in
+            local E9_ in
+              E9_ = 1
+              {Minus_ N E9_ E8_}
+            end
+            {GenericPascal Op E8_ L}
+          end
+          local E8_ E9_ in
+            {ShiftLeft L E8_}
+            {ShiftRight L E9_}
+            {OpList Op E8_ E9_ E5_}
+          end
+        end
+         end
+      end
+    end
+    OpList = proc {$ Op L1 L2 E6_ } in
+      case L1 of '|'(1:H1 2:T1) then case L2 of '|'(1:H2 2:T2) then local E7_ E8_ in
+        {Op H1 H2 E7_}
+        {OpList Op T1 T2 E8_}
+        E6_ = '|'(1:E7_ 2:E8_)
+      end
+       else skip
+       end
+       else E6_ = nil()
+       end
+    end
+    Add = proc {$ X Y E7_ } in
+      {Plus_ X Y E7_}
+    end
+    local E8_ in
+      local E10_ in
+        E10_ = 5
+        {GenericPascal Add E10_ E8_}
+      end
+      {Browse E8_}
+    end
+    FastPascal = proc {$ N E9_ } in
+      {GenericPascal Add N E9_}
+    end
+    Xor = proc {$ X Y E10_ } in
+      local E11_ in
+        {EQ_ X Y E11_}
+        if E11_ then E10_ = 0
+         else E10_ = 1
+         end
+      end
+    end
+    local E11_ in
+      local E13_ in
+        E13_ = 6
+        {GenericPascal Xor E13_ E11_}
+      end
+      {Browse E11_}
+    end
+  end
+  thread in
+    local P in
+      local E5_ in
+        E5_ = 10
+        {Pascal E5_ P}
+      end
+      {Browse P}
+    end
+  end
+  local E5_ in
+    local E6_ E7_ in
+      E6_ = 99
+      E7_ = 99
+      {Multiply_ E6_ E7_ E5_}
+    end
+    {Browse E5_}
+  end
+  local C in
+    local E6_ in
+      E6_ = 0
+      {NewCell E6_ C}
+    end
+    local C6_ G6_ in
+      local E7_ E8_ in
+        {Exchange C E7_ E7_}
+        E8_ = 1
+        {Plus_ E7_ E8_ C6_}
+      end
+      {Exchange C G6_ C6_}
+    end
+    local E7_ in
+      {Exchange C E7_ E7_}
+      {Browse E7_}
+    end
+  end
+  local C FastPascal GenericPascal OpList Add in
+    GenericPascal = proc {$ Op N E6_ } in
+      local E7_ in
+        local E8_ in
+          E8_ = 1
+          {EQ_ N E8_ E7_}
+        end
+        if E7_ then local E8_ in
+          E8_ = 1
+          local E10_ in
+            E10_ = nil()
+            E6_ = '|'(1:E8_ 2:E10_)
+          end
+        end
+         else local L in
+          local E9_ in
+            local E10_ in
+              E10_ = 1
+              {Minus_ N E10_ E9_}
+            end
+            {GenericPascal Op E9_ L}
+          end
+          local E9_ E10_ in
+            {ShiftLeft L E9_}
+            {ShiftRight L E10_}
+            {OpList Op E9_ E10_ E6_}
+          end
+        end
+         end
+      end
+    end
+    OpList = proc {$ Op L1 L2 E7_ } in
+      case L1 of '|'(1:H1 2:T1) then case L2 of '|'(1:H2 2:T2) then local E8_ E9_ in
+        {Op H1 H2 E8_}
+        {OpList Op T1 T2 E9_}
+        E7_ = '|'(1:E8_ 2:E9_)
+      end
+       else skip
+       end
+       else E7_ = nil()
+       end
+    end
+    Add = proc {$ X Y E8_ } in
+      {Plus_ X Y E8_}
+    end
+    local E9_ in
+      E9_ = 0
+      {NewCell E9_ C}
+    end
+    FastPascal = proc {$ N E9_ } in
+      local C10_ G10_ in
+        local E11_ E12_ in
+          {Exchange C E11_ E11_}
+          E12_ = 1
+          {Plus_ E11_ E12_ C10_}
+        end
+        {Exchange C G10_ C10_}
+      end
+      {GenericPascal Add N E9_}
+    end
+    local E10_ in
+      local E11_ in
+        E11_ = 5
+        {FastPascal E11_ E10_}
+      end
+      {Browse E10_}
+    end
+    local E11_ in
+      {Exchange C E11_ E11_}
+      {Browse E11_}
+    end
+  end
+end

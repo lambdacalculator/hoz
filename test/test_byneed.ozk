@@ -1,0 +1,71 @@
+local TestIf in
+  local E1_ in
+    E1_ = 'Test 1: Basic ByNeed'()
+    {Browse E1_}
+  end
+  local X Y Z in
+    local E2_ in
+      E2_ = proc {$ E3_}
+        E3_ = 3
+      end
+      {ByNeed E2_ X}
+    end
+    local E2_ in
+      E2_ = proc {$ E3_}
+        E3_ = 4
+      end
+      {ByNeed E2_ Y}
+    end
+    {Plus_ X Y Z}
+    local E2_ in
+      E2_ = z(1:Z)
+      {Browse E2_}
+    end
+  end
+  local E2_ in
+    E2_ = 'Test 2: Multiple triggers (X=Y aliasing)'()
+    {Browse E2_}
+  end
+  local X Y Z in
+    local E3_ in
+      E3_ = proc {$ E4_}
+        E4_ = 3
+      end
+      {ByNeed E3_ X}
+    end
+    local E3_ in
+      E3_ = proc {$ E4_}
+        E4_ = 3
+      end
+      {ByNeed E3_ Y}
+    end
+    X = Y
+    local E3_ in
+      E3_ = 1
+      {Plus_ X E3_ Z}
+    end
+    local E3_ in
+      E3_ = z_aliased(1:Z)
+      {Browse E3_}
+    end
+  end
+  local E3_ in
+    E3_ = 'Test 4: Triggered by If'()
+    {Browse E3_}
+  end
+  local X Y in
+    local E4_ in
+      E4_ = proc {$ E5_}
+        E5_ = true()
+      end
+      {ByNeed E4_ X}
+    end
+    if X then Y = found_true()
+     else Y = found_false()
+     end
+    local E4_ in
+      E4_ = y(1:Y)
+      {Browse E4_}
+    end
+  end
+end

@@ -1,0 +1,10 @@
+local X in
+  local E1_ E2_ in
+    thread
+      E1_ = 1
+    end
+    E2_ = 2
+    {Plus_ E1_ E2_ X}
+  end
+  {Browse X}
+end

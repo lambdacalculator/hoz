@@ -1,0 +1,24 @@
+local Clock C in
+  Clock = proc {$ E1_ } in
+    local Loop in
+      Loop = proc {$ B E2_ } in
+        local E3_ in
+          E3_ = 100
+          {Delay E3_}
+        end
+        local E5_ in
+          {Loop B E5_}
+          E2_ = '|'(1:B 2:E5_)
+        end
+      end
+      thread in
+        local E2_ in
+          E2_ = 1
+          {Loop E2_ E1_}
+        end
+      end
+    end
+  end
+  {Clock C}
+  {Browse C}
+end

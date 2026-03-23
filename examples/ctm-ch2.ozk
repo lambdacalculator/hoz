@@ -1,0 +1,193 @@
+local X Y Z T in
+  X = 5
+  Y = 10
+  {GTE_ X Y T}
+  if T then Z = X
+   else Z = Y
+   end
+end
+local X Y Z in
+  X = 5
+  Y = 10
+  local E1_ in
+    {GTE_ X Y E1_}
+    if E1_ then Z = X
+     else Z = Y
+     end
+  end
+end
+local A B C D in
+  A = 11
+  B = 2
+  {Plus_ A B C}
+  {Multiply_ C C D}
+end
+local X in
+  X = 1
+  local X in
+    X = 2
+    {Browse X}
+  end
+  {Browse X}
+end
+local Max in
+  Max = proc {$ X Y Z } in
+    local E1_ in
+      {GTE_ X Y E1_}
+      if E1_ then Z = X
+       else Z = Y
+       end
+    end
+  end
+end
+local Y LB in
+  Y = 10
+  LB = proc {$ X Z } in
+    local E1_ in
+      {GTE_ X Y E1_}
+      if E1_ then Z = X
+       else Z = Y
+       end
+    end
+  end
+  local Z in
+    local Y in
+      Y = 15
+      local E1_ in
+        E1_ = 5
+        {LB E1_ Z}
+      end
+      {Browse Z}
+    end
+  end
+end
+local P Q in
+  Q = proc {$ X } in
+    local E1_ in
+      E1_ = stat(1:X)
+      {Browse E1_}
+    end
+  end
+  P = proc {$ X } in
+    {Q X}
+  end
+  local Q in
+    Q = proc {$ X } in
+      local E1_ in
+        E1_ = dyn(1:X)
+        {Browse E1_}
+      end
+    end
+    local E1_ in
+      E1_ = hello()
+      {P E1_}
+    end
+  end
+end
+local Loop10 in
+  Loop10 = proc {$ I } in
+    local E1_ in
+      local E2_ in
+        E2_ = 10
+        {EQ_ I E2_ E1_}
+      end
+      if E1_ then skip
+       else {Browse I}
+      local E1_ in
+        local E2_ in
+          E2_ = 1
+          {Plus_ I E2_ E1_}
+        end
+        {Loop10 E1_}
+      end
+       end
+    end
+  end
+  local E1_ in
+    E1_ = 0
+    {Loop10 E1_}
+  end
+end
+local Eval in
+  Eval = proc {$ E E1_ } in
+    local E2_ in
+      {IsNumber E E2_}
+      if E2_ then E1_ = E
+       else local F2 in
+        F2 = proc {$  } in
+          case E of times(1:X 2:Y) then local E4_ E5_ in
+            {Eval X E4_}
+            {Eval Y E5_}
+            {Multiply_ E4_ E5_ E1_}
+          end
+           else local E5_ in
+            E5_ = illFormedExpr(1:E)
+            raise E5_
+          end
+           end
+        end
+        case E of plus(1:X 2:Y) then local E3_ E4_ in
+          {Eval X E3_}
+          {Eval Y E4_}
+          {Plus_ E3_ E4_ E1_}
+        end
+         else {F2 }
+         end
+      end
+       end
+    end
+  end
+  try
+    local E3_ in
+      local E4_ in
+        local E5_ E6_ in
+          local E6_ E7_ in
+            E6_ = 5
+            E7_ = 5
+            E5_ = plus(1:E6_ 2:E7_)
+          end
+          E6_ = 10
+          E4_ = plus(1:E5_ 2:E6_)
+        end
+        {Eval E4_ E3_}
+      end
+      {Browse E3_}
+    end
+    local E4_ in
+      local E5_ in
+        local E6_ E7_ in
+          E6_ = 6
+          E7_ = 11
+          E5_ = times(1:E6_ 2:E7_)
+        end
+        {Eval E5_ E4_}
+      end
+      {Browse E4_}
+    end
+    local E5_ in
+      local E6_ in
+        local E7_ E8_ in
+          E7_ = 7
+          E8_ = 10
+          E6_ = minus(1:E7_ 2:E8_)
+        end
+        {Eval E6_ E5_}
+      end
+      {Browse E5_}
+    end
+  catch X2_ then
+    case X2_ of illFormedExpr(1:E) then local E6_ in
+      local E7_ E9_ in
+        E7_ = '*** Illegal expression '()
+        E9_ = ' ***'()
+        E6_ = '#'(1:E7_ 2:E 3:E9_)
+      end
+      {Browse E6_}
+    end
+     else local E6_ in
+      E6_ = X2_
+      raise E6_
+    end
+     end
+  end
+end

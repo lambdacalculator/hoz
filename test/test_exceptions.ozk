@@ -1,0 +1,82 @@
+local E in
+  try
+    local E2_ in
+      E2_ = 'Try 1'()
+      {Browse E2_}
+    end
+    local E3_ in
+      E3_ = oops()
+      raise E3_
+    end
+    local E4_ in
+      E4_ = 'FAIL 1'()
+      {Browse E4_}
+    end
+  catch X1_ then
+    local X in
+      X1_ = X
+      local E5_ in
+        E5_ = 'Caught 1'()
+        {Browse E5_}
+      end
+      {Browse X}
+    end
+  end
+  try
+    try
+      local E7_ in
+        E7_ = inner()
+        raise E7_
+      end
+    catch X6_ then
+      local I in
+        X6_ = I
+        local E8_ in
+          E8_ = 'Caught Inner'()
+          {Browse E8_}
+        end
+        local E9_ in
+          E9_ = outer()
+          raise E9_
+        end
+      end
+    end
+  catch X5_ then
+    local O in
+      X5_ = O
+      local E8_ in
+        E8_ = 'Caught Outer'()
+        {Browse E8_}
+      end
+      {Browse O}
+    end
+  end
+  local X9_ in
+    try
+      try
+        local E12_ in
+          E12_ = 'Try Finally Body'()
+          {Browse E12_}
+        end
+      catch X11_ then
+        local E in
+          X11_ = E
+          local E13_ in
+            E13_ = 'Catch in Finally'()
+            {Browse E13_}
+          end
+        end
+      end
+    catch X9_ then
+      local E11_ in
+        E11_ = 'Finally Block Executed'()
+        {Browse E11_}
+      end
+      raise X9_
+    end
+    local E11_ in
+      E11_ = 'Finally Block Executed'()
+      {Browse E11_}
+    end
+  end
+end

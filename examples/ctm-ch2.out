@@ -1,0 +1,22 @@
+Up to date
+_25: 2
+_23: 1
+_33: 10
+_48: stat(1:hello)
+_52: 0
+_58: 1
+_66: 2
+_74: 3
+_82: 4
+_90: 5
+_98: 6
+_106: 7
+_114: 8
+_122: 9
+_140: 20
+_171: 66
+_202: '*** Illegal expression ' # minus(1:7 2:10) # ' ***'
+
+Execution Statistics:
+  - Statements executed:  272
+  - Store size (SAS):     100 entries

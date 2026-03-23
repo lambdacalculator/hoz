@@ -1,0 +1,1396 @@
+Concepts, Techniques, and Models
+of Computer Programming
+PETER VAN ROY1
+Université catholique de Louvain (at Louvain-la-Neuve)
+Swedish Institute of Computer Science
+SEIF HARIDI2
+Royal Institute of Technology (KTH)
+Swedish Institute of Computer Science
+June 5, 2003
+
+1 Email: pvr@info.ucl.ac.be, Web: http://www.info.ucl.ac.be/~pvr
+2 Email: seif@it.kth.se, Web: http://www.it.kth.se/~seif
+
+ii
+
+Copyright c 2001-3 by P. Van Roy and S. Haridi. All rights reserved.
+
+Contents
+List of Figures
+
+xvi
+
+List of Tables
+
+xxiv
+
+Preface
+
+xxvii
+
+Running the example programs
+
+xliii
+
+I
+
+Introduction
+
+1
+
+1 Introduction to Programming Concepts
+1.1 A calculator . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.2 Variables . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.3 Functions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.4 Lists . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.5 Functions over lists . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.6 Correctness . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.7 Complexity . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.8 Lazy evaluation . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.9 Higher-order programming . . . . . . . . . . . . . . . . . . . . . .
+1.10 Concurrency . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.11 Dataflow . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.12 State . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.13 Objects . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.14 Classes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.15 Nondeterminism and time . . . . . . . . . . . . . . . . . . . . . .
+1.16 Atomicity . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+1.17 Where do we go from here . . . . . . . . . . . . . . . . . . . . . .
+1.18 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+3
+3
+4
+4
+6
+9
+11
+12
+13
+15
+16
+17
+18
+19
+20
+21
+23
+24
+24
+
+II
+
+29
+
+General Computation Models
+
+2 Declarative Computation Model
+Copyright c 2001-3 by P. Van Roy and S. Haridi. All rights reserved.
+
+31
+
+iv
+
+CONTENTS
+2.1 Defining practical programming languages . . . . . . . . . . . . . 33
+2.1.1 Language syntax . . . . . . . . . . . . . . . . . . . . . . . 33
+2.1.2 Language semantics . . . . . . . . . . . . . . . . . . . . . . 38
+2.2 The single-assignment store . . . . . . . . . . . . . . . . . . . . . 44
+2.2.1 Declarative variables . . . . . . . . . . . . . . . . . . . . . 44
+2.2.2 Value store . . . . . . . . . . . . . . . . . . . . . . . . . . 44
+2.2.3 Value creation . . . . . . . . . . . . . . . . . . . . . . . . . 45
+2.2.4 Variable identifiers . . . . . . . . . . . . . . . . . . . . . . 46
+2.2.5 Value creation with identifiers . . . . . . . . . . . . . . . . 47
+2.2.6 Partial values . . . . . . . . . . . . . . . . . . . . . . . . . 47
+2.2.7 Variable-variable binding . . . . . . . . . . . . . . . . . . . 48
+2.2.8 Dataflow variables . . . . . . . . . . . . . . . . . . . . . . 49
+2.3 Kernel language . . . . . . . . . . . . . . . . . . . . . . . . . . . . 50
+2.3.1 Syntax . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 50
+2.3.2 Values and types . . . . . . . . . . . . . . . . . . . . . . . 51
+2.3.3 Basic types . . . . . . . . . . . . . . . . . . . . . . . . . . 53
+2.3.4 Records and procedures . . . . . . . . . . . . . . . . . . . 54
+2.3.5 Basic operations . . . . . . . . . . . . . . . . . . . . . . . 56
+2.4 Kernel language semantics . . . . . . . . . . . . . . . . . . . . . . 57
+2.4.1 Basic concepts . . . . . . . . . . . . . . . . . . . . . . . . . 57
+2.4.2 The abstract machine . . . . . . . . . . . . . . . . . . . . . 61
+2.4.3 Non-suspendable statements . . . . . . . . . . . . . . . . . 64
+2.4.4 Suspendable statements . . . . . . . . . . . . . . . . . . . 67
+2.4.5 Basic concepts revisited . . . . . . . . . . . . . . . . . . . 69
+2.4.6 Last call optimization . . . . . . . . . . . . . . . . . . . . 74
+2.4.7 Active memory and memory management . . . . . . . . . 75
+2.5 From kernel language to practical language . . . . . . . . . . . . . 80
+2.5.1 Syntactic conveniences . . . . . . . . . . . . . . . . . . . . 80
+2.5.2 Functions (the fun statement) . . . . . . . . . . . . . . . . 85
+2.5.3 Interactive interface (the declare statement) . . . . . . . 88
+2.6 Exceptions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 91
+2.6.1 Motivation and basic concepts . . . . . . . . . . . . . . . . 91
+2.6.2 The declarative model with exceptions . . . . . . . . . . . 93
+2.6.3 Full syntax . . . . . . . . . . . . . . . . . . . . . . . . . . 95
+2.6.4 System exceptions . . . . . . . . . . . . . . . . . . . . . . 97
+2.7 Advanced topics . . . . . . . . . . . . . . . . . . . . . . . . . . . . 98
+2.7.1 Functional programming languages . . . . . . . . . . . . . 98
+2.7.2 Unification and entailment . . . . . . . . . . . . . . . . . . 100
+2.7.3 Dynamic and static typing . . . . . . . . . . . . . . . . . . 106
+2.8 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 108
+Copyright c 2001-3 by P. Van Roy and S. Haridi. All rights reserved.
+
+CONTENTS
+
+v
+
+3 Declarative Programming Techniques
+113
+3.1 What is declarativeness? . . . . . . . . . . . . . . . . . . . . . . . 117
+3.1.1 A classification of declarative programming . . . . . . . . . 117
+3.1.2 Specification languages . . . . . . . . . . . . . . . . . . . . 119
+3.1.3 Implementing components in the declarative model . . . . 119
+3.2 Iterative computation . . . . . . . . . . . . . . . . . . . . . . . . . 120
+3.2.1 A general schema . . . . . . . . . . . . . . . . . . . . . . . 120
+3.2.2 Iteration with numbers . . . . . . . . . . . . . . . . . . . . 122
+3.2.3 Using local procedures . . . . . . . . . . . . . . . . . . . . 122
+3.2.4 From general schema to control abstraction . . . . . . . . 125
+3.3 Recursive computation . . . . . . . . . . . . . . . . . . . . . . . . 126
+3.3.1 Growing stack size . . . . . . . . . . . . . . . . . . . . . . 127
+3.3.2 Substitution-based abstract machine . . . . . . . . . . . . 128
+3.3.3 Converting a recursive to an iterative computation . . . . 129
+3.4 Programming with recursion . . . . . . . . . . . . . . . . . . . . . 130
+3.4.1 Type notation . . . . . . . . . . . . . . . . . . . . . . . . . 131
+3.4.2 Programming with lists . . . . . . . . . . . . . . . . . . . . 132
+3.4.3 Accumulators . . . . . . . . . . . . . . . . . . . . . . . . . 142
+3.4.4 Difference lists . . . . . . . . . . . . . . . . . . . . . . . . 144
+3.4.5 Queues . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 149
+3.4.6 Trees . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 153
+3.4.7 Drawing trees . . . . . . . . . . . . . . . . . . . . . . . . . 161
+3.4.8 Parsing . . . . . . . . . . . . . . . . . . . . . . . . . . . . 163
+3.5 Time and space efficiency . . . . . . . . . . . . . . . . . . . . . . 169
+3.5.1 Execution time . . . . . . . . . . . . . . . . . . . . . . . . 169
+3.5.2 Memory usage . . . . . . . . . . . . . . . . . . . . . . . . . 175
+3.5.3 Amortized complexity . . . . . . . . . . . . . . . . . . . . 177
+3.5.4 Reflections on performance . . . . . . . . . . . . . . . . . . 178
+3.6 Higher-order programming . . . . . . . . . . . . . . . . . . . . . . 180
+3.6.1 Basic operations . . . . . . . . . . . . . . . . . . . . . . . 180
+3.6.2 Loop abstractions . . . . . . . . . . . . . . . . . . . . . . . 186
+3.6.3 Linguistic support for loops . . . . . . . . . . . . . . . . . 190
+3.6.4 Data-driven techniques . . . . . . . . . . . . . . . . . . . . 193
+3.6.5 Explicit lazy evaluation . . . . . . . . . . . . . . . . . . . . 196
+3.6.6 Currying . . . . . . . . . . . . . . . . . . . . . . . . . . . . 196
+3.7 Abstract data types . . . . . . . . . . . . . . . . . . . . . . . . . . 197
+3.7.1 A declarative stack . . . . . . . . . . . . . . . . . . . . . . 198
+3.7.2 A declarative dictionary . . . . . . . . . . . . . . . . . . . 199
+3.7.3 A word frequency application . . . . . . . . . . . . . . . . 201
+3.7.4 Secure abstract data types . . . . . . . . . . . . . . . . . . 204
+3.7.5 The declarative model with secure types . . . . . . . . . . 205
+3.7.6 A secure declarative dictionary . . . . . . . . . . . . . . . 210
+3.7.7 Capabilities and security . . . . . . . . . . . . . . . . . . . 210
+3.8 Nondeclarative needs . . . . . . . . . . . . . . . . . . . . . . . . . 213
+Copyright c 2001-3 by P. Van Roy and S. Haridi. All rights reserved.
+
+vi
+
+CONTENTS
+3.8.1 Text input/output with a file . . . . . . . . . . . . . . . .
+3.8.2 Text input/output with a graphical user interface . . . . .
+3.8.3 Stateless data I/O with files . . . . . . . . . . . . . . . . .
+3.9 Program design in the small . . . . . . . . . . . . . . . . . . . . .
+3.9.1 Design methodology . . . . . . . . . . . . . . . . . . . . .
+3.9.2 Example of program design . . . . . . . . . . . . . . . . .
+3.9.3 Software components . . . . . . . . . . . . . . . . . . . . .
+3.9.4 Example of a standalone program . . . . . . . . . . . . . .
+3.10 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+213
+216
+219
+221
+221
+222
+223
+228
+233
+
+4 Declarative Concurrency
+237
+4.1 The data-driven concurrent model . . . . . . . . . . . . . . . . . . 239
+4.1.1 Basic concepts . . . . . . . . . . . . . . . . . . . . . . . . . 241
+4.1.2 Semantics of threads . . . . . . . . . . . . . . . . . . . . . 243
+4.1.3 Example execution . . . . . . . . . . . . . . . . . . . . . . 246
+4.1.4 What is declarative concurrency? . . . . . . . . . . . . . . 247
+4.2 Basic thread programming techniques . . . . . . . . . . . . . . . . 251
+4.2.1 Creating threads . . . . . . . . . . . . . . . . . . . . . . . 251
+4.2.2 Threads and the browser . . . . . . . . . . . . . . . . . . . 251
+4.2.3 Dataflow computation with threads . . . . . . . . . . . . . 252
+4.2.4 Thread scheduling . . . . . . . . . . . . . . . . . . . . . . 256
+4.2.5 Cooperative and competitive concurrency . . . . . . . . . . 259
+4.2.6 Thread operations . . . . . . . . . . . . . . . . . . . . . . 260
+4.3 Streams . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 261
+4.3.1 Basic producer/consumer . . . . . . . . . . . . . . . . . . 261
+4.3.2 Transducers and pipelines . . . . . . . . . . . . . . . . . . 263
+4.3.3 Managing resources and improving throughput . . . . . . . 265
+4.3.4 Stream objects . . . . . . . . . . . . . . . . . . . . . . . . 270
+4.3.5 Digital logic simulation . . . . . . . . . . . . . . . . . . . . 271
+4.4 Using the declarative concurrent model directly . . . . . . . . . . 277
+4.4.1 Order-determining concurrency . . . . . . . . . . . . . . . 277
+4.4.2 Coroutines . . . . . . . . . . . . . . . . . . . . . . . . . . . 279
+4.4.3 Concurrent composition . . . . . . . . . . . . . . . . . . . 281
+4.5 Lazy execution . . . . . . . . . . . . . . . . . . . . . . . . . . . . 283
+4.5.1 The demand-driven concurrent model . . . . . . . . . . . . 286
+4.5.2 Declarative computation models . . . . . . . . . . . . . . . 290
+4.5.3 Lazy streams . . . . . . . . . . . . . . . . . . . . . . . . . 293
+4.5.4 Bounded buffer . . . . . . . . . . . . . . . . . . . . . . . . 295
+4.5.5 Reading a file lazily . . . . . . . . . . . . . . . . . . . . . . 297
+4.5.6 The Hamming problem . . . . . . . . . . . . . . . . . . . . 298
+4.5.7 Lazy list operations . . . . . . . . . . . . . . . . . . . . . . 299
+4.5.8 Persistent queues and algorithm design . . . . . . . . . . . 303
+4.5.9 List comprehensions . . . . . . . . . . . . . . . . . . . . . 307
+4.6 Soft real-time programming . . . . . . . . . . . . . . . . . . . . . 309
+Copyright c 2001-3 by P. Van Roy and S. Haridi. All rights reserved.
+
+CONTENTS
+
+vii
+
+4.6.1 Basic operations . . . . . . . . . . . . . . . . . . . . . . .
+4.6.2 Ticking . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.7 Limitations and extensions of declarative programming . . . . . .
+4.7.1 Efficiency . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.7.2 Modularity . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.7.3 Nondeterminism . . . . . . . . . . . . . . . . . . . . . . .
+4.7.4 The real world . . . . . . . . . . . . . . . . . . . . . . . .
+4.7.5 Picking the right model . . . . . . . . . . . . . . . . . . .
+4.7.6 Extended models . . . . . . . . . . . . . . . . . . . . . . .
+4.7.7 Using different models together . . . . . . . . . . . . . . .
+4.8 The Haskell language . . . . . . . . . . . . . . . . . . . . . . . . .
+4.8.1 Computation model . . . . . . . . . . . . . . . . . . . . . .
+4.8.2 Lazy evaluation . . . . . . . . . . . . . . . . . . . . . . . .
+4.8.3 Currying . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.8.4 Polymorphic types . . . . . . . . . . . . . . . . . . . . . .
+4.8.5 Type classes . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.9 Advanced topics . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.9.1 The declarative concurrent model with exceptions . . . . .
+4.9.2 More on lazy execution . . . . . . . . . . . . . . . . . . . .
+4.9.3 Dataflow variables as communication channels . . . . . . .
+4.9.4 More on synchronization . . . . . . . . . . . . . . . . . . .
+4.9.5 Usefulness of dataflow variables . . . . . . . . . . . . . . .
+4.10 Historical notes . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.11 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+309
+311
+314
+314
+315
+319
+322
+323
+323
+325
+327
+328
+328
+329
+330
+331
+332
+332
+334
+337
+339
+340
+343
+344
+
+5 Message-Passing Concurrency
+353
+5.1 The message-passing concurrent model . . . . . . . . . . . . . . . 354
+5.1.1 Ports . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 354
+5.1.2 Semantics of ports . . . . . . . . . . . . . . . . . . . . . . 355
+5.2 Port objects . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 357
+5.2.1 The NewPortObject abstraction . . . . . . . . . . . . . . 358
+5.2.2 An example . . . . . . . . . . . . . . . . . . . . . . . . . . 359
+5.2.3 Reasoning with port objects . . . . . . . . . . . . . . . . . 360
+5.3 Simple message protocols . . . . . . . . . . . . . . . . . . . . . . . 361
+5.3.1 RMI (Remote Method Invocation) . . . . . . . . . . . . . 361
+5.3.2 Asynchronous RMI . . . . . . . . . . . . . . . . . . . . . . 364
+5.3.3 RMI with callback (using thread) . . . . . . . . . . . . . . 364
+5.3.4 RMI with callback (using record continuation) . . . . . . . 366
+5.3.5 RMI with callback (using procedure continuation) . . . . . 367
+5.3.6 Error reporting . . . . . . . . . . . . . . . . . . . . . . . . 367
+5.3.7 Asynchronous RMI with callback . . . . . . . . . . . . . . 368
+5.3.8 Double callbacks . . . . . . . . . . . . . . . . . . . . . . . 369
+5.4 Program design for concurrency . . . . . . . . . . . . . . . . . . . 370
+5.4.1 Programming with concurrent components . . . . . . . . . 370
+Copyright c 2001-3 by P. Van Roy and S. Haridi. All rights reserved.
+
+viii
+
+CONTENTS
+
+5.5
+
+5.6
+
+5.7
+5.8
+
+5.4.2 Design methodology . . . . . . . . . . . . . . . . . . . . .
+5.4.3 List operations as concurrency patterns . . . . . . . . . . .
+5.4.4 Lift control system . . . . . . . . . . . . . . . . . . . . . .
+5.4.5 Improvements to the lift control system . . . . . . . . . . .
+Using the message-passing concurrent model directly . . . . . . .
+5.5.1 Port objects that share one thread . . . . . . . . . . . . .
+5.5.2 A concurrent queue with ports . . . . . . . . . . . . . . . .
+5.5.3 A thread abstraction with termination detection . . . . . .
+5.5.4 Eliminating sequential dependencies . . . . . . . . . . . . .
+The Erlang language . . . . . . . . . . . . . . . . . . . . . . . . .
+5.6.1 Computation model . . . . . . . . . . . . . . . . . . . . . .
+5.6.2 Introduction to Erlang programming . . . . . . . . . . . .
+5.6.3 The receive operation . . . . . . . . . . . . . . . . . . . .
+Advanced topics . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+5.7.1 The nondeterministic concurrent model . . . . . . . . . . .
+Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+372
+373
+374
+383
+385
+385
+387
+390
+393
+394
+394
+395
+398
+402
+402
+407
+
+6 Explicit State
+413
+6.1 What is state? . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 416
+6.1.1 Implicit (declarative) state . . . . . . . . . . . . . . . . . . 416
+6.1.2 Explicit state . . . . . . . . . . . . . . . . . . . . . . . . . 417
+6.2 State and system building . . . . . . . . . . . . . . . . . . . . . . 418
+6.2.1 System properties . . . . . . . . . . . . . . . . . . . . . . . 419
+6.2.2 Component-based programming . . . . . . . . . . . . . . . 420
+6.2.3 Object-oriented programming . . . . . . . . . . . . . . . . 421
+6.3 The declarative model with explicit state . . . . . . . . . . . . . . 421
+6.3.1 Cells . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 422
+6.3.2 Semantics of cells . . . . . . . . . . . . . . . . . . . . . . . 424
+6.3.3 Relation to declarative programming . . . . . . . . . . . . 425
+6.3.4 Sharing and equality . . . . . . . . . . . . . . . . . . . . . 426
+6.4 Abstract data types . . . . . . . . . . . . . . . . . . . . . . . . . . 427
+6.4.1 Eight ways to organize ADTs . . . . . . . . . . . . . . . . 427
+6.4.2 Variations on a stack . . . . . . . . . . . . . . . . . . . . . 429
+6.4.3 Revocable capabilities . . . . . . . . . . . . . . . . . . . . 433
+6.4.4 Parameter passing . . . . . . . . . . . . . . . . . . . . . . 434
+6.5 Stateful collections . . . . . . . . . . . . . . . . . . . . . . . . . . 438
+6.5.1 Indexed collections . . . . . . . . . . . . . . . . . . . . . . 439
+6.5.2 Choosing an indexed collection . . . . . . . . . . . . . . . 441
+6.5.3 Other collections . . . . . . . . . . . . . . . . . . . . . . . 442
+6.6 Reasoning with state . . . . . . . . . . . . . . . . . . . . . . . . . 444
+6.6.1 Invariant assertions . . . . . . . . . . . . . . . . . . . . . . 444
+6.6.2 An example . . . . . . . . . . . . . . . . . . . . . . . . . . 445
+6.6.3 Assertions . . . . . . . . . . . . . . . . . . . . . . . . . . . 448
+6.6.4 Proof rules . . . . . . . . . . . . . . . . . . . . . . . . . . . 449
+Copyright c 2001-3 by P. Van Roy and S. Haridi. All rights reserved.
+
+CONTENTS
+
+ix
+
+6.6.5 Normal termination . . . . . . . . . . . . . . . . . . . . . .
+6.7 Program design in the large . . . . . . . . . . . . . . . . . . . . .
+6.7.1 Design methodology . . . . . . . . . . . . . . . . . . . . .
+6.7.2 Hierarchical system structure . . . . . . . . . . . . . . . .
+6.7.3 Maintainability . . . . . . . . . . . . . . . . . . . . . . . .
+6.7.4 Future developments . . . . . . . . . . . . . . . . . . . . .
+6.7.5 Further reading . . . . . . . . . . . . . . . . . . . . . . . .
+6.8 Case studies . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6.8.1 Transitive closure . . . . . . . . . . . . . . . . . . . . . . .
+6.8.2 Word frequencies (with stateful dictionary) . . . . . . . . .
+6.8.3 Generating random numbers . . . . . . . . . . . . . . . . .
+6.8.4 “Word of Mouth” simulation . . . . . . . . . . . . . . . . .
+6.9 Advanced topics . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+6.9.1 Limitations of stateful programming . . . . . . . . . . . .
+6.9.2 Memory management and external references . . . . . . .
+6.10 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+452
+453
+454
+456
+461
+464
+466
+467
+467
+475
+476
+481
+484
+484
+485
+487
+
+7 Object-Oriented Programming
+493
+7.1 Motivations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 495
+7.1.1 Inheritance . . . . . . . . . . . . . . . . . . . . . . . . . . 495
+7.1.2 Encapsulated state and inheritance . . . . . . . . . . . . . 497
+7.1.3 Objects and classes . . . . . . . . . . . . . . . . . . . . . . 497
+7.2 Classes as complete ADTs . . . . . . . . . . . . . . . . . . . . . . 498
+7.2.1 An example . . . . . . . . . . . . . . . . . . . . . . . . . . 499
+7.2.2 Semantics of the example . . . . . . . . . . . . . . . . . . 500
+7.2.3 Defining classes . . . . . . . . . . . . . . . . . . . . . . . . 501
+7.2.4 Initializing attributes . . . . . . . . . . . . . . . . . . . . . 503
+7.2.5 First-class messages . . . . . . . . . . . . . . . . . . . . . . 504
+7.2.6 First-class attributes . . . . . . . . . . . . . . . . . . . . . 507
+7.2.7 Programming techniques . . . . . . . . . . . . . . . . . . . 507
+7.3 Classes as incremental ADTs . . . . . . . . . . . . . . . . . . . . . 507
+7.3.1 Inheritance . . . . . . . . . . . . . . . . . . . . . . . . . . 508
+7.3.2 Static and dynamic binding . . . . . . . . . . . . . . . . . 511
+7.3.3 Controlling encapsulation . . . . . . . . . . . . . . . . . . 512
+7.3.4 Forwarding and delegation . . . . . . . . . . . . . . . . . . 517
+7.3.5 Reflection . . . . . . . . . . . . . . . . . . . . . . . . . . . 522
+7.4 Programming with inheritance . . . . . . . . . . . . . . . . . . . . 524
+7.4.1 The correct use of inheritance . . . . . . . . . . . . . . . . 524
+7.4.2 Constructing a hierarchy by following the type . . . . . . . 528
+7.4.3 Generic classes . . . . . . . . . . . . . . . . . . . . . . . . 531
+7.4.4 Multiple inheritance . . . . . . . . . . . . . . . . . . . . . 533
+7.4.5 Rules of thumb for multiple inheritance . . . . . . . . . . . 539
+7.4.6 The purpose of class diagrams . . . . . . . . . . . . . . . . 539
+7.4.7 Design patterns . . . . . . . . . . . . . . . . . . . . . . . . 540
+Copyright c 2001-3 by P. Van Roy and S. Haridi. All rights reserved.
+
+x
+
+CONTENTS
+7.5 Relation to other computation models . . . . . . . . . . . . . . .
+7.5.1 Object-based and component-based programming . . . . .
+7.5.2 Higher-order programming . . . . . . . . . . . . . . . . . .
+7.5.3 Functional decomposition versus type decomposition . . .
+7.5.4 Should everything be an object? . . . . . . . . . . . . . . .
+7.6 Implementing the object system . . . . . . . . . . . . . . . . . . .
+7.6.1 Abstraction diagram . . . . . . . . . . . . . . . . . . . . .
+7.6.2 Implementing classes . . . . . . . . . . . . . . . . . . . . .
+7.6.3 Implementing objects . . . . . . . . . . . . . . . . . . . . .
+7.6.4 Implementing inheritance . . . . . . . . . . . . . . . . . .
+7.7 The Java language (sequential part) . . . . . . . . . . . . . . . . .
+7.7.1 Computation model . . . . . . . . . . . . . . . . . . . . . .
+7.7.2 Introduction to Java programming . . . . . . . . . . . . .
+7.8 Active objects . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+7.8.1 An example . . . . . . . . . . . . . . . . . . . . . . . . . .
+7.8.2 The NewActive abstraction . . . . . . . . . . . . . . . . .
+7.8.3 The Flavius Josephus problem . . . . . . . . . . . . . . . .
+7.8.4 Other active object abstractions . . . . . . . . . . . . . . .
+7.8.5 Event manager with active objects . . . . . . . . . . . . .
+7.9 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+543
+543
+544
+547
+548
+552
+552
+554
+555
+556
+556
+557
+558
+563
+564
+564
+565
+568
+569
+574
+
+8 Shared-State Concurrency
+577
+8.1 The shared-state concurrent model . . . . . . . . . . . . . . . . . 581
+8.2 Programming with concurrency . . . . . . . . . . . . . . . . . . . 581
+8.2.1 Overview of the different approaches . . . . . . . . . . . . 581
+8.2.2 Using the shared-state model directly . . . . . . . . . . . . 585
+8.2.3 Programming with atomic actions . . . . . . . . . . . . . . 588
+8.2.4 Further reading . . . . . . . . . . . . . . . . . . . . . . . . 589
+8.3 Locks . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 590
+8.3.1 Building stateful concurrent ADTs . . . . . . . . . . . . . 592
+8.3.2 Tuple spaces (“Linda”) . . . . . . . . . . . . . . . . . . . . 594
+8.3.3 Implementing locks . . . . . . . . . . . . . . . . . . . . . . 599
+8.4 Monitors . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 600
+8.4.1 Bounded buffer . . . . . . . . . . . . . . . . . . . . . . . . 602
+8.4.2 Programming with monitors . . . . . . . . . . . . . . . . . 605
+8.4.3 Implementing monitors . . . . . . . . . . . . . . . . . . . . 605
+8.4.4 Another semantics for monitors . . . . . . . . . . . . . . . 607
+8.5 Transactions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 608
+8.5.1 Concurrency control . . . . . . . . . . . . . . . . . . . . . 610
+8.5.2 A simple transaction manager . . . . . . . . . . . . . . . . 613
+8.5.3 Transactions on cells . . . . . . . . . . . . . . . . . . . . . 616
+8.5.4 Implementing transactions on cells . . . . . . . . . . . . . 619
+8.5.5 More on transactions . . . . . . . . . . . . . . . . . . . . . 623
+8.6 The Java language (concurrent part) . . . . . . . . . . . . . . . . 625
+Copyright c 2001-3 by P. Van Roy and S. Haridi. All rights reserved.
+
+CONTENTS
+
+8.7
+
+xi
+
+8.6.1 Locks . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 626
+8.6.2 Monitors . . . . . . . . . . . . . . . . . . . . . . . . . . . . 626
+Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 626
+
+9 Relational Programming
+633
+9.1 The relational computation model . . . . . . . . . . . . . . . . . . 635
+9.1.1 The choice and fail statements . . . . . . . . . . . . . . 635
+9.1.2 Search tree . . . . . . . . . . . . . . . . . . . . . . . . . . 636
+9.1.3 Encapsulated search . . . . . . . . . . . . . . . . . . . . . 637
+9.1.4 The Solve function . . . . . . . . . . . . . . . . . . . . . . 638
+9.2 Further examples . . . . . . . . . . . . . . . . . . . . . . . . . . . 639
+9.2.1 Numeric examples . . . . . . . . . . . . . . . . . . . . . . 639
+9.2.2 Puzzles and the n-queens problem . . . . . . . . . . . . . . 641
+9.3 Relation to logic programming . . . . . . . . . . . . . . . . . . . . 644
+9.3.1 Logic and logic programming . . . . . . . . . . . . . . . . 644
+9.3.2 Operational and logical semantics . . . . . . . . . . . . . . 647
+9.3.3 Nondeterministic logic programming . . . . . . . . . . . . 650
+9.3.4 Relation to pure Prolog . . . . . . . . . . . . . . . . . . . 652
+9.3.5 Logic programming in other models . . . . . . . . . . . . . 653
+9.4 Natural language parsing . . . . . . . . . . . . . . . . . . . . . . . 654
+9.4.1 A simple grammar . . . . . . . . . . . . . . . . . . . . . . 655
+9.4.2 Parsing with the grammar . . . . . . . . . . . . . . . . . . 656
+9.4.3 Generating a parse tree . . . . . . . . . . . . . . . . . . . . 656
+9.4.4 Generating quantifiers . . . . . . . . . . . . . . . . . . . . 657
+9.4.5 Running the parser . . . . . . . . . . . . . . . . . . . . . . 660
+9.4.6 Running the parser “backwards” . . . . . . . . . . . . . . 660
+9.4.7 Unification grammars . . . . . . . . . . . . . . . . . . . . . 661
+9.5 A grammar interpreter . . . . . . . . . . . . . . . . . . . . . . . . 662
+9.5.1 A simple grammar . . . . . . . . . . . . . . . . . . . . . . 663
+9.5.2 Encoding the grammar . . . . . . . . . . . . . . . . . . . . 663
+9.5.3 Running the grammar interpreter . . . . . . . . . . . . . . 664
+9.5.4 Implementing the grammar interpreter . . . . . . . . . . . 665
+9.6 Databases . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 667
+9.6.1 Defining a relation . . . . . . . . . . . . . . . . . . . . . . 668
+9.6.2 Calculating with relations . . . . . . . . . . . . . . . . . . 669
+9.6.3 Implementing relations . . . . . . . . . . . . . . . . . . . . 671
+9.7 The Prolog language . . . . . . . . . . . . . . . . . . . . . . . . . 673
+9.7.1 Computation model . . . . . . . . . . . . . . . . . . . . . . 674
+9.7.2 Introduction to Prolog programming . . . . . . . . . . . . 676
+9.7.3 Translating Prolog into a relational program . . . . . . . . 681
+9.8 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 684
+Copyright c 2001-3 by P. Van Roy and S. Haridi. All rights reserved.
+
+xii
+
+CONTENTS
+
+III
+
+Specialized Computation Models
+
+687
+
+10 Graphical User Interface Programming
+689
+10.1 Basic concepts . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 691
+10.2 Using the declarative/procedural approach . . . . . . . . . . . . . 692
+10.2.1 Basic user interface elements . . . . . . . . . . . . . . . . . 693
+10.2.2 Building the graphical user interface . . . . . . . . . . . . 694
+10.2.3 Declarative geometry . . . . . . . . . . . . . . . . . . . . . 696
+10.2.4 Declarative resize behavior . . . . . . . . . . . . . . . . . . 697
+10.2.5 Dynamic behavior of widgets . . . . . . . . . . . . . . . . 698
+10.3 Case studies . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 699
+10.3.1 A simple progress monitor . . . . . . . . . . . . . . . . . . 699
+10.3.2 A simple calendar widget . . . . . . . . . . . . . . . . . . . 700
+10.3.3 Automatic generation of a user interface . . . . . . . . . . 703
+10.3.4 A context-sensitive clock . . . . . . . . . . . . . . . . . . . 707
+10.4 Implementing the GUI tool . . . . . . . . . . . . . . . . . . . . . 712
+10.5 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 712
+11 Distributed Programming
+713
+11.1 Taxonomy of distributed systems . . . . . . . . . . . . . . . . . . 716
+11.2 The distribution model . . . . . . . . . . . . . . . . . . . . . . . . 718
+11.3 Distribution of declarative data . . . . . . . . . . . . . . . . . . . 720
+11.3.1 Open distribution and global naming . . . . . . . . . . . . 720
+11.3.2 Sharing declarative data . . . . . . . . . . . . . . . . . . . 722
+11.3.3 Ticket distribution . . . . . . . . . . . . . . . . . . . . . . 723
+11.3.4 Stream communication . . . . . . . . . . . . . . . . . . . . 725
+11.4 Distribution of state . . . . . . . . . . . . . . . . . . . . . . . . . 726
+11.4.1 Simple state sharing . . . . . . . . . . . . . . . . . . . . . 726
+11.4.2 Distributed lexical scoping . . . . . . . . . . . . . . . . . . 728
+11.5 Network awareness . . . . . . . . . . . . . . . . . . . . . . . . . . 729
+11.6 Common distributed programming patterns . . . . . . . . . . . . 730
+11.6.1 Stationary and mobile objects . . . . . . . . . . . . . . . . 730
+11.6.2 Asynchronous objects and dataflow . . . . . . . . . . . . . 732
+11.6.3 Servers . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 734
+11.6.4 Closed distribution . . . . . . . . . . . . . . . . . . . . . . 737
+11.7 Distribution protocols . . . . . . . . . . . . . . . . . . . . . . . . 738
+11.7.1 Language entities . . . . . . . . . . . . . . . . . . . . . . . 738
+11.7.2 Mobile state protocol . . . . . . . . . . . . . . . . . . . . . 740
+11.7.3 Distributed binding protocol . . . . . . . . . . . . . . . . . 742
+11.7.4 Memory management . . . . . . . . . . . . . . . . . . . . . 743
+11.8 Partial failure . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 744
+11.8.1 Fault model . . . . . . . . . . . . . . . . . . . . . . . . . . 745
+11.8.2 Simple cases of failure handling . . . . . . . . . . . . . . . 747
+11.8.3 A resilient server . . . . . . . . . . . . . . . . . . . . . . . 748
+Copyright c 2001-3 by P. Van Roy and S. Haridi. All rights reserved.
+
+CONTENTS
+
+xiii
+
+11.8.4 Active fault tolerance . . . . . . . . . . . . . . . . . . . . .
+11.9 Security . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+11.10Building applications . . . . . . . . . . . . . . . . . . . . . . . . .
+11.10.1 Centralized first, distributed later . . . . . . . . . . . . . .
+11.10.2 Handling partial failure . . . . . . . . . . . . . . . . . . . .
+11.10.3 Distributed components . . . . . . . . . . . . . . . . . . .
+11.11Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+749
+749
+751
+751
+751
+752
+752
+
+12 Constraint Programming
+755
+12.1 Propagate and search . . . . . . . . . . . . . . . . . . . . . . . . . 756
+12.1.1 Basic ideas . . . . . . . . . . . . . . . . . . . . . . . . . . 756
+12.1.2 Calculating with partial information . . . . . . . . . . . . 757
+12.1.3 An example . . . . . . . . . . . . . . . . . . . . . . . . . . 758
+12.1.4 Executing the example . . . . . . . . . . . . . . . . . . . . 760
+12.1.5 Summary . . . . . . . . . . . . . . . . . . . . . . . . . . . 761
+12.2 Programming techniques . . . . . . . . . . . . . . . . . . . . . . . 761
+12.2.1 A cryptarithmetic problem . . . . . . . . . . . . . . . . . . 761
+12.2.2 Palindrome products revisited . . . . . . . . . . . . . . . . 763
+12.3 The constraint-based computation model . . . . . . . . . . . . . . 764
+12.3.1 Basic constraints and propagators . . . . . . . . . . . . . . 766
+12.4 Computation spaces . . . . . . . . . . . . . . . . . . . . . . . . . 766
+12.4.1 Programming search with computation spaces . . . . . . . 767
+12.4.2 Definition . . . . . . . . . . . . . . . . . . . . . . . . . . . 767
+12.5 Implementing the relational computation model . . . . . . . . . . 777
+12.5.1 The choice statement . . . . . . . . . . . . . . . . . . . . 778
+12.5.2 Implementing the Solve function . . . . . . . . . . . . . . 778
+12.6 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 778
+
+IV
+
+Semantics
+
+781
+
+13 Language Semantics
+783
+13.1 The shared-state concurrent model . . . . . . . . . . . . . . . . . 784
+13.1.1 The store . . . . . . . . . . . . . . . . . . . . . . . . . . . 785
+13.1.2 The single-assignment (constraint) store . . . . . . . . . . 785
+13.1.3 Abstract syntax . . . . . . . . . . . . . . . . . . . . . . . . 786
+13.1.4 Structural rules . . . . . . . . . . . . . . . . . . . . . . . . 787
+13.1.5 Sequential and concurrent execution . . . . . . . . . . . . 789
+13.1.6 Comparison with the abstract machine semantics . . . . . 789
+13.1.7 Variable introduction . . . . . . . . . . . . . . . . . . . . . 790
+13.1.8 Imposing equality (tell) . . . . . . . . . . . . . . . . . . . . 791
+13.1.9 Conditional statements (ask) . . . . . . . . . . . . . . . . . 793
+13.1.10 Names . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 795
+13.1.11 Procedural abstraction . . . . . . . . . . . . . . . . . . . . 795
+Copyright c 2001-3 by P. Van Roy and S. Haridi. All rights reserved.
+
+xiv
+
+CONTENTS
+13.1.12 Explicit state . . . . . . . . . . . . . . . . . . . . . . . . .
+13.1.13 By-need triggers . . . . . . . . . . . . . . . . . . . . . . . .
+13.1.14 Read-only variables . . . . . . . . . . . . . . . . . . . . . .
+13.1.15 Exception handling . . . . . . . . . . . . . . . . . . . . . .
+13.1.16 Failed values . . . . . . . . . . . . . . . . . . . . . . . . . .
+13.1.17 Variable substitution . . . . . . . . . . . . . . . . . . . . .
+13.2 Declarative concurrency . . . . . . . . . . . . . . . . . . . . . . .
+13.3 Eight computation models . . . . . . . . . . . . . . . . . . . . . .
+13.4 Semantics of common abstractions . . . . . . . . . . . . . . . . .
+13.5 Historical notes . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+13.6 Exercises . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+V
+
+Appendices
+
+797
+798
+800
+801
+804
+805
+806
+808
+809
+810
+811
+
+815
+
+A Mozart System Development Environment
+817
+A.1 Interactive interface . . . . . . . . . . . . . . . . . . . . . . . . . . 817
+A.1.1 Interface commands . . . . . . . . . . . . . . . . . . . . . . 817
+A.1.2 Using functors interactively . . . . . . . . . . . . . . . . . 818
+A.2 Batch interface . . . . . . . . . . . . . . . . . . . . . . . . . . . . 819
+B Basic Data Types
+821
+B.1 Numbers (integers, floats, and characters) . . . . . . . . . . . . . 821
+B.1.1 Operations on numbers . . . . . . . . . . . . . . . . . . . . 823
+B.1.2 Operations on characters . . . . . . . . . . . . . . . . . . . 824
+B.2 Literals (atoms and names) . . . . . . . . . . . . . . . . . . . . . 825
+B.2.1 Operations on atoms . . . . . . . . . . . . . . . . . . . . . 826
+B.3 Records and tuples . . . . . . . . . . . . . . . . . . . . . . . . . . 826
+B.3.1 Tuples . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 827
+B.3.2 Operations on records . . . . . . . . . . . . . . . . . . . . 828
+B.3.3 Operations on tuples . . . . . . . . . . . . . . . . . . . . . 829
+B.4 Chunks (limited records) . . . . . . . . . . . . . . . . . . . . . . . 829
+B.5 Lists . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 830
+B.5.1 Operations on lists . . . . . . . . . . . . . . . . . . . . . . 831
+B.6 Strings . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 832
+B.7 Virtual strings . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 833
+C Language Syntax
+835
+C.1 Interactive statements . . . . . . . . . . . . . . . . . . . . . . . . 836
+C.2 Statements and expressions . . . . . . . . . . . . . . . . . . . . . 836
+C.3 Nonterminals for statements and expressions . . . . . . . . . . . . 838
+C.4 Operators . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 838
+C.4.1 Ternary operator . . . . . . . . . . . . . . . . . . . . . . . 841
+C.5 Keywords . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 841
+C.6 Lexical syntax . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 843
+Copyright c 2001-3 by P. Van Roy and S. Haridi. All rights reserved.
+
+CONTENTS
+
+xv
+
+C.6.1 Tokens . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 843
+C.6.2 Blank space and comments . . . . . . . . . . . . . . . . . . 843
+D General Computation Model
+845
+D.1 Creative extension principle . . . . . . . . . . . . . . . . . . . . . 846
+D.2 Kernel language . . . . . . . . . . . . . . . . . . . . . . . . . . . . 847
+D.3 Concepts . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 848
+D.3.1 Declarative models . . . . . . . . . . . . . . . . . . . . . . 848
+D.3.2 Security . . . . . . . . . . . . . . . . . . . . . . . . . . . . 849
+D.3.3 Exceptions . . . . . . . . . . . . . . . . . . . . . . . . . . . 849
+D.3.4 Explicit state . . . . . . . . . . . . . . . . . . . . . . . . . 850
+D.4 Different forms of state . . . . . . . . . . . . . . . . . . . . . . . . 850
+D.5 Other concepts . . . . . . . . . . . . . . . . . . . . . . . . . . . . 851
+D.5.1 What’s next? . . . . . . . . . . . . . . . . . . . . . . . . . 851
+D.5.2 Domain-specific concepts . . . . . . . . . . . . . . . . . . . 851
+D.6 Layered language design . . . . . . . . . . . . . . . . . . . . . . . 852
+Bibliography
+
+853
+
+Index
+
+869
+
+Copyright c 2001-3 by P. Van Roy and S. Haridi. All rights reserved.
+
+xvi
+
+Copyright c 2001-3 by P. Van Roy and S. Haridi. All rights reserved.
+
+List of Figures
+1.1
+1.2
+1.3
+1.4
+1.5
+
+Taking apart the list [5 6 7 8] . . . . . . . . . . . . . . . . . .
+Calculating the fifth row of Pascal’s triangle . . . . . . . . . . . .
+A simple example of dataflow execution . . . . . . . . . . . . . . .
+All possible executions of the first nondeterministic example . . .
+One possible execution of the second nondeterministic example . .
+
+7
+8
+17
+21
+23
+
+2.1 From characters to statements . . . . . . . . . . . . . . . . . . . . 33
+2.2 The context-free approach to language syntax . . . . . . . . . . . 35
+2.3 Ambiguity in a context-free grammar . . . . . . . . . . . . . . . . 36
+2.4 The kernel language approach to semantics . . . . . . . . . . . . . 39
+2.5 Translation approaches to language semantics . . . . . . . . . . . 42
+2.6 A single-assignment store with three unbound variables . . . . . . 44
+2.7 Two of the variables are bound to values . . . . . . . . . . . . . . 44
+2.8 A value store: all variables are bound to values . . . . . . . . . . 45
+2.9 A variable identifier referring to an unbound variable . . . . . . . 46
+2.10 A variable identifier referring to a bound variable . . . . . . . . . 46
+2.11 A variable identifier referring to a value . . . . . . . . . . . . . . . 47
+2.12 A partial value . . . . . . . . . . . . . . . . . . . . . . . . . . . . 47
+2.13 A partial value with no unbound variables, i.e., a complete value . 48
+2.14 Two variables bound together . . . . . . . . . . . . . . . . . . . . 48
+2.15 The store after binding one of the variables . . . . . . . . . . . . . 49
+2.16 The type hierarchy of the declarative model . . . . . . . . . . . . 53
+2.17 The declarative computation model . . . . . . . . . . . . . . . . . 62
+2.18 Lifecycle of a memory block . . . . . . . . . . . . . . . . . . . . . 76
+2.19 Declaring global variables . . . . . . . . . . . . . . . . . . . . . . 88
+2.20 The Browser . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 90
+2.21 Exception handling . . . . . . . . . . . . . . . . . . . . . . . . . . 92
+2.22 Unification of cyclic structures . . . . . . . . . . . . . . . . . . . . 102
+3.1
+3.2
+3.3
+3.4
+3.5
+
+A declarative operation inside a general computation . . . . . . .
+Structure of the chapter . . . . . . . . . . . . . . . . . . . . . . .
+A classification of declarative programming . . . . . . . . . . . . .
+Finding roots using Newton’s method (first version) . . . . . . . .
+Finding roots using Newton’s method (second version) . . . . . .
+
+114
+115
+116
+121
+123
+
+Copyright c 2001-3 by P. Van Roy and S. Haridi. All rights reserved.
+
+xviii
+
+LIST OF FIGURES
+3.6 Finding roots using Newton’s method (third version) . . . . . . .
+3.7 Finding roots using Newton’s method (fourth version) . . . . . . .
+3.8 Finding roots using Newton’s method (fifth version) . . . . . . . .
+3.9 Sorting with mergesort . . . . . . . . . . . . . . . . . . . . . . . .
+3.10 Control flow with threaded state . . . . . . . . . . . . . . . . . . .
+3.11 Deleting node Y when one subtree is a leaf (easy case) . . . . . . .
+3.12 Deleting node Y when neither subtree is a leaf (hard case) . . . .
+3.13 Breadth-first traversal . . . . . . . . . . . . . . . . . . . . . . . .
+3.14 Breadth-first traversal with accumulator . . . . . . . . . . . . . .
+3.15 Depth-first traversal with explicit stack . . . . . . . . . . . . . . .
+3.16 The tree drawing constraints . . . . . . . . . . . . . . . . . . . . .
+3.17 An example tree . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3.18 Tree drawing algorithm . . . . . . . . . . . . . . . . . . . . . . . .
+3.19 The example tree displayed with the tree drawing algorithm . . .
+3.20 Delayed execution of a procedure value . . . . . . . . . . . . . . .
+3.21 Defining an integer loop . . . . . . . . . . . . . . . . . . . . . . .
+3.22 Defining a list loop . . . . . . . . . . . . . . . . . . . . . . . . . .
+3.23 Simple loops over integers and lists . . . . . . . . . . . . . . . . .
+3.24 Defining accumulator loops . . . . . . . . . . . . . . . . . . . . . .
+3.25 Accumulator loops over integers and lists . . . . . . . . . . . . . .
+3.26 Folding a list . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+3.27 Declarative dictionary (with linear list) . . . . . . . . . . . . . . .
+3.28 Declarative dictionary (with ordered binary tree) . . . . . . . . .
+3.29 Word frequencies (with declarative dictionary) . . . . . . . . . . .
+3.30 Internal structure of binary tree dictionary in WordFreq (in part)
+3.31 Doing S1={Pop S X} with a secure stack . . . . . . . . . . . . .
+3.32 A simple graphical I/O interface for text . . . . . . . . . . . . . .
+3.33 Screen shot of the word frequency application . . . . . . . . . . .
+3.34 Standalone dictionary library (file Dict.oz) . . . . . . . . . . . .
+3.35 Standalone word frequency application (file WordApp.oz) . . . . .
+3.36 Component dependencies for the word frequency application . . .
+
+124
+124
+125
+140
+141
+156
+157
+159
+160
+160
+162
+162
+164
+165
+181
+186
+186
+187
+188
+189
+190
+199
+201
+202
+203
+208
+217
+228
+229
+230
+231
+
+4.1 The declarative concurrent model . . . . . . . . . . . . . . . . . .
+4.2 Causal orders of sequential and concurrent executions . . . . . . .
+4.3 Relationship between causal order and interleaving executions . .
+4.4 Execution of the thread statement . . . . . . . . . . . . . . . . .
+4.5 Thread creations for the call {Fib 6} . . . . . . . . . . . . . . .
+4.6 The Oz Panel showing thread creation in {Fib 26 X} . . . . . .
+4.7 Dataflow and rubber bands . . . . . . . . . . . . . . . . . . . . .
+4.8 Cooperative and competitive concurrency . . . . . . . . . . . . . .
+4.9 Operations on threads . . . . . . . . . . . . . . . . . . . . . . . .
+4.10 Producer-consumer stream communication . . . . . . . . . . . . .
+4.11 Filtering a stream . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.12 A prime-number sieve with streams . . . . . . . . . . . . . . . . .
+
+240
+242
+242
+245
+254
+255
+256
+259
+260
+261
+264
+264
+
+Copyright c 2001-3 by P. Van Roy and S. Haridi. All rights reserved.
+
+LIST OF FIGURES
+4.13 Pipeline of filters generated by {Sieve Xs 316} . . . . . . . . .
+4.14 Bounded buffer . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.15 Bounded buffer (data-driven concurrent version) . . . . . . . . . .
+4.16 Digital logic gates . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.17 A full adder . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.18 A latch . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+4.19 A linguistic abstraction for logic gates . . . . . . . . . . . . . . . .
+4.20 Tree drawing algorithm with order-determining concurrency . . .
+4.21 Procedures, coroutines, and threads . . . . . . . . . . . . . . . . .
+4.22 Implementing coroutines using the Thread module . . . . . . . .
+4.23 Concurrent composition . . . . . . . . . . . . . . . . . . . . . . .
+4.24 The by-need protocol . . . . . . . . . . . . . . . . . . . . . . . . .
+4.25 Stages in a variable’s lifetime . . . . . . . . . . . . . . . . . . . .
+4.26 Practical declarative computation models . . . . . . . . . . . . . .
+4.27 Bounded buffer (naive lazy version) . . . . . . . . . . . . . . . . .
+4.28 Bounded buffer (correct lazy version) . . . . . . . . . . . . . . . .
+4.29 Lazy solution to the Hamming problem . . . . . . . . . . . . . . .
+4.30 A simple ‘Ping Pong’ program . . . . . . . . . . . . . . . . . . . .
+4.31 A standalone ‘Ping Pong’ program . . . . . . . . . . . . . . . . .
+4.32 A standalone ‘Ping Pong’ program that exits cleanly . . . . . . .
+4.33 Changes needed for instrumenting procedure P1 . . . . . . . . . .
+4.34 How can two clients send to the same server? They cannot! . . . .
+4.35 Impedance matching: example of a serializer . . . . . . . . . . . .
+
+xix
+266
+267
+267
+272
+273
+275
+276
+278
+280
+281
+282
+287
+289
+291
+296
+296
+298
+310
+311
+312
+317
+319
+326
+
+5.1 The message-passing concurrent model . . . . . . . . . . . . . . . 356
+5.2 Three port objects playing ball . . . . . . . . . . . . . . . . . . . 359
+5.3 Message diagrams of simple protocols . . . . . . . . . . . . . . . . 362
+5.4 Schematic overview of a building with lifts . . . . . . . . . . . . . 374
+5.5 Component diagram of the lift control system . . . . . . . . . . . 375
+5.6 Notation for state diagrams . . . . . . . . . . . . . . . . . . . . . 375
+5.7 State diagram of a lift controller . . . . . . . . . . . . . . . . . . . 377
+5.8 Implementation of the timer and controller components . . . . . . 378
+5.9 State diagram of a floor . . . . . . . . . . . . . . . . . . . . . . . 379
+5.10 Implementation of the floor component . . . . . . . . . . . . . . . 380
+5.11 State diagram of a lift . . . . . . . . . . . . . . . . . . . . . . . . 381
+5.12 Implementation of the lift component . . . . . . . . . . . . . . . . 382
+5.13 Hierarchical component diagram of the lift control system . . . . . 383
+5.14 Defining port objects that share one thread . . . . . . . . . . . . . 386
+5.15 Screenshot of the ‘Ping-Pong’ program . . . . . . . . . . . . . . . 386
+5.16 The ‘Ping-Pong’ program: using port objects that share one thread 387
+5.17 Queue (naive version with ports) . . . . . . . . . . . . . . . . . . 388
+5.18 Queue (correct version with ports) . . . . . . . . . . . . . . . . . 389
+5.19 A thread abstraction with termination detection . . . . . . . . . . 391
+5.20 A concurrent filter without sequential dependencies . . . . . . . . 392
+Copyright c 2001-3 by P. Van Roy and S. Haridi. All rights reserved.
+
+xx
+
+LIST OF FIGURES
+5.21 Translation of receive without time out . . . . . . . . . . . . . .
+5.22 Translation of receive with time out . . . . . . . . . . . . . . . .
+5.23 Translation of receive with zero time out . . . . . . . . . . . . .
+5.24 Connecting two clients using a stream merger . . . . . . . . . . .
+5.25 Symmetric nondeterministic choice (using exceptions) . . . . . . .
+5.26 Asymmetric nondeterministic choice (using IsDet) . . . . . . . .
+
+400
+401
+402
+404
+407
+407
+
+6.1 The declarative model with explicit state . . . . . . . . . . . . . .
+6.2 Five ways to package a stack . . . . . . . . . . . . . . . . . . . . .
+6.3 Four versions of a secure stack . . . . . . . . . . . . . . . . . . . .
+6.4 Different varieties of indexed collections . . . . . . . . . . . . . . .
+6.5 Extensible array (stateful implementation) . . . . . . . . . . . . .
+6.6 A system structured as a hierarchical graph . . . . . . . . . . . .
+6.7 System structure – static and dynamic . . . . . . . . . . . . . . .
+6.8 A directed graph and its transitive closure . . . . . . . . . . . . .
+6.9 One step in the transitive closure algorithm . . . . . . . . . . . .
+6.10 Transitive closure (first declarative version) . . . . . . . . . . . . .
+6.11 Transitive closure (stateful version) . . . . . . . . . . . . . . . . .
+6.12 Transitive closure (second declarative version) . . . . . . . . . . .
+6.13 Transitive closure (concurrent/parallel version) . . . . . . . . . . .
+6.14 Word frequencies (with stateful dictionary) . . . . . . . . . . . . .
+
+422
+429
+430
+439
+443
+456
+458
+466
+467
+469
+471
+472
+474
+476
+
+7.1 An example class Counter (with class syntax) . . . . . . . . . .
+7.2 Defining the Counter class (without syntactic support) . . . . . .
+7.3 Creating a Counter object . . . . . . . . . . . . . . . . . . . . . .
+7.4 Illegal and legal class hierarchies . . . . . . . . . . . . . . . . . . .
+7.5 A class declaration is an executable statement . . . . . . . . . . .
+7.6 An example class Account . . . . . . . . . . . . . . . . . . . . . .
+7.7 The meaning of “private” . . . . . . . . . . . . . . . . . . . . . .
+7.8 Different ways to extend functionality . . . . . . . . . . . . . . . .
+7.9 Implementing delegation . . . . . . . . . . . . . . . . . . . . . . .
+7.10 An example of delegation . . . . . . . . . . . . . . . . . . . . . . .
+7.11 A simple hierarchy with three classes . . . . . . . . . . . . . . . .
+7.12 Constructing a hierarchy by following the type . . . . . . . . . . .
+7.13 Lists in object-oriented style . . . . . . . . . . . . . . . . . . . . .
+7.14 A generic sorting class (with inheritance) . . . . . . . . . . . . . .
+7.15 Making it concrete (with inheritance) . . . . . . . . . . . . . . . .
+7.16 A class hierarchy for genericity . . . . . . . . . . . . . . . . . . . .
+7.17 A generic sorting class (with higher-order programming) . . . . .
+7.18 Making it concrete (with higher-order programming) . . . . . . .
+7.19 Class diagram of the graphics package . . . . . . . . . . . . . . .
+7.20 Drawing in the graphics package . . . . . . . . . . . . . . . . . . .
+7.21 Class diagram with an association . . . . . . . . . . . . . . . . . .
+7.22 The Composite pattern . . . . . . . . . . . . . . . . . . . . . . . .
+
+498
+499
+500
+508
+509
+510
+513
+517
+519
+521
+525
+527
+528
+529
+530
+530
+531
+532
+534
+536
+537
+541
+
+Copyright c 2001-3 by P. Van Roy and S. Haridi. All rights reserved.
+
+LIST OF FIGURES
+
+xxi
+
+7.23 Functional decomposition versus type decomposition . . . . . . .
+7.24 Abstractions in object-oriented programming . . . . . . . . . . . .
+7.25 An example class Counter (again) . . . . . . . . . . . . . . . . .
+7.26 An example of class construction . . . . . . . . . . . . . . . . . .
+7.27 An example of object construction . . . . . . . . . . . . . . . . . .
+7.28 Implementing inheritance . . . . . . . . . . . . . . . . . . . . . . .
+7.29 Parameter passing in Java . . . . . . . . . . . . . . . . . . . . . .
+7.30 Two active objects playing ball (definition) . . . . . . . . . . . . .
+7.31 Two active objects playing ball (illustration) . . . . . . . . . . . .
+7.32 The Flavius Josephus problem . . . . . . . . . . . . . . . . . . . .
+7.33 The Flavius Josephus problem (active object version) . . . . . . .
+7.34 The Flavius Josephus problem (data-driven concurrent version) .
+7.35 Event manager with active objects . . . . . . . . . . . . . . . . .
+7.36 Adding functionality with inheritance . . . . . . . . . . . . . . . .
+7.37 Batching a list of messages and procedures . . . . . . . . . . . . .
+
+548
+553
+554
+555
+556
+557
+562
+563
+564
+565
+566
+568
+570
+571
+572
+
+8.1 The shared-state concurrent model . . . . . . . . . . . . . . . . .
+8.2 Different approaches to concurrent programming . . . . . . . . . .
+8.3 Concurrent stack . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8.4 The hierarchy of atomic actions . . . . . . . . . . . . . . . . . . .
+8.5 Differences between atomic actions . . . . . . . . . . . . . . . . .
+8.6 Queue (declarative version) . . . . . . . . . . . . . . . . . . . . .
+8.7 Queue (sequential stateful version) . . . . . . . . . . . . . . . . .
+8.8 Queue (concurrent stateful version with lock) . . . . . . . . . . .
+8.9 Queue (concurrent object-oriented version with lock) . . . . . . .
+8.10 Queue (concurrent stateful version with exchange) . . . . . . . . .
+8.11 Queue (concurrent version with tuple space) . . . . . . . . . . . .
+8.12 Tuple space (object-oriented version) . . . . . . . . . . . . . . . .
+8.13 Lock (non-reentrant version without exception handling) . . . . .
+8.14 Lock (non-reentrant version with exception handling) . . . . . . .
+8.15 Lock (reentrant version with exception handling) . . . . . . . . .
+8.16 Bounded buffer (monitor version) . . . . . . . . . . . . . . . . . .
+8.17 Queue (extended concurrent stateful version) . . . . . . . . . . . .
+8.18 Lock (reentrant get-release version) . . . . . . . . . . . . . . . . .
+8.19 Monitor implementation . . . . . . . . . . . . . . . . . . . . . . .
+8.20 State diagram of one incarnation of a transaction . . . . . . . . .
+8.21 Architecture of the transaction system . . . . . . . . . . . . . . .
+8.22 Implementation of the transaction system (part 1) . . . . . . . . .
+8.23 Implementation of the transaction system (part 2) . . . . . . . . .
+8.24 Priority queue . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+8.25 Bounded buffer (Java version) . . . . . . . . . . . . . . . . . . . .
+
+580
+582
+586
+588
+589
+591
+592
+593
+594
+595
+596
+597
+598
+598
+599
+604
+606
+607
+608
+615
+619
+621
+622
+624
+627
+
+9.1
+9.2
+
+Search tree for the clothing design example . . . . . . . . . . . . . 637
+Two digit counting with depth-first search . . . . . . . . . . . . . 640
+Copyright c 2001-3 by P. Van Roy and S. Haridi. All rights reserved.
+
+xxii
+
+LIST OF FIGURES
+9.3 The n-queens problem (when n = 4) . . . . . . . . . . . . . . . .
+9.4 Solving the n-queens problem with relational programming . . . .
+9.5 Natural language parsing (simple nonterminals) . . . . . . . . . .
+9.6 Natural language parsing (compound nonterminals) . . . . . . . .
+9.7 Encoding of a grammar . . . . . . . . . . . . . . . . . . . . . . . .
+9.8 Implementing the grammar interpreter . . . . . . . . . . . . . . .
+9.9 A simple graph . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9.10 Paths in a graph . . . . . . . . . . . . . . . . . . . . . . . . . . .
+9.11 Implementing relations (with first-argument indexing) . . . . . . .
+
+642
+643
+658
+659
+664
+666
+669
+671
+672
+
+10.1 Building the graphical user interface . . . . . . . . . . . . . . . .
+10.2 Simple text entry window . . . . . . . . . . . . . . . . . . . . . .
+10.3 Function for doing text entry . . . . . . . . . . . . . . . . . . . .
+10.4 Windows generated with the lr and td widgets . . . . . . . . . .
+10.5 Window generated with newline and continue codes . . . . . .
+10.6 Declarative resize behavior . . . . . . . . . . . . . . . . . . . . . .
+10.7 Window generated with the glue parameter . . . . . . . . . . . .
+10.8 A simple progress monitor . . . . . . . . . . . . . . . . . . . . . .
+10.9 A simple calendar widget . . . . . . . . . . . . . . . . . . . . . . .
+10.10Automatic generation of a user interface . . . . . . . . . . . . . .
+10.11From the original data to the user interface . . . . . . . . . . . . .
+10.12Defining the read-only presentation . . . . . . . . . . . . . . . . .
+10.13Defining the editable presentation . . . . . . . . . . . . . . . . . .
+10.14Three views of FlexClock, a context-sensitive clock . . . . . . . .
+10.15Architecture of the context-sensitive clock . . . . . . . . . . . . .
+10.16View definitions for the context-sensitive clock . . . . . . . . . . .
+10.17The best view for any size clock window . . . . . . . . . . . . . .
+
+693
+694
+695
+695
+696
+697
+698
+700
+701
+703
+704
+705
+705
+707
+707
+710
+711
+
+11.1 A simple taxonomy of distributed systems . . . . . . . . . . . . . 717
+11.2 The distributed computation model . . . . . . . . . . . . . . . . . 718
+11.3 Process-oriented view of the distribution model . . . . . . . . . . 720
+11.4 Distributed locking . . . . . . . . . . . . . . . . . . . . . . . . . . 727
+11.5 The advantages of asynchronous objects with dataflow . . . . . . 733
+11.6 Graph notation for a distributed cell . . . . . . . . . . . . . . . . 741
+11.7 Moving the state pointer . . . . . . . . . . . . . . . . . . . . . . . 741
+11.8 Graph notation for a distributed dataflow variable . . . . . . . . . 742
+11.9 Binding a distributed dataflow variable . . . . . . . . . . . . . . . 742
+11.10A resilient server . . . . . . . . . . . . . . . . . . . . . . . . . . . 748
+12.1 Constraint definition of Send-More-Money puzzle . . . . . . . . .
+12.2 Constraint-based computation model . . . . . . . . . . . . . . . .
+12.3 Depth-first single solution search . . . . . . . . . . . . . . . . . .
+12.4 Visibility of variables and bindings in nested spaces . . . . . . . .
+12.5 Communication between a space and its distribution strategy . . .
+12.6 Lazy all-solution search engine Solve . . . . . . . . . . . . . . . .
+Copyright c 2001-3 by P. Van Roy and S. Haridi. All rights reserved.
+
+762
+765
+768
+770
+775
+779
+
+LIST OF FIGURES
+13.1 The kernel language with shared-state concurrency . . . . . . . . 787
+B.1 Graph representation of the infinite list C1=a|b|C1 . . . . . . . . 832
+C.1 The ternary operator “. :=” . . . . . . . . . . . . . . . . . . . . 840
+
+Copyright c 2001-3 by P. Van Roy and S. Haridi. All rights reserved.
+
+xxiii
+
+xxiv
+
+Copyright c 2001-3 by P. Van Roy and S. Haridi. All rights reserved.
+
+List of Tables
+2.1 The declarative kernel language . . . . . . . . . . . . . . . . . . . 50
+2.2 Value expressions in the declarative kernel language . . . . . . . . 51
+2.3 Examples of basic operations . . . . . . . . . . . . . . . . . . . . . 56
+2.4 Expressions for calculating with numbers . . . . . . . . . . . . . . 82
+2.5 The if statement . . . . . . . . . . . . . . . . . . . . . . . . . . . 83
+2.6 The case statement . . . . . . . . . . . . . . . . . . . . . . . . . 83
+2.7 Function syntax . . . . . . . . . . . . . . . . . . . . . . . . . . . . 85
+2.8 Interactive statement syntax . . . . . . . . . . . . . . . . . . . . . 88
+2.9 The declarative kernel language with exceptions . . . . . . . . . . 94
+2.10 Exception syntax . . . . . . . . . . . . . . . . . . . . . . . . . . . 95
+2.11 Equality (unification) and equality test (entailment check) . . . . 100
+3.1
+3.2
+3.3
+3.4
+3.5
+3.6
+3.7
+
+The descriptive declarative kernel language . . . . . . . . . . . . .
+The parser’s input language (which is a token sequence) . . . . . .
+The parser’s output language (which is a tree) . . . . . . . . . . .
+Execution times of kernel instructions . . . . . . . . . . . . . . . .
+Memory consumption of kernel instructions . . . . . . . . . . . . .
+The declarative kernel language with secure types . . . . . . . . .
+Functor syntax . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+
+117
+166
+167
+170
+176
+206
+224
+
+4.1
+4.2
+4.3
+4.4
+4.5
+
+The data-driven concurrent kernel language . . . . . . . . . . . .
+The demand-driven concurrent kernel language . . . . . . . . . . .
+The declarative concurrent kernel language with exceptions . . . .
+Dataflow variable as communication channel . . . . . . . . . . . .
+Classifying synchronization . . . . . . . . . . . . . . . . . . . . . .
+
+240
+285
+332
+337
+340
+
+5.1
+5.2
+
+The kernel language with message-passing concurrency . . . . . . 355
+The nondeterministic concurrent kernel language . . . . . . . . . . 403
+
+6.1
+6.2
+
+The kernel language with explicit state . . . . . . . . . . . . . . . 423
+Cell operations . . . . . . . . . . . . . . . . . . . . . . . . . . . . 423
+
+7.1
+
+Class syntax . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 501
+
+8.1
+
+The kernel language with shared-state concurrency . . . . . . . . 580
+Copyright c 2001-3 by P. Van Roy and S. Haridi. All rights reserved.
+
+

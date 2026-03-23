@@ -1,0 +1,57 @@
+local List Rec Cell Res CyclicList CyclicRec in
+  local E1_ E2_ in
+    E1_ = 10
+    local E3_ E4_ in
+      E3_ = 20
+      E4_ = nil()
+      E2_ = '|'(1:E3_ 2:E4_)
+    end
+    List = '|'(1:E1_ 2:E2_)
+  end
+  {Browse List}
+  local E1_ E2_ in
+    E1_ = 'Alice'()
+    E2_ = 30
+    Rec = person(name:E1_ age:E2_)
+  end
+  {Browse Rec}
+  local E1_ in
+    E1_ = 0
+    {NewCell E1_ Cell}
+  end
+  local E4_ in
+    E4_ = 5
+    {Exchange Cell Res E4_}
+  end
+  {Browse Res}
+  local E3_ in
+    {Exchange Cell E3_ E3_}
+    {Browse E3_}
+  end
+  local C4_ G4_ in
+    C4_ = 10
+    {Exchange Cell G4_ C4_}
+  end
+  local E5_ in
+    {Exchange Cell E5_ E5_}
+    {Browse E5_}
+  end
+  local X Y in
+    local E6_ in
+      E6_ = 1
+      X = '|'(1:E6_ 2:Y)
+    end
+    local E6_ in
+      E6_ = 2
+      Y = '|'(1:E6_ 2:X)
+    end
+    CyclicList = X
+  end
+  {Browse CyclicList}
+  local R in
+    R = a(x:R y:R)
+    CyclicRec = R
+  end
+  {Browse CyclicRec}
+end
+%show mutable

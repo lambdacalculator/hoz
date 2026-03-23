@@ -1,0 +1,76 @@
+local X Y Lz Force in
+  thread
+    local E1_ in
+      E1_ = 'Thread 1 Start'()
+      {Browse E1_}
+    end
+    X = 100
+  end
+  thread
+    local E1_ in
+      E1_ = 'Thread 2 Start'()
+      {Browse E1_}
+    end
+    Y = 200
+  end
+  local E1_ in
+    {Plus_ X Y E1_}
+    {Browse E1_}
+  end
+  local E2_ in
+    E2_ = proc {$ E3_}
+      E3_ = 42
+    end
+    {ByNeed E2_ Lz}
+  end
+  local E3_ in
+    E3_ = 10
+    {Plus_ Lz E3_ Force}
+  end
+  {Browse Force}
+  local F LazyVal in
+    F = proc {$ X E3_}
+      local E4_ in
+        E4_ = proc {$ E5_}
+          local E6_ in
+            E6_ = 10
+            {Multiply_ X E6_ E5_}
+          end
+        end
+        {ByNeed E4_ E3_}
+      end
+    end
+    local E4_ in
+      E4_ = 5
+      {F E4_ LazyVal}
+    end
+    local E4_ in
+      E4_ = 'Lazy Created'()
+      {Browse E4_}
+    end
+    local E5_ in
+      local E6_ in
+        E6_ = 0
+        {Plus_ LazyVal E6_ E5_}
+      end
+      {Browse E5_}
+    end
+  end
+  local A B in
+    {ReadOnly A B}
+    thread
+      local E3_ in
+        E3_ = 'Waiting for A'()
+        {Browse E3_}
+      end
+      local E4_ in
+        local E5_ in
+          E5_ = 10
+          {Plus_ B E5_ E4_}
+        end
+        {Browse E4_}
+      end
+    end
+    A = 5
+  end
+end

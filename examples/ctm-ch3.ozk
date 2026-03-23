@@ -1,0 +1,2743 @@
+local Sqrt SqrtIter Improve GoodEnough Abs in
+  Sqrt = proc {$ X E1_ } in
+    local Guess in
+      Guess = 1.0
+      {SqrtIter Guess X E1_}
+    end
+  end
+  SqrtIter = proc {$ Guess X E2_ } in
+    local E3_ in
+      {GoodEnough Guess X E3_}
+      if E3_ then E2_ = Guess
+       else local E4_ in
+        {Improve Guess X E4_}
+        {SqrtIter E4_ X E2_}
+      end
+       end
+    end
+  end
+  Improve = proc {$ Guess X E3_ } in
+    local E4_ E5_ in
+      local E7_ in
+        {FloatDiv_ X Guess E7_}
+        {Plus_ Guess E7_ E4_}
+      end
+      E5_ = 2.0
+      {FloatDiv_ E4_ E5_ E3_}
+    end
+  end
+  GoodEnough = proc {$ Guess X E4_ } in
+    local E5_ E6_ in
+      local E8_ in
+        local E10_ in
+          local E11_ in
+            {Multiply_ Guess Guess E11_}
+            {Minus_ X E11_ E10_}
+          end
+          {Abs E10_ E8_}
+        end
+        {FloatDiv_ E8_ X E5_}
+      end
+      E6_ = 1.0e-5
+      {LT_ E5_ E6_ E4_}
+    end
+  end
+  Abs = proc {$ X E5_ } in
+    local E6_ in
+      local E7_ in
+        E7_ = 0.0
+        {LT_ X E7_ E6_}
+      end
+      if E6_ then local E7_ in
+        E7_ = 0
+        {Minus_ E7_ X E5_}
+      end
+       else E5_ = X
+       end
+    end
+  end
+  local E6_ in
+    local E7_ in
+      E7_ = 2.0
+      {Sqrt E7_ E6_}
+    end
+    {Browse E6_}
+  end
+end
+local Abs in
+  Abs = proc {$ X E1_ } in
+    local E2_ in
+      local E3_ in
+        E3_ = 0.0
+        {LT_ X E3_ E2_}
+      end
+      if E2_ then local E3_ in
+        E3_ = 0
+        {Minus_ E3_ X E1_}
+      end
+       else E1_ = X
+       end
+    end
+  end
+  local Improve in
+    Improve = proc {$ Guess X E2_ } in
+      local E3_ E4_ in
+        local E6_ in
+          {FloatDiv_ X Guess E6_}
+          {Plus_ Guess E6_ E3_}
+        end
+        E4_ = 2.0
+        {FloatDiv_ E3_ E4_ E2_}
+      end
+    end
+    local GoodEnough in
+      GoodEnough = proc {$ Guess X E3_ } in
+        local E4_ E5_ in
+          local E7_ in
+            local E9_ in
+              local E10_ in
+                {Multiply_ Guess Guess E10_}
+                {Minus_ X E10_ E9_}
+              end
+              {Abs E9_ E7_}
+            end
+            {FloatDiv_ E7_ X E4_}
+          end
+          E5_ = 1.0e-5
+          {LT_ E4_ E5_ E3_}
+        end
+      end
+      local SqrtIter in
+        SqrtIter = proc {$ Guess X E4_ } in
+          local E5_ in
+            {GoodEnough Guess X E5_}
+            if E5_ then E4_ = Guess
+             else local E6_ in
+              {Improve Guess X E6_}
+              {SqrtIter E6_ X E4_}
+            end
+             end
+          end
+        end
+        local Sqrt in
+          Sqrt = proc {$ X E5_ } in
+            local Guess in
+              Guess = 1.0
+              {SqrtIter Guess X E5_}
+            end
+          end
+          local E1_ in
+            local E2_ in
+              E2_ = 2.0
+              {Sqrt E2_ E1_}
+            end
+            {Browse E1_}
+          end
+        end
+      end
+    end
+  end
+end
+local Sqrt in
+  Sqrt = proc {$ X E1_ } in
+    local Improve in
+      Improve = proc {$ Guess X E2_ } in
+        local E3_ E4_ in
+          local E6_ in
+            {FloatDiv_ X Guess E6_}
+            {Plus_ Guess E6_ E3_}
+          end
+          E4_ = 2.0
+          {FloatDiv_ E3_ E4_ E2_}
+        end
+      end
+      local Abs in
+        Abs = proc {$ X E3_ } in
+          local E4_ in
+            local E5_ in
+              E5_ = 0.0
+              {LT_ X E5_ E4_}
+            end
+            if E4_ then local E5_ in
+              E5_ = 0
+              {Minus_ E5_ X E3_}
+            end
+             else E3_ = X
+             end
+          end
+        end
+        local GoodEnough in
+          GoodEnough = proc {$ Guess X E4_ } in
+            local E5_ E6_ in
+              local E8_ in
+                local E10_ in
+                  local E11_ in
+                    {Multiply_ Guess Guess E11_}
+                    {Minus_ X E11_ E10_}
+                  end
+                  {Abs E10_ E8_}
+                end
+                {FloatDiv_ E8_ X E5_}
+              end
+              E6_ = 1.0e-5
+              {LT_ E5_ E6_ E4_}
+            end
+          end
+          local SqrtIter in
+            SqrtIter = proc {$ Guess X E5_ } in
+              local E6_ in
+                {GoodEnough Guess X E6_}
+                if E6_ then E5_ = Guess
+                 else local E7_ in
+                  {Improve Guess X E7_}
+                  {SqrtIter E7_ X E5_}
+                end
+                 end
+              end
+            end
+            local Guess in
+              Guess = 1.0
+              {SqrtIter Guess X E1_}
+            end
+          end
+        end
+      end
+    end
+  end
+  local E2_ in
+    local E3_ in
+      E3_ = 2.0
+      {Sqrt E3_ E2_}
+    end
+    {Browse E2_}
+  end
+end
+local Sqrt in
+  Sqrt = proc {$ X E1_ } in
+    local Improve in
+      Improve = proc {$ Guess E2_ } in
+        local E3_ E4_ in
+          local E6_ in
+            {FloatDiv_ X Guess E6_}
+            {Plus_ Guess E6_ E3_}
+          end
+          E4_ = 2.0
+          {FloatDiv_ E3_ E4_ E2_}
+        end
+      end
+      local Abs in
+        Abs = proc {$ X E3_ } in
+          local E4_ in
+            local E5_ in
+              E5_ = 0.0
+              {LT_ X E5_ E4_}
+            end
+            if E4_ then local E5_ in
+              E5_ = 0
+              {Minus_ E5_ X E3_}
+            end
+             else E3_ = X
+             end
+          end
+        end
+        local GoodEnough in
+          GoodEnough = proc {$ Guess E4_ } in
+            local E5_ E6_ in
+              local E8_ in
+                local E10_ in
+                  local E11_ in
+                    {Multiply_ Guess Guess E11_}
+                    {Minus_ X E11_ E10_}
+                  end
+                  {Abs E10_ E8_}
+                end
+                {FloatDiv_ E8_ X E5_}
+              end
+              E6_ = 1.0e-5
+              {LT_ E5_ E6_ E4_}
+            end
+          end
+          local SqrtIter in
+            SqrtIter = proc {$ Guess E5_ } in
+              local E6_ in
+                {GoodEnough Guess E6_}
+                if E6_ then E5_ = Guess
+                 else local E7_ in
+                  {Improve Guess E7_}
+                  {SqrtIter E7_ E5_}
+                end
+                 end
+              end
+            end
+            local Guess in
+              Guess = 1.0
+              {SqrtIter Guess E1_}
+            end
+          end
+        end
+      end
+    end
+  end
+  local E2_ in
+    local E3_ in
+      E3_ = 2.0
+      {Sqrt E3_ E2_}
+    end
+    {Browse E2_}
+  end
+end
+local Sqrt in
+  Sqrt = proc {$ X E1_ } in
+    local Improve in
+      Improve = proc {$ Guess E2_ } in
+        local E3_ E4_ in
+          local E6_ in
+            {FloatDiv_ X Guess E6_}
+            {Plus_ Guess E6_ E3_}
+          end
+          E4_ = 2.0
+          {FloatDiv_ E3_ E4_ E2_}
+        end
+      end
+      local Abs in
+        Abs = proc {$ X E3_ } in
+          local E4_ in
+            local E5_ in
+              E5_ = 0.0
+              {LT_ X E5_ E4_}
+            end
+            if E4_ then local E5_ in
+              E5_ = 0
+              {Minus_ E5_ X E3_}
+            end
+             else E3_ = X
+             end
+          end
+        end
+        local GoodEnough in
+          GoodEnough = proc {$ Guess E4_ } in
+            local E5_ E6_ in
+              local E8_ in
+                local E10_ in
+                  local E11_ in
+                    {Multiply_ Guess Guess E11_}
+                    {Minus_ X E11_ E10_}
+                  end
+                  {Abs E10_ E8_}
+                end
+                {FloatDiv_ E8_ X E5_}
+              end
+              E6_ = 1.0e-5
+              {LT_ E5_ E6_ E4_}
+            end
+          end
+          local SqrtIter in
+            SqrtIter = proc {$ Guess E5_ } in
+              local E6_ in
+                {GoodEnough Guess E6_}
+                if E6_ then E5_ = Guess
+                 else local E7_ in
+                  {Improve Guess E7_}
+                  {SqrtIter E7_ E5_}
+                end
+                 end
+              end
+            end
+            local Guess in
+              Guess = 1.0
+              {SqrtIter Guess E1_}
+            end
+          end
+        end
+      end
+    end
+  end
+  local E2_ in
+    local E3_ in
+      E3_ = 2.0
+      {Sqrt E3_ E2_}
+    end
+    {Browse E2_}
+  end
+end
+local Fact in
+  Fact = proc {$ N E1_ } in
+    local E2_ in
+      local E3_ in
+        E3_ = 0
+        {EQ_ N E3_ E2_}
+      end
+      if E2_ then E1_ = 1
+       else local E3_ in
+        local E4_ in
+          E4_ = 0
+          {GT_ N E4_ E3_}
+        end
+        if E3_ then local E4_ in
+          local E6_ in
+            local E7_ in
+              E7_ = 1
+              {Minus_ N E7_ E6_}
+            end
+            {Fact E6_ E4_}
+          end
+          {Multiply_ N E4_ E1_}
+        end
+         else local E4_ in
+          E4_ = domainError()
+          raise E4_
+        end
+         end
+      end
+       end
+    end
+  end
+  local E2_ in
+    local E3_ in
+      E3_ = 5
+      {Fact E3_ E2_}
+    end
+    {Browse E2_}
+  end
+end
+local Fact in
+  Fact = proc {$ N E1_ } in
+    local FactIter in
+      FactIter = proc {$ N A E2_ } in
+        local E3_ in
+          local E4_ in
+            E4_ = 0
+            {EQ_ N E4_ E3_}
+          end
+          if E3_ then E2_ = A
+           else local E4_ in
+            local E5_ in
+              E5_ = 0
+              {GT_ N E5_ E4_}
+            end
+            if E4_ then local E5_ E6_ in
+              local E6_ in
+                E6_ = 1
+                {Minus_ N E6_ E5_}
+              end
+              {Multiply_ A N E6_}
+              {FactIter E5_ E6_ E2_}
+            end
+             else local E5_ in
+              E5_ = domainError()
+              raise E5_
+            end
+             end
+          end
+           end
+        end
+      end
+      local E3_ in
+        E3_ = 1
+        {FactIter N E3_ E1_}
+      end
+    end
+  end
+  local E2_ in
+    local E3_ in
+      E3_ = 6
+      {Fact E3_ E2_}
+    end
+    {Browse E2_}
+  end
+end
+local Length Append Nth SumList Reverse IterLength Merge Split in
+  Length = proc {$ Ls E1_ } in
+    local F1 in
+      F1 = proc {$  } in
+        case Ls of '|'(1:N2_ 2:Lr) then local E3_ E4_ in
+          E3_ = 1
+          {Length Lr E4_}
+          {Plus_ E3_ E4_ E1_}
+        end
+         else skip
+         end
+      end
+      case Ls of nil() then E1_ = 0
+       else {F1 }
+       end
+    end
+  end
+  local E2_ in
+    local E3_ in
+      local E4_ E5_ E6_ in
+        E4_ = a()
+        E5_ = b()
+        E6_ = c()
+        local E8_ in
+          local E10_ in
+            local E12_ in
+              E12_ = nil()
+              E10_ = '|'(1:E6_ 2:E12_)
+            end
+            E8_ = '|'(1:E5_ 2:E10_)
+          end
+          E3_ = '|'(1:E4_ 2:E8_)
+        end
+      end
+      {Length E3_ E2_}
+    end
+    {Browse E2_}
+  end
+  Append = proc {$ Ls Ms E3_ } in
+    local F3 in
+      F3 = proc {$  } in
+        case Ls of '|'(1:X 2:Lr) then local E6_ in
+          {Append Lr Ms E6_}
+          E3_ = '|'(1:X 2:E6_)
+        end
+         else skip
+         end
+      end
+      case Ls of nil() then E3_ = Ms
+       else {F3 }
+       end
+    end
+  end
+  local E4_ in
+    local E5_ E6_ in
+      local E6_ E7_ E8_ in
+        E6_ = a()
+        E7_ = b()
+        E8_ = c()
+        local E10_ in
+          local E12_ in
+            local E14_ in
+              E14_ = nil()
+              E12_ = '|'(1:E8_ 2:E14_)
+            end
+            E10_ = '|'(1:E7_ 2:E12_)
+          end
+          E5_ = '|'(1:E6_ 2:E10_)
+        end
+      end
+      local E7_ E8_ E9_ in
+        E7_ = d()
+        E8_ = e()
+        E9_ = f()
+        local E11_ in
+          local E13_ in
+            local E15_ in
+              E15_ = nil()
+              E13_ = '|'(1:E9_ 2:E15_)
+            end
+            E11_ = '|'(1:E8_ 2:E13_)
+          end
+          E6_ = '|'(1:E7_ 2:E11_)
+        end
+      end
+      {Append E5_ E6_ E4_}
+    end
+    {Browse E4_}
+  end
+  Nth = proc {$ Xs N E5_ } in
+    local E6_ in
+      local E7_ in
+        E7_ = 1
+        {EQ_ N E7_ E6_}
+      end
+      if E6_ then local E7_ in
+        E7_ = 1
+        {RecordAccess_ Xs E7_ E5_}
+      end
+       else local E7_ in
+        local E8_ in
+          E8_ = 1
+          {GT_ N E8_ E7_}
+        end
+        if E7_ then local E8_ E9_ in
+          local E9_ in
+            E9_ = 2
+            {RecordAccess_ Xs E9_ E8_}
+          end
+          local E10_ in
+            E10_ = 1
+            {Minus_ N E10_ E9_}
+          end
+          {Nth E8_ E9_ E5_}
+        end
+         else skip
+         end
+      end
+       end
+    end
+  end
+  local E6_ in
+    local E7_ E8_ in
+      local E8_ E9_ E10_ E11_ in
+        E8_ = a()
+        E9_ = b()
+        E10_ = c()
+        E11_ = d()
+        local E13_ in
+          local E15_ in
+            local E17_ in
+              local E19_ in
+                E19_ = nil()
+                E17_ = '|'(1:E11_ 2:E19_)
+              end
+              E15_ = '|'(1:E10_ 2:E17_)
+            end
+            E13_ = '|'(1:E9_ 2:E15_)
+          end
+          E7_ = '|'(1:E8_ 2:E13_)
+        end
+      end
+      E8_ = 4
+      {Nth E7_ E8_ E6_}
+    end
+    {Browse E6_}
+  end
+  SumList = proc {$ Xs E7_ } in
+    local F7 in
+      F7 = proc {$  } in
+        case Xs of '|'(1:X 2:Xr) then local E9_ in
+          {SumList Xr E9_}
+          {Plus_ X E9_ E7_}
+        end
+         else skip
+         end
+      end
+      case Xs of nil() then E7_ = 0
+       else {F7 }
+       end
+    end
+  end
+  local E8_ in
+    local E9_ in
+      local E10_ E11_ E12_ in
+        E10_ = 1
+        E11_ = 2
+        E12_ = 3
+        local E14_ in
+          local E16_ in
+            local E18_ in
+              E18_ = nil()
+              E16_ = '|'(1:E12_ 2:E18_)
+            end
+            E14_ = '|'(1:E11_ 2:E16_)
+          end
+          E9_ = '|'(1:E10_ 2:E14_)
+        end
+      end
+      {SumList E9_ E8_}
+    end
+    {Browse E8_}
+  end
+  Reverse = proc {$ Xs E9_ } in
+    local F9 in
+      F9 = proc {$  } in
+        case Xs of '|'(1:X 2:Xr) then local E11_ E12_ in
+          {Reverse Xr E11_}
+          local E13_ in
+            E13_ = X
+            local E15_ in
+              E15_ = nil()
+              E12_ = '|'(1:E13_ 2:E15_)
+            end
+          end
+          {Append E11_ E12_ E9_}
+        end
+         else skip
+         end
+      end
+      case Xs of nil() then E9_ = nil()
+       else {F9 }
+       end
+    end
+  end
+  local E10_ in
+    local E11_ in
+      local E12_ E13_ E14_ in
+        E12_ = a()
+        E13_ = b()
+        E14_ = c()
+        local E16_ in
+          local E18_ in
+            local E20_ in
+              E20_ = nil()
+              E18_ = '|'(1:E14_ 2:E20_)
+            end
+            E16_ = '|'(1:E13_ 2:E18_)
+          end
+          E11_ = '|'(1:E12_ 2:E16_)
+        end
+      end
+      {Reverse E11_ E10_}
+    end
+    {Browse E10_}
+  end
+  local Length in
+    local IterLength in
+      IterLength = proc {$ I Ys E11_ } in
+        local F11 in
+          F11 = proc {$  } in
+            case Ys of '|'(1:N12_ 2:Yr) then local E13_ in
+              local E14_ in
+                E14_ = 1
+                {Plus_ I E14_ E13_}
+              end
+              {IterLength E13_ Yr E11_}
+            end
+             else skip
+             end
+          end
+          case Ys of nil() then E11_ = I
+           else {F11 }
+           end
+        end
+      end
+      Length = proc {$ Xs E11_ } in
+        local E12_ in
+          E12_ = 0
+          {IterLength E12_ Xs E11_}
+        end
+      end
+      local E12_ in
+        local E13_ in
+          local E14_ E15_ E16_ in
+            E14_ = 1
+            E15_ = 2
+            E16_ = 3
+            local E18_ in
+              local E20_ in
+                local E22_ in
+                  E22_ = nil()
+                  E20_ = '|'(1:E16_ 2:E22_)
+                end
+                E18_ = '|'(1:E15_ 2:E20_)
+              end
+              E13_ = '|'(1:E14_ 2:E18_)
+            end
+          end
+          {Length E13_ E12_}
+        end
+        {Browse E12_}
+      end
+    end
+  end
+  local Reverse in
+    local IterReverse in
+      IterReverse = proc {$ Rs Ys E11_ } in
+        local F11 in
+          F11 = proc {$  } in
+            case Ys of '|'(1:Y 2:Yr) then local E13_ in
+              E13_ = '|'(1:Y 2:Rs)
+              {IterReverse E13_ Yr E11_}
+            end
+             else skip
+             end
+          end
+          case Ys of nil() then E11_ = Rs
+           else {F11 }
+           end
+        end
+      end
+      Reverse = proc {$ Xs E11_ } in
+        local E12_ in
+          E12_ = nil()
+          {IterReverse E12_ Xs E11_}
+        end
+      end
+      local E12_ in
+        local E13_ in
+          local E14_ E15_ E16_ in
+            E14_ = a()
+            E15_ = b()
+            E16_ = c()
+            local E18_ in
+              local E20_ in
+                local E22_ in
+                  E22_ = nil()
+                  E20_ = '|'(1:E16_ 2:E22_)
+                end
+                E18_ = '|'(1:E15_ 2:E20_)
+              end
+              E13_ = '|'(1:E14_ 2:E18_)
+            end
+          end
+          {Reverse E13_ E12_}
+        end
+        {Browse E12_}
+      end
+    end
+  end
+  Merge = proc {$ Xs Ys E11_ } in
+    local E12_ in
+      E12_ = '#'(1:Xs 2:Ys)
+      local F12 in
+        F12 = proc {$  } in
+          local F14 in
+            F14 = proc {$  } in
+              case E12_ of '#'(1:P16_ 2:P17_) then case P17_ of '|'(1:Y 2:Yr) then case P16_ of '|'(1:X 2:Xr) then local E17_ in
+                {LT_ X Y E17_}
+                if E17_ then local E19_ in
+                  {Merge Xr Ys E19_}
+                  E11_ = '|'(1:X 2:E19_)
+                end
+                 else local E19_ in
+                  {Merge Xs Yr E19_}
+                  E11_ = '|'(1:Y 2:E19_)
+                end
+                 end
+              end
+               else skip
+               end
+               else skip
+               end
+               else skip
+               end
+            end
+            case E12_ of '#'(1:Xs 2:P14_) then case P14_ of nil() then E11_ = Xs
+             else {F14 }
+             end
+             else {F14 }
+             end
+          end
+        end
+        case E12_ of '#'(1:P12_ 2:Ys) then case P12_ of nil() then E11_ = Ys
+         else {F12 }
+         end
+         else {F12 }
+         end
+      end
+    end
+  end
+  Split = proc {$ Xs Ys Zs } in
+    local F11 in
+      F11 = proc {$  } in
+        local F12 in
+          F12 = proc {$  } in
+            case Xs of '|'(1:X1 2:P14_) then case P14_ of '|'(1:X2 2:Xr) then local Yr Zr in
+              Ys = '|'(1:X1 2:Yr)
+              Zs = '|'(1:X2 2:Zr)
+              {Split Xr Yr Zr}
+            end
+             else skip
+             end
+             else skip
+             end
+          end
+          case Xs of '|'(1:X 2:P12_) then case P12_ of nil() then local E13_ in
+            E13_ = X
+            local E15_ in
+              E15_ = nil()
+              Ys = '|'(1:E13_ 2:E15_)
+            end
+          end
+          Zs = nil()
+           else {F12 }
+           end
+           else {F12 }
+           end
+        end
+      end
+      case Xs of nil() then Ys = nil()
+      Zs = nil()
+       else {F11 }
+       end
+    end
+  end
+  local MergeSort in
+    MergeSort = proc {$ Xs E12_ } in
+      local F12 in
+        F12 = proc {$  } in
+          local F13 in
+            F13 = proc {$  } in
+              local Ys Zs in
+                {Split Xs Ys Zs}
+                local E16_ E17_ in
+                  {MergeSort Ys E16_}
+                  {MergeSort Zs E17_}
+                  {Merge E16_ E17_ E12_}
+                end
+              end
+            end
+            case Xs of '|'(1:X 2:P13_) then case P13_ of nil() then local E14_ in
+              E14_ = X
+              local E16_ in
+                E16_ = nil()
+                E12_ = '|'(1:E14_ 2:E16_)
+              end
+            end
+             else {F13 }
+             end
+             else {F13 }
+             end
+          end
+        end
+        case Xs of nil() then E12_ = nil()
+         else {F12 }
+         end
+      end
+    end
+    local E13_ in
+      local E14_ in
+        local E15_ E16_ E17_ E18_ E19_ E20_ E21_ E22_ E23_ E24_ E25_ in
+          E15_ = 3
+          E16_ = 1
+          E17_ = 4
+          E18_ = 1
+          E19_ = 5
+          E20_ = 9
+          E21_ = 2
+          E22_ = 6
+          E23_ = 5
+          E24_ = 3
+          E25_ = 5
+          local E27_ in
+            local E29_ in
+              local E31_ in
+                local E33_ in
+                  local E35_ in
+                    local E37_ in
+                      local E39_ in
+                        local E41_ in
+                          local E43_ in
+                            local E45_ in
+                              local E47_ in
+                                E47_ = nil()
+                                E45_ = '|'(1:E25_ 2:E47_)
+                              end
+                              E43_ = '|'(1:E24_ 2:E45_)
+                            end
+                            E41_ = '|'(1:E23_ 2:E43_)
+                          end
+                          E39_ = '|'(1:E22_ 2:E41_)
+                        end
+                        E37_ = '|'(1:E21_ 2:E39_)
+                      end
+                      E35_ = '|'(1:E20_ 2:E37_)
+                    end
+                    E33_ = '|'(1:E19_ 2:E35_)
+                  end
+                  E31_ = '|'(1:E18_ 2:E33_)
+                end
+                E29_ = '|'(1:E17_ 2:E31_)
+              end
+              E27_ = '|'(1:E16_ 2:E29_)
+            end
+            E14_ = '|'(1:E15_ 2:E27_)
+          end
+        end
+        {MergeSort E14_ E13_}
+      end
+      {Browse E13_}
+    end
+  end
+  local MergeSort in
+    MergeSort = proc {$ Xs E12_ } in
+      local MergeSortAcc in
+        MergeSortAcc = proc {$ L1 N E13_ } in
+          local E14_ in
+            local E15_ in
+              E15_ = 0
+              {EQ_ N E15_ E14_}
+            end
+            if E14_ then local E15_ in
+              E15_ = nil()
+              E13_ = '#'(1:E15_ 2:L1)
+            end
+             else local E15_ in
+              local E16_ in
+                E16_ = 1
+                {EQ_ N E16_ E15_}
+              end
+              if E15_ then local E16_ E17_ in
+                local E17_ in
+                  local E18_ in
+                    E18_ = 1
+                    {RecordAccess_ L1 E18_ E17_}
+                  end
+                  local E19_ in
+                    E19_ = nil()
+                    E16_ = '|'(1:E17_ 2:E19_)
+                  end
+                end
+                local E18_ in
+                  E18_ = 2
+                  {RecordAccess_ L1 E18_ E17_}
+                end
+                E13_ = '#'(1:E16_ 2:E17_)
+              end
+               else local E16_ in
+                local E17_ in
+                  E17_ = 1
+                  {GT_ N E17_ E16_}
+                end
+                if E16_ then local NL in
+                  local E17_ in
+                    E17_ = 2
+                    {Div_ N E17_ NL}
+                  end
+                  local NR in
+                    {Minus_ N NL NR}
+                    local Ys L2 P18_ in
+                      P18_ = '#'(1:Ys 2:L2)
+                      {MergeSortAcc L1 NL P18_}
+                      local Zs L3 P20_ in
+                        P20_ = '#'(1:Zs 2:L3)
+                        {MergeSortAcc L2 NR P20_}
+                        local E17_ in
+                          {Merge Ys Zs E17_}
+                          E13_ = '#'(1:E17_ 2:L3)
+                        end
+                      end
+                    end
+                  end
+                end
+                 else skip
+                 end
+              end
+               end
+            end
+             end
+          end
+        end
+        local E13_ E14_ in
+          local E17_ in
+            {Length Xs E17_}
+            {MergeSortAcc Xs E17_ E13_}
+          end
+          E14_ = 1
+          {RecordAccess_ E13_ E14_ E12_}
+        end
+      end
+    end
+    local E13_ in
+      local E14_ in
+        local E15_ E16_ E17_ E18_ E19_ E20_ E21_ E22_ E23_ E24_ E25_ in
+          E15_ = 3
+          E16_ = 1
+          E17_ = 4
+          E18_ = 1
+          E19_ = 5
+          E20_ = 9
+          E21_ = 2
+          E22_ = 6
+          E23_ = 5
+          E24_ = 3
+          E25_ = 5
+          local E27_ in
+            local E29_ in
+              local E31_ in
+                local E33_ in
+                  local E35_ in
+                    local E37_ in
+                      local E39_ in
+                        local E41_ in
+                          local E43_ in
+                            local E45_ in
+                              local E47_ in
+                                E47_ = nil()
+                                E45_ = '|'(1:E25_ 2:E47_)
+                              end
+                              E43_ = '|'(1:E24_ 2:E45_)
+                            end
+                            E41_ = '|'(1:E23_ 2:E43_)
+                          end
+                          E39_ = '|'(1:E22_ 2:E41_)
+                        end
+                        E37_ = '|'(1:E21_ 2:E39_)
+                      end
+                      E35_ = '|'(1:E20_ 2:E37_)
+                    end
+                    E33_ = '|'(1:E19_ 2:E35_)
+                  end
+                  E31_ = '|'(1:E18_ 2:E33_)
+                end
+                E29_ = '|'(1:E17_ 2:E31_)
+              end
+              E27_ = '|'(1:E16_ 2:E29_)
+            end
+            E14_ = '|'(1:E15_ 2:E27_)
+          end
+        end
+        {MergeSort E14_ E13_}
+      end
+      {Browse E13_}
+    end
+  end
+  local AppendD Flatten FlattenD IsList in
+    IsList = proc {$ L E12_ } in
+      case L of nil() then E12_ = true()
+       else case L of '|'(1:N13_ 2:N14_) then E12_ = true()
+       else E12_ = false()
+       end
+       end
+    end
+    AppendD = proc {$ D1 D2 E13_ } in
+      local S1 E1 P13_ in
+        P13_ = '#'(1:S1 2:E1)
+        P13_ = D1
+        local S2 E2 P14_ in
+          P14_ = '#'(1:S2 2:E2)
+          P14_ = D2
+          E1 = S2
+          E13_ = '#'(1:S1 2:E2)
+        end
+      end
+    end
+    Flatten = proc {$ Xs E14_ } in
+      local F14 in
+        F14 = proc {$  } in
+          local F15 in
+            F15 = proc {$  } in
+              case Xs of '|'(1:X 2:Xr) then local E18_ in
+                {Flatten Xr E18_}
+                E14_ = '|'(1:X 2:E18_)
+              end
+               else skip
+               end
+            end
+            case Xs of '|'(1:X 2:Xr) then local D16_ in
+              {IsList X D16_}
+              if D16_ then local E16_ E17_ in
+                {Flatten X E16_}
+                {Flatten Xr E17_}
+                {Append E16_ E17_ E14_}
+              end
+               else case Xs of '|'(1:X 2:Xr) then local E18_ in
+                {Flatten Xr E18_}
+                E14_ = '|'(1:X 2:E18_)
+              end
+               else skip
+               end
+               end
+            end
+             else {F15 }
+             end
+          end
+        end
+        case Xs of nil() then E14_ = nil()
+         else {F14 }
+         end
+      end
+    end
+    local E15_ in
+      local E16_ in
+        local E17_ E18_ E19_ E20_ in
+          local E21_ E22_ in
+            E21_ = a()
+            E22_ = b()
+            local E24_ in
+              local E26_ in
+                E26_ = nil()
+                E24_ = '|'(1:E22_ 2:E26_)
+              end
+              E17_ = '|'(1:E21_ 2:E24_)
+            end
+          end
+          local E21_ E22_ in
+            local E23_ in
+              E23_ = c()
+              local E25_ in
+                E25_ = nil()
+                E21_ = '|'(1:E23_ 2:E25_)
+              end
+            end
+            local E23_ in
+              E23_ = d()
+              local E25_ in
+                E25_ = nil()
+                E22_ = '|'(1:E23_ 2:E25_)
+              end
+            end
+            local E24_ in
+              local E26_ in
+                E26_ = nil()
+                E24_ = '|'(1:E22_ 2:E26_)
+              end
+              E18_ = '|'(1:E21_ 2:E24_)
+            end
+          end
+          E19_ = nil()
+          local E21_ E22_ in
+            E21_ = e()
+            local E23_ in
+              E23_ = f()
+              local E25_ in
+                E25_ = nil()
+                E22_ = '|'(1:E23_ 2:E25_)
+              end
+            end
+            local E24_ in
+              local E26_ in
+                E26_ = nil()
+                E24_ = '|'(1:E22_ 2:E26_)
+              end
+              E20_ = '|'(1:E21_ 2:E24_)
+            end
+          end
+          local E22_ in
+            local E24_ in
+              local E26_ in
+                local E28_ in
+                  E28_ = nil()
+                  E26_ = '|'(1:E20_ 2:E28_)
+                end
+                E24_ = '|'(1:E19_ 2:E26_)
+              end
+              E22_ = '|'(1:E18_ 2:E24_)
+            end
+            E16_ = '|'(1:E17_ 2:E22_)
+          end
+        end
+        {Flatten E16_ E15_}
+      end
+      {Browse E15_}
+    end
+    local Flatten in
+      FlattenD = proc {$ Xs Ds } in
+        local F15 in
+          F15 = proc {$  } in
+            local F16 in
+              F16 = proc {$  } in
+                case Xs of '|'(1:X 2:Xr) then local Y1 Y2 in
+                  local E18_ in
+                    E18_ = '|'(1:X 2:Y1)
+                    Ds = '#'(1:E18_ 2:Y2)
+                  end
+                  local E19_ in
+                    E19_ = '#'(1:Y1 2:Y2)
+                    {FlattenD Xr E19_}
+                  end
+                end
+                 else skip
+                 end
+              end
+              case Xs of '|'(1:X 2:Xr) then local D16_ in
+                {IsList X D16_}
+                if D16_ then local Y1 Y2 Y4 in
+                  Ds = '#'(1:Y1 2:Y4)
+                  local E18_ in
+                    E18_ = '#'(1:Y1 2:Y2)
+                    {FlattenD X E18_}
+                  end
+                  local E19_ in
+                    E19_ = '#'(1:Y2 2:Y4)
+                    {FlattenD Xr E19_}
+                  end
+                end
+                 else case Xs of '|'(1:X 2:Xr) then local Y1 Y2 in
+                  local E18_ in
+                    E18_ = '|'(1:X 2:Y1)
+                    Ds = '#'(1:E18_ 2:Y2)
+                  end
+                  local E19_ in
+                    E19_ = '#'(1:Y1 2:Y2)
+                    {FlattenD Xr E19_}
+                  end
+                end
+                 else skip
+                 end
+                 end
+              end
+               else {F16 }
+               end
+            end
+          end
+          case Xs of nil() then local Y in
+            Ds = '#'(1:Y 2:Y)
+          end
+           else {F15 }
+           end
+        end
+      end
+      Flatten = proc {$ Xs E16_ } in
+        local Ys in
+          local E18_ in
+            local E20_ in
+              E20_ = nil()
+              E18_ = '#'(1:Ys 2:E20_)
+            end
+            {FlattenD Xs E18_}
+          end
+          E16_ = Ys
+        end
+      end
+      local E17_ in
+        local E18_ in
+          local E19_ E20_ E21_ E22_ in
+            local E23_ E24_ in
+              E23_ = a()
+              E24_ = b()
+              local E26_ in
+                local E28_ in
+                  E28_ = nil()
+                  E26_ = '|'(1:E24_ 2:E28_)
+                end
+                E19_ = '|'(1:E23_ 2:E26_)
+              end
+            end
+            local E23_ E24_ in
+              local E25_ in
+                E25_ = c()
+                local E27_ in
+                  E27_ = nil()
+                  E23_ = '|'(1:E25_ 2:E27_)
+                end
+              end
+              local E25_ in
+                E25_ = d()
+                local E27_ in
+                  E27_ = nil()
+                  E24_ = '|'(1:E25_ 2:E27_)
+                end
+              end
+              local E26_ in
+                local E28_ in
+                  E28_ = nil()
+                  E26_ = '|'(1:E24_ 2:E28_)
+                end
+                E20_ = '|'(1:E23_ 2:E26_)
+              end
+            end
+            E21_ = nil()
+            local E23_ E24_ in
+              E23_ = e()
+              local E25_ in
+                E25_ = f()
+                local E27_ in
+                  E27_ = nil()
+                  E24_ = '|'(1:E25_ 2:E27_)
+                end
+              end
+              local E26_ in
+                local E28_ in
+                  E28_ = nil()
+                  E26_ = '|'(1:E24_ 2:E28_)
+                end
+                E22_ = '|'(1:E23_ 2:E26_)
+              end
+            end
+            local E24_ in
+              local E26_ in
+                local E28_ in
+                  local E30_ in
+                    E30_ = nil()
+                    E28_ = '|'(1:E22_ 2:E30_)
+                  end
+                  E26_ = '|'(1:E21_ 2:E28_)
+                end
+                E24_ = '|'(1:E20_ 2:E26_)
+              end
+              E18_ = '|'(1:E19_ 2:E24_)
+            end
+          end
+          {Flatten E18_ E17_}
+        end
+        {Browse E17_}
+      end
+    end
+    local Flatten in
+      Flatten = proc {$ Xs E16_ } in
+        local Ys in
+          local FlattenD in
+            FlattenD = proc {$ Xs S E } in
+              local F17 in
+                F17 = proc {$  } in
+                  local F18 in
+                    F18 = proc {$  } in
+                      case Xs of '|'(1:X 2:Xr) then local Y1 in
+                        S = '|'(1:X 2:Y1)
+                        {FlattenD Xr Y1 E}
+                      end
+                       else skip
+                       end
+                    end
+                    case Xs of '|'(1:X 2:Xr) then local D18_ in
+                      {IsList X D18_}
+                      if D18_ then local Y2 in
+                        {FlattenD X S Y2}
+                        {FlattenD Xr Y2 E}
+                      end
+                       else case Xs of '|'(1:X 2:Xr) then local Y1 in
+                        S = '|'(1:X 2:Y1)
+                        {FlattenD Xr Y1 E}
+                      end
+                       else skip
+                       end
+                       end
+                    end
+                     else {F18 }
+                     end
+                  end
+                end
+                case Xs of nil() then S = E
+                 else {F17 }
+                 end
+              end
+            end
+            local E19_ in
+              E19_ = nil()
+              {FlattenD Xs Ys E19_}
+            end
+            E16_ = Ys
+          end
+        end
+      end
+      local E17_ in
+        local E18_ in
+          local E19_ E20_ E21_ E22_ in
+            local E23_ E24_ in
+              E23_ = a()
+              E24_ = b()
+              local E26_ in
+                local E28_ in
+                  E28_ = nil()
+                  E26_ = '|'(1:E24_ 2:E28_)
+                end
+                E19_ = '|'(1:E23_ 2:E26_)
+              end
+            end
+            local E23_ E24_ in
+              local E25_ in
+                E25_ = c()
+                local E27_ in
+                  E27_ = nil()
+                  E23_ = '|'(1:E25_ 2:E27_)
+                end
+              end
+              local E25_ in
+                E25_ = d()
+                local E27_ in
+                  E27_ = nil()
+                  E24_ = '|'(1:E25_ 2:E27_)
+                end
+              end
+              local E26_ in
+                local E28_ in
+                  E28_ = nil()
+                  E26_ = '|'(1:E24_ 2:E28_)
+                end
+                E20_ = '|'(1:E23_ 2:E26_)
+              end
+            end
+            E21_ = nil()
+            local E23_ E24_ in
+              E23_ = e()
+              local E25_ in
+                E25_ = f()
+                local E27_ in
+                  E27_ = nil()
+                  E24_ = '|'(1:E25_ 2:E27_)
+                end
+              end
+              local E26_ in
+                local E28_ in
+                  E28_ = nil()
+                  E26_ = '|'(1:E24_ 2:E28_)
+                end
+                E22_ = '|'(1:E23_ 2:E26_)
+              end
+            end
+            local E24_ in
+              local E26_ in
+                local E28_ in
+                  local E30_ in
+                    E30_ = nil()
+                    E28_ = '|'(1:E22_ 2:E30_)
+                  end
+                  E26_ = '|'(1:E21_ 2:E28_)
+                end
+                E24_ = '|'(1:E20_ 2:E26_)
+              end
+              E18_ = '|'(1:E19_ 2:E24_)
+            end
+          end
+          {Flatten E18_ E17_}
+        end
+        {Browse E17_}
+      end
+    end
+    local Flatten in
+      Flatten = proc {$ Xs E16_ } in
+        local FlattenD in
+          FlattenD = proc {$ Xs E E17_ } in
+            local F17 in
+              F17 = proc {$  } in
+                local F18 in
+                  F18 = proc {$  } in
+                    case Xs of '|'(1:X 2:Xr) then local E21_ in
+                      {FlattenD Xr E E21_}
+                      E17_ = '|'(1:X 2:E21_)
+                    end
+                     else skip
+                     end
+                  end
+                  case Xs of '|'(1:X 2:Xr) then local D19_ in
+                    {IsList X D19_}
+                    if D19_ then local E20_ in
+                      {FlattenD Xr E E20_}
+                      {FlattenD X E20_ E17_}
+                    end
+                     else case Xs of '|'(1:X 2:Xr) then local E21_ in
+                      {FlattenD Xr E E21_}
+                      E17_ = '|'(1:X 2:E21_)
+                    end
+                     else skip
+                     end
+                     end
+                  end
+                   else {F18 }
+                   end
+                end
+              end
+              case Xs of nil() then E17_ = E
+               else {F17 }
+               end
+            end
+          end
+          local E18_ in
+            E18_ = nil()
+            {FlattenD Xs E18_ E16_}
+          end
+        end
+      end
+      local E17_ in
+        local E18_ in
+          local E19_ E20_ E21_ E22_ in
+            local E23_ E24_ in
+              E23_ = a()
+              E24_ = b()
+              local E26_ in
+                local E28_ in
+                  E28_ = nil()
+                  E26_ = '|'(1:E24_ 2:E28_)
+                end
+                E19_ = '|'(1:E23_ 2:E26_)
+              end
+            end
+            local E23_ E24_ in
+              local E25_ in
+                E25_ = c()
+                local E27_ in
+                  E27_ = nil()
+                  E23_ = '|'(1:E25_ 2:E27_)
+                end
+              end
+              local E25_ in
+                E25_ = d()
+                local E27_ in
+                  E27_ = nil()
+                  E24_ = '|'(1:E25_ 2:E27_)
+                end
+              end
+              local E26_ in
+                local E28_ in
+                  E28_ = nil()
+                  E26_ = '|'(1:E24_ 2:E28_)
+                end
+                E20_ = '|'(1:E23_ 2:E26_)
+              end
+            end
+            E21_ = nil()
+            local E23_ E24_ in
+              E23_ = e()
+              local E25_ in
+                E25_ = f()
+                local E27_ in
+                  E27_ = nil()
+                  E24_ = '|'(1:E25_ 2:E27_)
+                end
+              end
+              local E26_ in
+                local E28_ in
+                  E28_ = nil()
+                  E26_ = '|'(1:E24_ 2:E28_)
+                end
+                E22_ = '|'(1:E23_ 2:E26_)
+              end
+            end
+            local E24_ in
+              local E26_ in
+                local E28_ in
+                  local E30_ in
+                    E30_ = nil()
+                    E28_ = '|'(1:E22_ 2:E30_)
+                  end
+                  E26_ = '|'(1:E21_ 2:E28_)
+                end
+                E24_ = '|'(1:E20_ 2:E26_)
+              end
+              E18_ = '|'(1:E19_ 2:E24_)
+            end
+          end
+          {Flatten E18_ E17_}
+        end
+        {Browse E17_}
+      end
+    end
+  end
+  local NewQueue Check Insert Delete IsEmpty BFS BFSQueue in
+    NewQueue = proc {$ E12_ } in
+      local E13_ E14_ in
+        E13_ = nil()
+        E14_ = nil()
+        E12_ = q(1:E13_ 2:E14_)
+      end
+    end
+    Check = proc {$ Q E13_ } in
+      case Q of q(1:P13_ 2:R) then case P13_ of nil() then local E14_ E15_ in
+        {Reverse R E14_}
+        E15_ = nil()
+        E13_ = q(1:E14_ 2:E15_)
+      end
+       else E13_ = Q
+       end
+       else E13_ = Q
+       end
+    end
+    Insert = proc {$ Q X E14_ } in
+      case Q of q(1:F 2:R) then local E15_ in
+        local E17_ in
+          E17_ = '|'(1:X 2:R)
+          E15_ = q(1:F 2:E17_)
+        end
+        {Check E15_ E14_}
+      end
+       else skip
+       end
+    end
+    Delete = proc {$ Q X E15_ } in
+      case Q of q(1:F 2:R) then local F1 in
+        F = '|'(1:X 2:F1)
+        local E16_ in
+          E16_ = q(1:F1 2:R)
+          {Check E16_ E15_}
+        end
+      end
+       else skip
+       end
+    end
+    IsEmpty = proc {$ Q E16_ } in
+      case Q of q(1:F 2:R) then local E17_ in
+        E17_ = nil()
+        {EQ_ F E17_ E16_}
+      end
+       else skip
+       end
+    end
+    local Q1 Q2 Q3 Q4 Q5 Q6 Q7 in
+      {NewQueue Q1}
+      local E18_ in
+        E18_ = peter()
+        {Insert Q1 E18_ Q2}
+      end
+      local E18_ in
+        E18_ = paul()
+        {Insert Q2 E18_ Q3}
+      end
+      local X in
+        {Delete Q3 X Q4}
+        {Browse X}
+      end
+      local E18_ in
+        E18_ = mary()
+        {Insert Q4 E18_ Q5}
+      end
+      local X in
+        {Delete Q5 X Q6}
+        {Browse X}
+      end
+      local X in
+        {Delete Q6 X Q7}
+        {Browse X}
+      end
+    end
+    local NewQueue Insert Delete IsEmpty in
+      NewQueue = proc {$ E17_ } in
+        local X in
+          local E18_ in
+            E18_ = 0
+            E17_ = q(1:E18_ 2:X 3:X)
+          end
+        end
+      end
+      Insert = proc {$ Q X E18_ } in
+        case Q of q(1:N 2:S 3:E) then local E1 in
+          E = '|'(1:X 2:E1)
+          local E19_ in
+            local E20_ in
+              E20_ = 1
+              {Plus_ N E20_ E19_}
+            end
+            E18_ = q(1:E19_ 2:S 3:E1)
+          end
+        end
+         else skip
+         end
+      end
+      Delete = proc {$ Q X E19_ } in
+        case Q of q(1:N 2:S 3:E) then local S1 in
+          S = '|'(1:X 2:S1)
+          local E20_ in
+            local E21_ in
+              E21_ = 1
+              {Minus_ N E21_ E20_}
+            end
+            E19_ = q(1:E20_ 2:S1 3:E)
+          end
+        end
+         else skip
+         end
+      end
+      IsEmpty = proc {$ Q E20_ } in
+        case Q of q(1:N 2:S 3:E) then local E21_ in
+          E21_ = 0
+          {EQ_ N E21_ E20_}
+        end
+         else skip
+         end
+      end
+    end
+    local BFSQueue in
+      BFS = proc {$ T } in
+        local TreeInsert in
+          TreeInsert = proc {$ Q T E17_ } in
+            local E18_ in
+              local E19_ in
+                E19_ = leaf()
+                {NotEQ_ T E19_ E18_}
+              end
+              if E18_ then {Insert Q T E17_}
+               else E17_ = Q
+               end
+            end
+          end
+          local BFSQueue in
+            BFSQueue = proc {$ Q1 } in
+              local E18_ in
+                {IsEmpty Q1 E18_}
+                if E18_ then skip
+                 else local X in
+                  local Q2 in
+                    {Delete Q1 X Q2}
+                    local Key Val L R P18_ in
+                      P18_ = tree(1:Key 2:Val 3:L 4:R)
+                      P18_ = X
+                      local E18_ in
+                        E18_ = '#'(1:Key 2:Val)
+                        {Browse E18_}
+                      end
+                      local E19_ in
+                        local E20_ in
+                          {TreeInsert Q2 L E20_}
+                          {TreeInsert E20_ R E19_}
+                        end
+                        {BFSQueue E19_}
+                      end
+                    end
+                  end
+                end
+                 end
+              end
+            end
+            local E17_ in
+              local E18_ in
+                {NewQueue E18_}
+                {TreeInsert E18_ T E17_}
+              end
+              {BFSQueue E17_}
+            end
+          end
+        end
+      end
+    end
+    local Lookup Insert Delete RemoveSmallest DFS DFSAcc BFSAcc in
+      Lookup = proc {$ X T E17_ } in
+        local F17 in
+          F17 = proc {$  } in
+            case T of tree(1:Y 2:V 3:T1 4:T2) then local E19_ in
+              {LT_ X Y E19_}
+              if E19_ then {Lookup X T1 E17_}
+               else local E20_ in
+                {GT_ X Y E20_}
+                if E20_ then {Lookup X T2 E17_}
+                 else E17_ = found(1:V)
+                 end
+              end
+               end
+            end
+             else skip
+             end
+          end
+          case T of leaf() then E17_ = notfound()
+           else {F17 }
+           end
+        end
+      end
+      Insert = proc {$ X V T E18_ } in
+        local F18 in
+          F18 = proc {$  } in
+            local F19 in
+              F19 = proc {$  } in
+                local F20 in
+                  F20 = proc {$  } in
+                    case T of tree(1:Y 2:W 3:T1 4:T2) then local D22_ in
+                      {GT_ X Y D22_}
+                      if D22_ then local E25_ in
+                        {Insert X V T2 E25_}
+                        E18_ = tree(1:Y 2:W 3:T1 4:E25_)
+                      end
+                       else skip
+                       end
+                    end
+                     else skip
+                     end
+                  end
+                  case T of tree(1:Y 2:W 3:T1 4:T2) then local D21_ in
+                    {LT_ X Y D21_}
+                    if D21_ then local E23_ in
+                      {Insert X V T1 E23_}
+                      E18_ = tree(1:Y 2:W 3:E23_ 4:T2)
+                    end
+                     else case T of tree(1:Y 2:W 3:T1 4:T2) then local D22_ in
+                      {GT_ X Y D22_}
+                      if D22_ then local E25_ in
+                        {Insert X V T2 E25_}
+                        E18_ = tree(1:Y 2:W 3:T1 4:E25_)
+                      end
+                       else skip
+                       end
+                    end
+                     else skip
+                     end
+                     end
+                  end
+                   else {F20 }
+                   end
+                end
+              end
+              case T of tree(1:Y 2:W 3:T1 4:T2) then local D20_ in
+                {EQ_ X Y D20_}
+                if D20_ then E18_ = tree(1:X 2:V 3:T1 4:T2)
+                 else local F20 in
+                  F20 = proc {$  } in
+                    case T of tree(1:Y 2:W 3:T1 4:T2) then local D22_ in
+                      {GT_ X Y D22_}
+                      if D22_ then local E25_ in
+                        {Insert X V T2 E25_}
+                        E18_ = tree(1:Y 2:W 3:T1 4:E25_)
+                      end
+                       else skip
+                       end
+                    end
+                     else skip
+                     end
+                  end
+                  case T of tree(1:Y 2:W 3:T1 4:T2) then local D21_ in
+                    {LT_ X Y D21_}
+                    if D21_ then local E23_ in
+                      {Insert X V T1 E23_}
+                      E18_ = tree(1:Y 2:W 3:E23_ 4:T2)
+                    end
+                     else case T of tree(1:Y 2:W 3:T1 4:T2) then local D22_ in
+                      {GT_ X Y D22_}
+                      if D22_ then local E25_ in
+                        {Insert X V T2 E25_}
+                        E18_ = tree(1:Y 2:W 3:T1 4:E25_)
+                      end
+                       else skip
+                       end
+                    end
+                     else skip
+                     end
+                     end
+                  end
+                   else {F20 }
+                   end
+                end
+                 end
+              end
+               else {F19 }
+               end
+            end
+          end
+          case T of leaf() then local E21_ E22_ in
+            E21_ = leaf()
+            E22_ = leaf()
+            E18_ = tree(1:X 2:V 3:E21_ 4:E22_)
+          end
+           else {F18 }
+           end
+        end
+      end
+      Delete = proc {$ X T E19_ } in
+        local F19 in
+          F19 = proc {$  } in
+            local F20 in
+              F20 = proc {$  } in
+                local F21 in
+                  F21 = proc {$  } in
+                    case T of tree(1:Y 2:W 3:T1 4:T2) then local D23_ in
+                      {GT_ X Y D23_}
+                      if D23_ then local E26_ in
+                        {Delete X T2 E26_}
+                        E19_ = tree(1:Y 2:W 3:T1 4:E26_)
+                      end
+                       else skip
+                       end
+                    end
+                     else skip
+                     end
+                  end
+                  case T of tree(1:Y 2:W 3:T1 4:T2) then local D22_ in
+                    {LT_ X Y D22_}
+                    if D22_ then local E24_ in
+                      {Delete X T1 E24_}
+                      E19_ = tree(1:Y 2:W 3:E24_ 4:T2)
+                    end
+                     else case T of tree(1:Y 2:W 3:T1 4:T2) then local D23_ in
+                      {GT_ X Y D23_}
+                      if D23_ then local E26_ in
+                        {Delete X T2 E26_}
+                        E19_ = tree(1:Y 2:W 3:T1 4:E26_)
+                      end
+                       else skip
+                       end
+                    end
+                     else skip
+                     end
+                     end
+                  end
+                   else {F21 }
+                   end
+                end
+              end
+              case T of tree(1:Y 2:W 3:T1 4:T2) then local D21_ in
+                {EQ_ X Y D21_}
+                if D21_ then local E21_ in
+                  {RemoveSmallest T2 E21_}
+                  case E21_ of none() then E19_ = T1
+                   else case E21_ of '#'(1:Yp 2:Vp 3:Tp) then E19_ = tree(1:Yp 2:Vp 3:T1 4:Tp)
+                   else skip
+                   end
+                   end
+                end
+                 else local F21 in
+                  F21 = proc {$  } in
+                    case T of tree(1:Y 2:W 3:T1 4:T2) then local D23_ in
+                      {GT_ X Y D23_}
+                      if D23_ then local E26_ in
+                        {Delete X T2 E26_}
+                        E19_ = tree(1:Y 2:W 3:T1 4:E26_)
+                      end
+                       else skip
+                       end
+                    end
+                     else skip
+                     end
+                  end
+                  case T of tree(1:Y 2:W 3:T1 4:T2) then local D22_ in
+                    {LT_ X Y D22_}
+                    if D22_ then local E24_ in
+                      {Delete X T1 E24_}
+                      E19_ = tree(1:Y 2:W 3:E24_ 4:T2)
+                    end
+                     else case T of tree(1:Y 2:W 3:T1 4:T2) then local D23_ in
+                      {GT_ X Y D23_}
+                      if D23_ then local E26_ in
+                        {Delete X T2 E26_}
+                        E19_ = tree(1:Y 2:W 3:T1 4:E26_)
+                      end
+                       else skip
+                       end
+                    end
+                     else skip
+                     end
+                     end
+                  end
+                   else {F21 }
+                   end
+                end
+                 end
+              end
+               else {F20 }
+               end
+            end
+          end
+          case T of leaf() then E19_ = leaf()
+           else {F19 }
+           end
+        end
+      end
+      RemoveSmallest = proc {$ T E20_ } in
+        local F20 in
+          F20 = proc {$  } in
+            case T of tree(1:Y 2:V 3:T1 4:T2) then local E22_ in
+              {RemoveSmallest T1 E22_}
+              local F22 in
+                F22 = proc {$  } in
+                  case E22_ of '#'(1:Yp 2:Vp 3:Tp) then local E26_ in
+                    E26_ = tree(1:Y 2:V 3:Tp 4:T2)
+                    E20_ = '#'(1:Yp 2:Vp 3:E26_)
+                  end
+                   else skip
+                   end
+                end
+                case E22_ of none() then E20_ = '#'(1:Y 2:V 3:T2)
+                 else {F22 }
+                 end
+              end
+            end
+             else skip
+             end
+          end
+          case T of leaf() then E20_ = none()
+           else {F20 }
+           end
+        end
+      end
+      DFS = proc {$ T } in
+        local F20 in
+          F20 = proc {$  } in
+            case T of tree(1:Key 2:Val 3:L 4:R) then {DFS L}
+            local E22_ in
+              E22_ = '#'(1:Key 2:Val)
+              {Browse E22_}
+            end
+            {DFS R}
+             else skip
+             end
+          end
+          case T of leaf() then skip
+           else {F20 }
+           end
+        end
+      end
+      local T1 T2 T3 T4 in
+        local E21_ E22_ E23_ in
+          E21_ = 10
+          E22_ = ten()
+          E23_ = leaf()
+          {Insert E21_ E22_ E23_ T1}
+        end
+        local E21_ E22_ in
+          E21_ = 5
+          E22_ = five()
+          {Insert E21_ E22_ T1 T2}
+        end
+        local E21_ E22_ in
+          E21_ = 15
+          E22_ = fifteen()
+          {Insert E21_ E22_ T2 T3}
+        end
+        local E21_ E22_ in
+          E21_ = 2
+          E22_ = two()
+          {Insert E21_ E22_ T3 T4}
+        end
+        {BFS T4}
+      end
+    end
+  end
+end
+local Sqrt QuadraticEquation RS X1 X2 in
+  Sqrt = proc {$ X E1_ } in
+    E1_ = X
+  end
+  local D RealSol X1 X2 in
+    local A in
+      A = 1.0
+      local B in
+        B = 3.0
+        local C in
+          C = 2.0
+          local E2_ E3_ in
+            {Multiply_ B B E2_}
+            local E5_ in
+              local E7_ in
+                E7_ = 4.0
+                {Multiply_ E7_ A E5_}
+              end
+              {Multiply_ E5_ C E3_}
+            end
+            {Minus_ E2_ E3_ D}
+          end
+          local E2_ in
+            local E3_ in
+              E3_ = 0.0
+              {GTE_ D E3_ E2_}
+            end
+            if E2_ then RealSol = true()
+            local E2_ E3_ in
+              local E5_ E6_ in
+                local E8_ in
+                  E8_ = 0
+                  {Minus_ E8_ B E5_}
+                end
+                {Sqrt D E6_}
+                {Plus_ E5_ E6_ E2_}
+              end
+              local E5_ in
+                E5_ = 2.0
+                {Multiply_ E5_ A E3_}
+              end
+              {FloatDiv_ E2_ E3_ X1}
+            end
+            local E2_ E3_ in
+              local E5_ E6_ in
+                local E8_ in
+                  E8_ = 0
+                  {Minus_ E8_ B E5_}
+                end
+                {Sqrt D E6_}
+                {Minus_ E5_ E6_ E2_}
+              end
+              local E5_ in
+                E5_ = 2.0
+                {Multiply_ E5_ A E3_}
+              end
+              {FloatDiv_ E2_ E3_ X2}
+            end
+             else RealSol = false()
+            local E2_ E3_ in
+              local E5_ in
+                E5_ = 0
+                {Minus_ E5_ B E2_}
+              end
+              local E5_ in
+                E5_ = 2.0
+                {Multiply_ E5_ A E3_}
+              end
+              {FloatDiv_ E2_ E3_ X1}
+            end
+            local E2_ E3_ in
+              local E5_ in
+                local E6_ in
+                  E6_ = 0
+                  {Minus_ E6_ D E5_}
+                end
+                {Sqrt E5_ E2_}
+              end
+              local E5_ in
+                E5_ = 2.0
+                {Multiply_ E5_ A E3_}
+              end
+              {FloatDiv_ E2_ E3_ X2}
+            end
+             end
+          end
+          local E3_ in
+            E3_ = '#'(1:RealSol 2:X1 3:X2)
+            {Browse E3_}
+          end
+        end
+      end
+    end
+  end
+  QuadraticEquation = proc {$ A B C RealSol X1 X2 } in
+    local D in
+      local E2_ E3_ in
+        {Multiply_ B B E2_}
+        local E5_ in
+          local E7_ in
+            E7_ = 4.0
+            {Multiply_ E7_ A E5_}
+          end
+          {Multiply_ E5_ C E3_}
+        end
+        {Minus_ E2_ E3_ D}
+      end
+      local E2_ in
+        local E3_ in
+          E3_ = 0.0
+          {GTE_ D E3_ E2_}
+        end
+        if E2_ then RealSol = true()
+        local E2_ E3_ in
+          local E5_ E6_ in
+            local E8_ in
+              E8_ = 0
+              {Minus_ E8_ B E5_}
+            end
+            {Sqrt D E6_}
+            {Plus_ E5_ E6_ E2_}
+          end
+          local E5_ in
+            E5_ = 2.0
+            {Multiply_ E5_ A E3_}
+          end
+          {FloatDiv_ E2_ E3_ X1}
+        end
+        local E2_ E3_ in
+          local E5_ E6_ in
+            local E8_ in
+              E8_ = 0
+              {Minus_ E8_ B E5_}
+            end
+            {Sqrt D E6_}
+            {Minus_ E5_ E6_ E2_}
+          end
+          local E5_ in
+            E5_ = 2.0
+            {Multiply_ E5_ A E3_}
+          end
+          {FloatDiv_ E2_ E3_ X2}
+        end
+         else RealSol = false()
+        local E2_ E3_ in
+          local E5_ in
+            E5_ = 0
+            {Minus_ E5_ B E2_}
+          end
+          local E5_ in
+            E5_ = 2.0
+            {Multiply_ E5_ A E3_}
+          end
+          {FloatDiv_ E2_ E3_ X1}
+        end
+        local E2_ E3_ in
+          local E5_ in
+            local E6_ in
+              E6_ = 0
+              {Minus_ E6_ D E5_}
+            end
+            {Sqrt E5_ E2_}
+          end
+          local E5_ in
+            E5_ = 2.0
+            {Multiply_ E5_ A E3_}
+          end
+          {FloatDiv_ E2_ E3_ X2}
+        end
+         end
+      end
+    end
+  end
+  local E2_ E3_ E4_ in
+    E2_ = 1.0
+    E3_ = 3.0
+    E4_ = 2.0
+    {QuadraticEquation E2_ E3_ E4_ RS X1 X2}
+  end
+  local E5_ in
+    E5_ = '#'(1:RS 2:X1 3:X2)
+    {Browse E5_}
+  end
+end
+local SumList FoldR ProductList Some GenericMergeSort FoldL Map Filter in
+  FoldR = proc {$ L F U E1_ } in
+    local F1 in
+      F1 = proc {$  } in
+        case L of '|'(1:X 2:L1) then local E4_ in
+          {FoldR L1 F U E4_}
+          {F X E4_ E1_}
+        end
+         else skip
+         end
+      end
+      case L of nil() then E1_ = U
+       else {F1 }
+       end
+    end
+  end
+  SumList = proc {$ L E2_ } in
+    local E4_ E5_ in
+      E4_ = proc {$ X Y E5_ } in
+        {Plus_ X Y E5_}
+      end
+      E5_ = 0
+      {FoldR L E4_ E5_ E2_}
+    end
+  end
+  ProductList = proc {$ L E3_ } in
+    local E5_ E6_ in
+      E5_ = proc {$ X Y E6_ } in
+        {Multiply_ X Y E6_}
+      end
+      E6_ = 1
+      {FoldR L E5_ E6_ E3_}
+    end
+  end
+  Some = proc {$ L E4_ } in
+    local E6_ E7_ in
+      E6_ = proc {$ X Y E7_ } in
+        if X then E7_ = true()
+         else E7_ = Y
+         end
+      end
+      E7_ = false()
+      {FoldR L E6_ E7_ E4_}
+    end
+  end
+  GenericMergeSort = proc {$ F Xs E5_ } in
+    local Merge in
+      Merge = proc {$ Xs Ys E6_ } in
+        local E7_ in
+          E7_ = '#'(1:Xs 2:Ys)
+          local F7 in
+            F7 = proc {$  } in
+              local F9 in
+                F9 = proc {$  } in
+                  case E7_ of '#'(1:P11_ 2:P12_) then case P12_ of '|'(1:Y 2:Yr) then case P11_ of '|'(1:X 2:Xr) then local E12_ in
+                    {F X Y E12_}
+                    if E12_ then local E14_ in
+                      {Merge Xr Ys E14_}
+                      E6_ = '|'(1:X 2:E14_)
+                    end
+                     else local E14_ in
+                      {Merge Xs Yr E14_}
+                      E6_ = '|'(1:Y 2:E14_)
+                    end
+                     end
+                  end
+                   else skip
+                   end
+                   else skip
+                   end
+                   else skip
+                   end
+                end
+                case E7_ of '#'(1:Xs 2:P9_) then case P9_ of nil() then E6_ = Xs
+                 else {F9 }
+                 end
+                 else {F9 }
+                 end
+              end
+            end
+            case E7_ of '#'(1:P7_ 2:Ys) then case P7_ of nil() then E6_ = Ys
+             else {F7 }
+             end
+             else {F7 }
+             end
+          end
+        end
+      end
+      local Split in
+        Split = proc {$ Xs Ys Zs } in
+          local F6 in
+            F6 = proc {$  } in
+              local F7 in
+                F7 = proc {$  } in
+                  case Xs of '|'(1:X1 2:P9_) then case P9_ of '|'(1:X2 2:Xr) then local Yr Zr in
+                    Ys = '|'(1:X1 2:Yr)
+                    Zs = '|'(1:X2 2:Zr)
+                    {Split Xr Yr Zr}
+                  end
+                   else skip
+                   end
+                   else skip
+                   end
+                end
+                case Xs of '|'(1:X 2:P7_) then case P7_ of nil() then local E8_ in
+                  E8_ = X
+                  local E10_ in
+                    E10_ = nil()
+                    Ys = '|'(1:E8_ 2:E10_)
+                  end
+                end
+                Zs = nil()
+                 else {F7 }
+                 end
+                 else {F7 }
+                 end
+              end
+            end
+            case Xs of nil() then Ys = nil()
+            Zs = nil()
+             else {F6 }
+             end
+          end
+        end
+        local MergeSort in
+          MergeSort = proc {$ Xs E8_ } in
+            local F8 in
+              F8 = proc {$  } in
+                local F9 in
+                  F9 = proc {$  } in
+                    local Ys Zs in
+                      {Split Xs Ys Zs}
+                      local E12_ E13_ in
+                        {MergeSort Ys E12_}
+                        {MergeSort Zs E13_}
+                        {Merge E12_ E13_ E8_}
+                      end
+                    end
+                  end
+                  case Xs of '|'(1:X 2:P9_) then case P9_ of nil() then local E10_ in
+                    E10_ = X
+                    local E12_ in
+                      E12_ = nil()
+                      E8_ = '|'(1:E10_ 2:E12_)
+                    end
+                  end
+                   else {F9 }
+                   end
+                   else {F9 }
+                   end
+                end
+              end
+              case Xs of nil() then E8_ = nil()
+               else {F8 }
+               end
+            end
+          end
+          {MergeSort Xs E5_}
+        end
+      end
+    end
+  end
+  FoldL = proc {$ L F U E6_ } in
+    local F6 in
+      F6 = proc {$  } in
+        case L of '|'(1:X 2:L2) then local E10_ in
+          {F U X E10_}
+          {FoldL L2 F E10_ E6_}
+        end
+         else skip
+         end
+      end
+      case L of nil() then E6_ = U
+       else {F6 }
+       end
+    end
+  end
+  Map = proc {$ Xs F E7_ } in
+    local F7 in
+      F7 = proc {$  } in
+        case Xs of '|'(1:X 2:Xr) then local E9_ E10_ in
+          {F X E9_}
+          {Map Xr F E10_}
+          E7_ = '|'(1:E9_ 2:E10_)
+        end
+         else skip
+         end
+      end
+      case Xs of nil() then E7_ = nil()
+       else {F7 }
+       end
+    end
+  end
+  Filter = proc {$ Xs F E8_ } in
+    local F8 in
+      F8 = proc {$  } in
+        case Xs of '|'(1:X 2:Xr) then local D10_ in
+          {F X D10_}
+          if D10_ then local E11_ in
+            {Filter Xr F E11_}
+            E8_ = '|'(1:X 2:E11_)
+          end
+           else case Xs of '|'(1:X 2:Xr) then {Filter Xr F E8_}
+           else skip
+           end
+           end
+        end
+         else case Xs of '|'(1:X 2:Xr) then {Filter Xr F E8_}
+         else skip
+         end
+         end
+      end
+      case Xs of nil() then E8_ = nil()
+       else {F8 }
+       end
+    end
+  end
+end
+local NewDictionary Put CondGet Domain Map in
+  NewDictionary = proc {$ E1_ } in
+    E1_ = nil()
+  end
+  Put = proc {$ Ds Key Value E2_ } in
+    local F2 in
+      F2 = proc {$  } in
+        local F3 in
+          F3 = proc {$  } in
+            local F5 in
+              F5 = proc {$  } in
+                case Ds of '|'(1:P7_ 2:Dr) then case P7_ of '#'(1:K 2:V) then local D9_ in
+                  {LT_ K Key D9_}
+                  if D9_ then local E8_ E9_ in
+                    E8_ = '#'(1:K 2:V)
+                    {Put Dr Key Value E9_}
+                    E2_ = '|'(1:E8_ 2:E9_)
+                  end
+                   else skip
+                   end
+                end
+                 else skip
+                 end
+                 else skip
+                 end
+              end
+              case Ds of '|'(1:P5_ 2:Dr) then case P5_ of '#'(1:K 2:V) then local D7_ in
+                {GT_ K Key D7_}
+                if D7_ then local E6_ E7_ in
+                  E6_ = '#'(1:Key 2:Value)
+                  local E8_ in
+                    E8_ = '#'(1:K 2:V)
+                    E7_ = '|'(1:E8_ 2:Dr)
+                  end
+                  E2_ = '|'(1:E6_ 2:E7_)
+                end
+                 else case Ds of '|'(1:P7_ 2:Dr) then case P7_ of '#'(1:K 2:V) then local D9_ in
+                  {LT_ K Key D9_}
+                  if D9_ then local E8_ E9_ in
+                    E8_ = '#'(1:K 2:V)
+                    {Put Dr Key Value E9_}
+                    E2_ = '|'(1:E8_ 2:E9_)
+                  end
+                   else skip
+                   end
+                end
+                 else skip
+                 end
+                 else skip
+                 end
+                 end
+              end
+               else {F5 }
+               end
+               else {F5 }
+               end
+            end
+          end
+          case Ds of '|'(1:P3_ 2:Dr) then case P3_ of '#'(1:K 2:V) then local D5_ in
+            {EQ_ Key K D5_}
+            if D5_ then local E4_ in
+              E4_ = '#'(1:Key 2:Value)
+              E2_ = '|'(1:E4_ 2:Dr)
+            end
+             else local F5 in
+              F5 = proc {$  } in
+                case Ds of '|'(1:P7_ 2:Dr) then case P7_ of '#'(1:K 2:V) then local D9_ in
+                  {LT_ K Key D9_}
+                  if D9_ then local E8_ E9_ in
+                    E8_ = '#'(1:K 2:V)
+                    {Put Dr Key Value E9_}
+                    E2_ = '|'(1:E8_ 2:E9_)
+                  end
+                   else skip
+                   end
+                end
+                 else skip
+                 end
+                 else skip
+                 end
+              end
+              case Ds of '|'(1:P5_ 2:Dr) then case P5_ of '#'(1:K 2:V) then local D7_ in
+                {GT_ K Key D7_}
+                if D7_ then local E6_ E7_ in
+                  E6_ = '#'(1:Key 2:Value)
+                  local E8_ in
+                    E8_ = '#'(1:K 2:V)
+                    E7_ = '|'(1:E8_ 2:Dr)
+                  end
+                  E2_ = '|'(1:E6_ 2:E7_)
+                end
+                 else case Ds of '|'(1:P7_ 2:Dr) then case P7_ of '#'(1:K 2:V) then local D9_ in
+                  {LT_ K Key D9_}
+                  if D9_ then local E8_ E9_ in
+                    E8_ = '#'(1:K 2:V)
+                    {Put Dr Key Value E9_}
+                    E2_ = '|'(1:E8_ 2:E9_)
+                  end
+                   else skip
+                   end
+                end
+                 else skip
+                 end
+                 else skip
+                 end
+                 end
+              end
+               else {F5 }
+               end
+               else {F5 }
+               end
+            end
+             end
+          end
+           else {F3 }
+           end
+           else {F3 }
+           end
+        end
+      end
+      case Ds of nil() then local E3_ in
+        E3_ = '#'(1:Key 2:Value)
+        local E5_ in
+          E5_ = nil()
+          E2_ = '|'(1:E3_ 2:E5_)
+        end
+      end
+       else {F2 }
+       end
+    end
+  end
+  CondGet = proc {$ Ds Key Default E3_ } in
+    local F3 in
+      F3 = proc {$  } in
+        local F4 in
+          F4 = proc {$  } in
+            local F6 in
+              F6 = proc {$  } in
+                case Ds of '|'(1:P8_ 2:Dr) then case P8_ of '#'(1:K 2:V) then local D10_ in
+                  {LT_ K Key D10_}
+                  if D10_ then {CondGet Dr Key Default E3_}
+                   else skip
+                   end
+                end
+                 else skip
+                 end
+                 else skip
+                 end
+              end
+              case Ds of '|'(1:P6_ 2:Dr) then case P6_ of '#'(1:K 2:V) then local D8_ in
+                {GT_ K Key D8_}
+                if D8_ then E3_ = Default
+                 else case Ds of '|'(1:P8_ 2:Dr) then case P8_ of '#'(1:K 2:V) then local D10_ in
+                  {LT_ K Key D10_}
+                  if D10_ then {CondGet Dr Key Default E3_}
+                   else skip
+                   end
+                end
+                 else skip
+                 end
+                 else skip
+                 end
+                 end
+              end
+               else {F6 }
+               end
+               else {F6 }
+               end
+            end
+          end
+          case Ds of '|'(1:P4_ 2:Dr) then case P4_ of '#'(1:K 2:V) then local D6_ in
+            {EQ_ Key K D6_}
+            if D6_ then E3_ = V
+             else local F6 in
+              F6 = proc {$  } in
+                case Ds of '|'(1:P8_ 2:Dr) then case P8_ of '#'(1:K 2:V) then local D10_ in
+                  {LT_ K Key D10_}
+                  if D10_ then {CondGet Dr Key Default E3_}
+                   else skip
+                   end
+                end
+                 else skip
+                 end
+                 else skip
+                 end
+              end
+              case Ds of '|'(1:P6_ 2:Dr) then case P6_ of '#'(1:K 2:V) then local D8_ in
+                {GT_ K Key D8_}
+                if D8_ then E3_ = Default
+                 else case Ds of '|'(1:P8_ 2:Dr) then case P8_ of '#'(1:K 2:V) then local D10_ in
+                  {LT_ K Key D10_}
+                  if D10_ then {CondGet Dr Key Default E3_}
+                   else skip
+                   end
+                end
+                 else skip
+                 end
+                 else skip
+                 end
+                 end
+              end
+               else {F6 }
+               end
+               else {F6 }
+               end
+            end
+             end
+          end
+           else {F4 }
+           end
+           else {F4 }
+           end
+        end
+      end
+      case Ds of nil() then E3_ = Default
+       else {F3 }
+       end
+    end
+  end
+  Map = proc {$ Xs F E4_ } in
+    local F4 in
+      F4 = proc {$  } in
+        case Xs of '|'(1:X 2:Xr) then local E6_ E7_ in
+          {F X E6_}
+          {Map Xr F E7_}
+          E4_ = '|'(1:E6_ 2:E7_)
+        end
+         else skip
+         end
+      end
+      case Xs of nil() then E4_ = nil()
+       else {F4 }
+       end
+    end
+  end
+  Domain = proc {$ Ds E5_ } in
+    local E7_ in
+      E7_ = proc {$ A8_ E8_ } in
+        local K N9_ P10_ in
+          P10_ = '#'(1:K 2:N9_)
+          P10_ = A8_
+          E8_ = K
+        end
+      end
+      {Map Ds E7_ E5_}
+    end
+  end
+end
+local NewWrapper Wrap Unwrap NewStack Push Pop IsEmpty in
+  NewWrapper = proc {$ Wrap Unwrap } in
+    local Key in
+      {NewName Key}
+      Wrap = proc {$ X E1_ } in
+        E1_ = proc {$ K E2_ } in
+          local E3_ in
+            {EQ_ K Key E3_}
+            if E3_ then E2_ = X
+             else skip
+             end
+          end
+        end
+      end
+      Unwrap = proc {$ W E2_ } in
+        {W Key E2_}
+      end
+    end
+  end
+  {NewWrapper Wrap Unwrap}
+  NewStack = proc {$ E1_ } in
+    local E2_ in
+      E2_ = nil()
+      {Wrap E2_ E1_}
+    end
+  end
+  Push = proc {$ S E E2_ } in
+    local E3_ in
+      local E5_ in
+        {Unwrap S E5_}
+        E3_ = '|'(1:E 2:E5_)
+      end
+      {Wrap E3_ E2_}
+    end
+  end
+  Pop = proc {$ S E E3_ } in
+    local E4_ in
+      {Unwrap S E4_}
+      case E4_ of '|'(1:X 2:S1) then E = X
+      {Wrap S1 E3_}
+       else skip
+       end
+    end
+  end
+  IsEmpty = proc {$ S E4_ } in
+    local E5_ E6_ in
+      {Unwrap S E5_}
+      E6_ = nil()
+      {EQ_ E5_ E6_ E4_}
+    end
+  end
+end

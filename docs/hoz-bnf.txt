@@ -1,0 +1,208 @@
+# BNF Grammar for the Hoz Interpreter
+
+This document provides a Backus-Naur Form (BNF) grammar for the Hoz language (an Oz subset).
+
+---
+## High-Level Structure
+---
+
+<program>        ::= <statement>+
+<in_statement>   ::= (<declarations> 'in' <statement>+) | <statement>+
+<in_expression>  ::= (<declarations> 'in' <statement>* <expression>) | <statement>* <expression>
+
+---
+## Statements
+---
+
+<statement>       ::= 'skip'
+                    | <directive_stmt>
+                    | <local_stmt>
+                    | <bind_stmt>
+                    | <if_stmt>
+                    | <case_stmt>
+                    | <proc_def_stmt>
+                    | <fun_def_stmt>
+                    | <proc_app_stmt>
+                    | <thread_stmt>
+                    | <try_stmt>
+                    | <raise_stmt>
+                    | <set_cell_stmt>
+
+<directive_stmt>  ::= '%show' 'full'
+                    | '%show' 'stack'
+                    | '%show' 'globals'
+                    | '%show' 'mutable'
+
+<local_stmt>      ::= 'local' <declarations> 'in' <statement>+ 'end'
+<bind_stmt>       ::= <pattern> '=' <expression>
+<if_stmt>         ::= 'if' <expression> 'then' <in_statement> <elseif_stmt>* ['else' <in_statement>] 'end'
+<elseif_stmt>     ::= 'elseif' <expression> 'then' <in_statement>
+
+<case_stmt>       ::= 'case' <expression> 'of' <case_clause> <case_clause>* ['else' <in_statement>] 'end'
+<case_clause>     ::= ['[]'] <pattern> ['andthen' <expression>] 'then' <in_statement>
+
+<proc_def_stmt>   ::= 'proc' '{' <identifier> <identifier>* '}' <in_statement> 'end'
+<fun_def_stmt>    ::= 'fun' ['lazy'] '{' <identifier> <identifier>* '}' <in_expression> 'end'
+<proc_app_stmt>   ::= '{' <identifier> <expression>* '}'
+
+<thread_stmt>     ::= 'thread' <in_statement> 'end'
+<try_stmt>        ::= 'try' <in_statement> ['catch' <catch_clause>+] ['finally' <in_statement>] 'end'
+<catch_clause>    ::= ['[]'] <pattern> 'then' <in_statement>
+
+<raise_stmt>      ::= 'raise' <expression> 'end'
+<set_cell_stmt>   ::= <identifier> ':=' <expression>
+
+---
+## Declarations (within a 'local' block)
+---
+
+<declarations>    ::= <declaration>*
+<declaration>     ::= <named_proc_decl>
+                    | <named_fun_decl>
+                    | <bind_stmt>
+                    | <identifier>
+
+<named_proc_decl> ::= 'proc' '{' <identifier> <identifier>* '}' <in_statement> 'end'
+<named_fun_decl>  ::= 'fun' ['lazy'] '{' <identifier> <identifier>* '}' <in_expression> 'end'
+
+---
+## Expressions
+---
+
+<!-- Precedence Hierarchy (Highest to Lowest) -->
+<!-- 1. Terminals (Id, Atom, Lit), Records, Lists, Fun/Proc, and Parentheses -->
+<!-- 2. Record Access (.) -->
+<!-- 3. Prefix: Cell Access (@), Read-Only (!!) -->
+<!-- 4. Prefix: Unary Minus (~) -->
+<!-- 5. Multiplicative (*, /, div, mod) -->
+<!-- 6. Additive (+, -) -->
+<!-- 7. Tuple (#) -->
+<!-- 8. List Cons (|) -->
+<!-- 9. Relational (==, \=, <, >, =<, >=) -->
+<!-- 10. Boolean (andthen, orelse) -->
+
+<expression>      ::= <bool_op_expr>
+
+<bool_op_expr>    ::= <rel_expr> 'andthen' <bool_op_expr>
+                    | <rel_expr> 'orelse' <bool_op_expr>
+                    | <rel_expr>
+
+<rel_expr>        ::= <list_cons_expr> <rel_op> <list_cons_expr>
+                    | <list_cons_expr>
+
+<list_cons_expr>  ::= <tuple_expr> '|' <list_cons_expr>
+                    | <tuple_expr>
+
+<tuple_expr>      ::= <arith_expr> '#' <tuple_expr>
+                    | <arith_expr>
+
+<arith_expr>      ::= ... (Standard precedence for +, -, *, /, div, mod, ~, @, !!, .) ...
+
+<term>            ::= <if_expr>
+                    | <case_expr>
+                    | <local_expr>
+                    | <fun_expr>
+                    | <proc_expr>
+                    | <fun_app_expr>
+                    | <record_expr>
+                    | <list_expr>
+                    | <paren_expr>
+                    | <thread_expr>
+                    | <raise_expr>
+                    | <at_cell_expr>
+                    | <number>
+                    | <atom>
+                    | <identifier>
+
+<if_expr>         ::= 'if' <expression> 'then' <in_expression> <elseif_expr>* ['else' <in_expression>] 'end'
+<elseif_expr>     ::= 'elseif' <expression> 'then' <in_expression>
+
+<case_expr>       ::= 'case' <expression> 'of' <case_expr_clause> <case_expr_clause>* ['else' <in_expression>] 'end'
+<case_expr_clause>::= ['[]'] <pattern> ['andthen' <expression>] 'then' <in_expression>
+
+<local_expr>      ::= 'local' <declarations> 'in' <statement>* <expression> 'end'
+<fun_expr>        ::= 'fun' ['lazy'] '{' '$' <identifier>* '}' <in_expression> 'end'
+<proc_expr>       ::= 'proc' '{' '$' <identifier>* '}' <in_statement> 'end'
+<fun_app_expr>    ::= '{' <identifier> <expression>* '}'
+<record_expr>     ::= <atom> '(' <record_item>* ')'
+<record_item>     ::= [<feature> ':'] <expression>
+<list_expr>       ::= '[' <expression>* ']'
+<paren_expr>      ::= '(' <expression> ')'
+
+<thread_expr>     ::= 'thread' <in_expression> 'end'
+<raise_expr>      ::= 'raise' <expression> 'end'
+<at_cell_expr>    ::= '@' <identifier>
+
+<rel_op>          ::= '==' | '\=' | '<' | '>' | '=<' | '>=' 
+
+---
+## Patterns
+---
+
+<pattern>         ::= <list_cons_pattern>
+
+<list_cons_pattern> ::= <tuple_pattern> '|' <list_cons_pattern>
+                    | <tuple_pattern>
+
+<tuple_pattern>   ::= <pat_term> '#' <tuple_pattern>
+                    | <pat_term>
+
+<pat_term>        ::= <record_pattern>
+                    | <list_pattern>
+                    | <paren_pattern>
+                    | <atom>
+                    | <identifier>
+                    | <number_pattern>
+                    | '_'
+
+<record_pattern>  ::= (<atom> | '#') '(' <pattern_item>* ')'
+<pattern_item>    ::= [<feature> ':'] <pattern>
+<list_pattern>    ::= '[' <pattern>* ']'
+<paren_pattern>   ::= '(' <pattern> ')'
+<number_pattern>  ::= <number>
+
+---
+## Terminals
+---
+
+<identifier>      ::= [A-Z][a-zA-Z0-9]*
+<atom>            ::= [a-z][a-zA-Z0-9]* | "'" <any_char>* "'"
+<feature>         ::= <atom> | <integer>
+<number>          ::= <float> | <integer>
+<reserved_word>   ::= 'skip' | 'local' | 'in' | 'end' | 'case' | 'of' | 'if' | 'else' | 'then' | 'proc' | 'fun' | 'elseif' | 'thread' | 'lazy' | 'try' | 'catch' | 'raise' | 'andthen' | 'orelse'
+
+---
+## Appendix A: Kernel Syntax (Strict)
+---
+
+The `--kernel` flag enforces a strict subset of the language.
+
+<kernel_program>  ::= <kernel_stmt>+
+
+<kernel_stmt>     ::= 'skip'
+                    | 'local' <identifier>+ 'in' <kernel_stmt>+ 'end'
+                    | <identifier> '=' <identifier>
+                    | <identifier> '=' <kernel_val>
+                    | '{' <identifier> <identifier>* '}'
+                    | 'if' <identifier> 'then' <kernel_stmt>+ 'else' <kernel_stmt>+ 'end'
+                    | 'case' <identifier> 'of' <kernel_pat> 'then' <kernel_stmt>+ 'else' <kernel_stmt>+ 'end'
+                    | 'proc' '{' <identifier> <identifier>* '}' <kernel_stmt>+ 'end'
+                    | 'thread' <kernel_stmt>+ 'end'
+                    | 'try' <kernel_stmt>+ 'catch' <identifier> 'then' <kernel_stmt>+ 'end'
+                    | 'raise' <identifier> 'end'
+
+<kernel_val>      ::= <integer>
+                    | <float>
+                    | <kernel_record>
+                    | <kernel_proc_anon>
+
+<kernel_pat>      ::= <integer>
+                    | <float>
+                    | <kernel_record_pat>
+
+<kernel_proc_anon>::= 'proc' '{' '$' <identifier>* '}' <kernel_stmt>+ 'end'
+
+<kernel_record>   ::= <atom> ['(' (<feature> ':' <identifier>)+ ')']
+<kernel_record_pat>::= <atom> ['(' (<feature> ':' <identifier>)+ ')']
+
+<!-- Note: Kernel syntax strictly forbids nested expressions, arithmetic operators, or function calls in positions expecting values/identifiers. -->

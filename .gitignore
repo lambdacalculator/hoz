@@ -1,0 +1,17 @@
+dist-newstyle/
+private/
+*.hi
+*.o
+*.zip
+*.tar.gz
+solutions/
+hoz
+*#
+.#*
+*~
+reproduce_bug*
+test_browse.oz
+test_implicit*
+test_watch.oz
+ctm-ch1.out
+rebuild.sh
