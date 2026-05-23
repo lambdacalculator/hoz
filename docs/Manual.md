@@ -26,6 +26,7 @@ to trigger state inspection during execution.
 | Directive          | Description                                                                           |
 | :----------------- | :------------------------------------------------------------------------------------ |
 | `%show full`       | Prints the complete state: Thread Stack, Environment, Store (SAS), and Mutable Store. |
+| `%show env`        | Prints the current environment mapping variable names to store locations.              |
 | `%show stack`      | Prints the current thread's execution stack.                                          |
 | `%show globals`    | Lists all built-in primitives and their internal IDs.                                 |
 | `%show mutable`    | Prints the Mutable Store (Cells).                                                     |

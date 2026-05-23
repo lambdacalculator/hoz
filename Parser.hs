@@ -46,7 +46,7 @@ pStatement = some (notFollowedBy pTerminator >> pSingleStatement)
 
 pSingleStatement :: ParserT FStmt
 pSingleStatement = choice
-  [ pSkip, pBind, pLocal, pIf, pCase, pFunDef, pProcDef, pThread, pSetCell, pProcApp, pShowDirective, pTry, pRaise, pIllegalStatement ]
+  [ pSkip, pDerefBind, pBind, pLocal, pIf, pCase, pFunDef, pProcDef, pThread, pSetCell, pProcApp, pShowDirective, pTry, pRaise, pIllegalStatement ]
   <?> "Statement"
 
 pIllegalStatement :: ParserT FStmt
@@ -108,6 +108,12 @@ pLocal = withErrorContext "local" $ do
   inStmt <- pInStatement
   rwordSC "end"
   return $ FLocal inStmt -- the variable introduction is stored in inStmt
+
+pDerefBind :: ParserT FStmt
+pDerefBind = do
+  cellExpr <- try $ do charSC '@' *> pExp <* charSC '='
+  valExpr <- pExp
+  return $ FDerefBind cellExpr valExpr
 
 pBind :: ParserT FStmt
 pBind = do
@@ -407,7 +413,12 @@ pTuple = do
     ns -> return $ ERcd "#" (zip (map FeatInt [1..]) ns)
 
 pArithmetic :: ParserT Exp
-pArithmetic = makeExprParser pDotTerm operatorTable
+pArithmetic = makeExprParser pDerefTerm operatorTable
+
+pDerefTerm :: ParserT Exp
+pDerefTerm = (symbol "@" *> (EAtCell <$> pDerefTerm))
+         <|> (symbol "!!" *> (ERO <$> pDerefTerm))
+         <|> pDotTerm
 
 -- DOT is left associative, but binds tighter than * / + etc.
 -- We handle it manually to enforce strict feature parsing (no floats on RHS)
@@ -434,10 +445,7 @@ pStrictInt = do
 
 operatorTable :: [[Operator (ParsecT Void String (State String)) Exp]]
 operatorTable =
-  [ [ prefix "@" (\e -> EAtCell (getVar e)) 
-    , prefix "!!" ERO -- ReadOnly
-    ]
-  , [ prefix "~" (\e -> EParen (ENum (FPInt 0)) e "Minus_") ]
+  [ [ prefix "~" (\e -> EParen (ENum (FPInt 0)) e "Minus_") ]
   , [ binary "*" "*"
     , binary "/" "/"
     , binaryRW "div" "div"
@@ -451,8 +459,6 @@ operatorTable =
     binary name prim = InfixL (symbol name $> (\x y -> EParen x y prim))
     binaryRW name prim = InfixL (rword name $> (\x y -> EParen x y prim))
     prefix name f = Prefix (symbol name $> f)
-    getVar (EVar s) = s
-    getVar _ = error "Cell access @ must be applied to a variable identifier" -- Parser fail?
 
 pTerm :: ParserT Exp
 pTerm = choice
@@ -638,11 +644,7 @@ pFunApp = do
   charSC '}'
   return $ EFunApp funID params
 
-pAtCell :: ParserT Exp
-pAtCell = do
-  char '@'
-  id1 <- pIdentifierSC
-  return $ EAtCell id1
+
 
 
 

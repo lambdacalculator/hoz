@@ -36,6 +36,8 @@ release: build
 	cp -r examples docs $(PROJECT_NAME).cabal Makefile README.md update.sh $(PROJECT_NAME)-$(VERSION)/
 	# Copy Haskell source files from root
 	cp *.hs $(PROJECT_NAME)-$(VERSION)/
+	# Copy scripts
+	cp -r scripts $(PROJECT_NAME)-$(VERSION)/
 	# Copy LICENSE if it exists
 	-cp LICENSE $(PROJECT_NAME)-$(VERSION)/
 	tar -czf $(PROJECT_NAME)-$(VERSION).tar.gz $(PROJECT_NAME)-$(VERSION)
@@ -47,3 +49,21 @@ clean:
 	rm -f $(EXE_NAME)
 	rm -f reproduce_bug*.out
 	rm -f $(PROJECT_NAME)-*.tar.gz
+
+# Push the current branch to GitHub, then sync and publish it to the student main branch
+publish:
+	@echo "Publishing current branch..."
+	@current_branch=$$(git branch --show-current); \
+	if [ -z "$$current_branch" ]; then \
+		echo "Not currently on any branch. Aborting."; \
+		exit 1; \
+	fi; \
+	echo "Pushing active branch ($$current_branch) to origin..."; \
+	git push origin "$$current_branch"; \
+	echo "Merging $$current_branch into main and publishing..."; \
+	git checkout main && \
+	git pull origin main --rebase=false && \
+	git merge "$$current_branch" && \
+	git push origin main && \
+	git checkout "$$current_branch"; \
+	echo "Publish successful!"

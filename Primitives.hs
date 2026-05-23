@@ -123,33 +123,45 @@ interpOp name mode impl = SPrimOp $ \s args ->
           [] -> return $ EError $ "Available outputs exhausted for " ++ name
           (v:rs) -> 
               if id < 0 then return $ EError "Cannot bind global"
-              else case slookup id (sas s) of
-                 Just (_, SUnbound) -> 
-                   do
-                     let sas' = supdate (sas s) id v
-                     let (w', msgs) = notifyWatchers sas' (watches s) [id]
-                     liftIO $ mapM_ putStrLn msgs
-                     -- Determining an output can resume threads waiting on that variable.
-                     let s' = wakeThreads [id] (spawnThunks [] s{sas = sas', watches = w'})
-                     bindOutputs ids ms rs s'
-                 Just (vg, SThunk ts) -> 
-                     let sas' = supdate (sas s) id v
-                         (w', msgs) = notifyWatchers sas' (watches s) [id]
-                     in do
-                         liftIO $ mapM_ putStrLn msgs
-                         let s' = wakeThreads [id] (spawnThunks [(ts, id)] s{sas = sas', watches = w'})
-                         bindOutputs ids ms rs s'
-                 Just _ ->
-                    let id2:rest = newlocs s
-                        sas' = ([id2],v) : (sas s)
-                    in case bind sas' id id2 of
-                         BFail -> return $ EError $ "Can't unify output result in " ++ name
-                         BSuccess sas'' modifiedIds _ triggered det -> do
-                             let (w', msgs) = notifyWatchers sas'' (watches s) modifiedIds
-                             liftIO $ mapM_ putStrLn msgs
-                             let s' = wakeThreads det (spawnThunks triggered s{sas=sas'', newlocs=rest, watches=w'})
-                             bindOutputs ids ms rs s'
-                         BSuspend id' -> return $ ESuspend id'
+              else case v of
+                SVarRef refId ->
+                    case bind (sas s) id refId of
+                      BFail -> return $ EError $ "Can't unify output reference in " ++ name
+                      BSuccess sas'' modifiedIds _ triggered det -> do
+                          let (w', msgs) = notifyWatchers sas'' (watches s) modifiedIds
+                          liftIO $ mapM_ putStrLn msgs
+                          let s' = wakeThreads det (spawnThunks triggered s{sas=sas'', watches=w'})
+                          bindOutputs ids ms rs s'
+                      BSuspend id' -> return $ ESuspend id'
+                      BNeed ts r' -> return $ ENeed ts r'
+                _ -> case slookup id (sas s) of
+                   Just (_, SUnbound) -> 
+                     do
+                       let sas' = supdate (sas s) id v
+                       let (w', msgs) = notifyWatchers sas' (watches s) [id]
+                       liftIO $ mapM_ putStrLn msgs
+                       -- Determining an output can resume threads waiting on that variable.
+                       let s' = wakeThreads [id] (spawnThunks [] s{sas = sas', watches = w'})
+                       bindOutputs ids ms rs s'
+                   Just (vg, SThunk ts) -> 
+                       let sas' = supdate (sas s) id v
+                           (w', msgs) = notifyWatchers sas' (watches s) [id]
+                       in do
+                           liftIO $ mapM_ putStrLn msgs
+                           let s' = wakeThreads [id] (spawnThunks [(ts, id)] s{sas = sas', watches = w'})
+                           bindOutputs ids ms rs s'
+                   Just _ ->
+                      let id2:rest = newlocs s
+                          sas' = ([id2],v) : (sas s)
+                      in case bind sas' id id2 of
+                           BFail -> return $ EError $ "Can't unify output result in " ++ name
+                           BSuccess sas'' modifiedIds _ triggered det -> do
+                               let (w', msgs) = notifyWatchers sas'' (watches s) modifiedIds
+                               liftIO $ mapM_ putStrLn msgs
+                               let s' = wakeThreads det (spawnThunks triggered s{sas=sas'', newlocs=rest, watches=w'})
+                               bindOutputs ids ms rs s'
+                           BSuspend id' -> return $ ESuspend id'
+                           BNeed ts r' -> return $ ENeed ts r'
         _ -> bindOutputs ids ms outs s
       bindOutputs _ _ _ _ = return $ EError "Output binding mismatch"
 
@@ -285,7 +297,7 @@ prim_notEq = interpOp "NotEQ_" [Strict, Strict, Output] $ \args s ->
     _ -> Left "NotEq check"
 
 -- {NewCell InitVal Cell}
-prim_newCell = interpOp "NewCell" [Strict, Output] $ \args s ->
+prim_newCell = interpOp "NewCell" [NonStrict, Output] $ \args s ->
   return $ case args of
     [(idVal, _)] -> 
        let n = newname s
@@ -299,13 +311,9 @@ prim_exchange = interpOp "Exchange" [Strict, Output, NonStrict] $ \args s ->
       case lookup n (muts s) of
         Nothing -> Left "Cell not found"
         Just oldId ->
-           -- Lookup old value to separate it
-           case lookupMixed oldId s of
-             Nothing -> Left "Old value store missing" -- Possible?
-             Just (_, oldVal) ->
-                -- Update cell to point to New
-                let muts' = mupdate (muts s) n idNew
-                in Right (s{muts=muts'}, [oldVal])
+           -- Update cell to point to New
+           let muts' = mupdate (muts s) n idNew
+           in Right (s{muts=muts'}, [SVarRef oldId])
     _ -> Left "Exchange Type Error"
 
 -- {ByNeed Proc Res}

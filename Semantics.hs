@@ -49,6 +49,7 @@ data SVal = SUnbound                       -- Unbound
           | SCell Name                     -- Cell name (-> mutable store)
           | SThunk [SLoc]                   -- Thunk references (triggers)
           | SReadOnly SLoc                 -- Read-Only view
+          | SVarRef SLoc                   -- Variable Reference (writeable alias)
 
 data BindResult = BSuccess SAS [SLoc] [String] [([SLoc], SLoc)] [SLoc]
                 | BFail 
@@ -66,6 +67,7 @@ instance Show SVal where
   show (SCell n) = "Cell "++(show n)
   show (SThunk ss) = "Thunk "++(show ss)
   show (SReadOnly s) = "ReadOnly "++(show s)
+  show (SVarRef s) = "VarRef "++(show s)
 
 show_Srec_Pure :: RecVal -> String
 show_Srec_Pure (a,[]) = if needsQuote a then "'" ++ a ++ "'" else a
@@ -133,10 +135,17 @@ spawnThunks ((triggers, needId):rest) s =
 wakeThreads :: [SLoc] -> State -> State
 wakeThreads [] s = s
 wakeThreads (l:ls) s = 
-    let (ws, suspended') = Map.updateLookupWithKey (\_ _ -> Nothing) l (suspended s)
-        s' = case ws of
-            Just threads -> s{back = threads ++ back s, suspended = suspended'}
-            Nothing -> s{suspended = suspended'}
+    let vg = case slookup l (sas s) of
+               Just (xs, _) -> xs
+               Nothing -> [l]
+        wakeLocs [] state = state
+        wakeLocs (x:xs) state =
+            let (ws, suspended') = Map.updateLookupWithKey (\_ _ -> Nothing) x (suspended state)
+                state' = case ws of
+                    Just threads -> state{back = threads ++ back state, suspended = suspended'}
+                    Nothing -> state{suspended = suspended'}
+            in wakeLocs xs state'
+        s' = wakeLocs vg s
     in wakeThreads ls s'
 
 data SchedResult = SDone                   -- Program terminates successfully
@@ -332,6 +341,7 @@ formatPretty sas mbRoot rootVal =
       SCell n -> return $ "<Cell " ++ show n ++ ">"
       SThunk _ -> return "$"
       SReadOnly _ -> return "<ReadOnly>"
+      SVarRef _ -> return "<VarRef>"
       SPrimOp _ -> return "<Prim>"
       SRec (lab, fvs) -> do
          formatRec lab fvs

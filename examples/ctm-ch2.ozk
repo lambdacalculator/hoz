@@ -31,7 +31,7 @@ local X in
   {Browse X}
 end
 local Max in
-  Max = proc {$ X Y Z } in
+  Max = proc {$ X Y Z}
     local E1_ in
       {GTE_ X Y E1_}
       if E1_ then Z = X
@@ -42,7 +42,7 @@ local Max in
 end
 local Y LB in
   Y = 10
-  LB = proc {$ X Z } in
+  LB = proc {$ X Z}
     local E1_ in
       {GTE_ X Y E1_}
       if E1_ then Z = X
@@ -62,17 +62,17 @@ local Y LB in
   end
 end
 local P Q in
-  Q = proc {$ X } in
+  Q = proc {$ X}
     local E1_ in
       E1_ = stat(1:X)
       {Browse E1_}
     end
   end
-  P = proc {$ X } in
+  P = proc {$ X}
     {Q X}
   end
   local Q in
-    Q = proc {$ X } in
+    Q = proc {$ X}
       local E1_ in
         E1_ = dyn(1:X)
         {Browse E1_}
@@ -85,7 +85,7 @@ local P Q in
   end
 end
 local Loop10 in
-  Loop10 = proc {$ I } in
+  Loop10 = proc {$ I}
     local E1_ in
       local E2_ in
         E2_ = 10
@@ -109,12 +109,12 @@ local Loop10 in
   end
 end
 local Eval in
-  Eval = proc {$ E E1_ } in
+  Eval = proc {$ E E1_}
     local E2_ in
       {IsNumber E E2_}
       if E2_ then E1_ = E
        else local F2 in
-        F2 = proc {$  } in
+        F2 = proc {$ }
           case E of times(1:X 2:Y) then local E4_ E5_ in
             {Eval X E4_}
             {Eval Y E5_}

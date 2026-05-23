@@ -309,6 +309,20 @@ elabS f cnt = case f of
           id2 = "G" ++ show (cnt+1) ++ "_"
           exStmts = expH (cnt+1) ex exID
           fullK = [Local [exID,id2] (exStmts ++ [Apply "Exchange" [id1, id2, exID]])]
+      FDerefBind exCell exVal -> (fullK, cnt'')
+        where
+          (cellID, cellStmts, cellVars, cnt') = case exCell of
+             EVar v -> (v, [], [], cnt)
+             _ -> let cid = "C" ++ show (cnt+1) ++ "_"
+                  in (cid, expH (cnt+1) exCell cid, [cid], cnt+1)
+          (valID, valStmts, valVars, cnt'') = case exVal of
+             EVar v -> (v, [], [], cnt')
+             _ -> let vid = "V" ++ show (cnt'+1) ++ "_"
+                  in (vid, expH (cnt'+1) exVal vid, [vid], cnt'+1)
+          kStmt = Apply "Exchange" [cellID, valID, valID]
+          fullK = if null (cellVars ++ valVars)
+                  then cellStmts ++ valStmts ++ [kStmt]
+                  else [Local (cellVars ++ valVars) (cellStmts ++ valStmts ++ [kStmt])]
       FApply procID params -> (fullK, cnt + length (concat newVars))
         where
           (exIDs, exStmts, newVars) = unzip3 $ map (elabP cnt) (zip [1..] params)
@@ -594,7 +608,11 @@ expH cnt ex id2bind = case ex of
   EAndThen e1 e2 -> expH cnt (EIf e1 (Nothing, [], e2) [] (Just (Nothing, [], ERcd "false" []))) id2bind
   EOrElse e1 e2 -> expH cnt (EIf e1 (Nothing, [], ERcd "true" []) [] (Just (Nothing, [], e2))) id2bind
   EThread inExp -> [Thread (fst $ inExpH inExp cnt id2bind)]
-  EAtCell id1 -> [Apply "Exchange" [id1, id2bind, id2bind]] -- Assumes id1 is a var name. Parser enforces.
+  EAtCell ex -> case ex of
+    EVar v -> [Apply "Exchange" [v, id2bind, id2bind]]
+    _ -> let exID = "E" ++ show (cnt+1) ++ "_"
+             exStmts = expH (cnt+1) ex exID
+         in [Local [exID] (exStmts ++ [Apply "Exchange" [exID, id2bind, id2bind]])]
   ERO ex -> case ex of
       EVar v -> [Apply "ReadOnly" [v, id2bind]]
       _ -> let exID = "E" ++ show (cnt+1) ++ "_"

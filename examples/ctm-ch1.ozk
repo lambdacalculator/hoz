@@ -56,7 +56,7 @@ local V Fact Comb in
     end
     {Browse E3_}
   end
-  Fact = proc {$ N E4_ } in
+  Fact = proc {$ N E4_}
     local E5_ in
       local E6_ in
         E6_ = 0
@@ -90,7 +90,7 @@ local V Fact Comb in
     end
     {Browse E6_}
   end
-  Comb = proc {$ N R E7_ } in
+  Comb = proc {$ N R E7_}
     local E8_ E9_ in
       {Fact N E8_}
       local E11_ E12_ in
@@ -195,9 +195,9 @@ local H T L in
    end
 end
 local ShiftLeft ShiftRight AddList Pascal FastPascal Ints PascalList PascalList2 GenericPascal OpList Add Xor in
-  ShiftLeft = proc {$ L E1_ } in
+  ShiftLeft = proc {$ L E1_}
     local F1 in
-      F1 = proc {$  } in
+      F1 = proc {$ }
         local E3_ in
           E3_ = 0
           local E5_ in
@@ -214,13 +214,13 @@ local ShiftLeft ShiftRight AddList Pascal FastPascal Ints PascalList PascalList2
        end
     end
   end
-  ShiftRight = proc {$ L E2_ } in
+  ShiftRight = proc {$ L E2_}
     local E3_ in
       E3_ = 0
       E2_ = '|'(1:E3_ 2:L)
     end
   end
-  AddList = proc {$ L1 L2 E3_ } in
+  AddList = proc {$ L1 L2 E3_}
     case L1 of '|'(1:H1 2:T1) then case L2 of '|'(1:H2 2:T2) then local E4_ E5_ in
       {Plus_ H1 H2 E4_}
       {AddList T1 T2 E5_}
@@ -231,7 +231,7 @@ local ShiftLeft ShiftRight AddList Pascal FastPascal Ints PascalList PascalList2
      else E3_ = nil()
      end
   end
-  Pascal = proc {$ N E4_ } in
+  Pascal = proc {$ N E4_}
     local E5_ in
       local E6_ in
         E6_ = 1
@@ -271,7 +271,7 @@ local ShiftLeft ShiftRight AddList Pascal FastPascal Ints PascalList PascalList2
     end
   end
   local FastPascal in
-    FastPascal = proc {$ N E5_ } in
+    FastPascal = proc {$ N E5_}
       local E6_ in
         local E7_ in
           E7_ = 1
@@ -317,9 +317,9 @@ local ShiftLeft ShiftRight AddList Pascal FastPascal Ints PascalList PascalList2
     end
   end
   local Ints PascalList PascalList2 L in
-    Ints = proc {$ N E5_ } in
+    Ints = proc {$ N E5_}
       local E6_ in
-        E6_ = proc {$ E7_ } in
+        E6_ = proc {$ E7_}
           local E9_ in
             local E10_ in
               local E11_ in
@@ -359,9 +359,9 @@ local ShiftLeft ShiftRight AddList Pascal FastPascal Ints PascalList PascalList2
      end
      else skip
      end
-    PascalList = proc {$ Row E11_ } in
+    PascalList = proc {$ Row E11_}
       local E12_ in
-        E12_ = proc {$ E13_ } in
+        E12_ = proc {$ E13_}
           local E15_ in
             local E16_ in
               local E17_ E18_ in
@@ -408,7 +408,7 @@ local ShiftLeft ShiftRight AddList Pascal FastPascal Ints PascalList PascalList2
         {Browse E13_}
       end
     end
-    PascalList2 = proc {$ N Row E12_ } in
+    PascalList2 = proc {$ N Row E12_}
       local E13_ in
         local E14_ in
           E14_ = 1
@@ -455,7 +455,7 @@ local ShiftLeft ShiftRight AddList Pascal FastPascal Ints PascalList PascalList2
     end
   end
   local GenericPascal OpList Add FastPascal Xor in
-    GenericPascal = proc {$ Op N E5_ } in
+    GenericPascal = proc {$ Op N E5_}
       local E6_ in
         local E7_ in
           E7_ = 1
@@ -485,7 +485,7 @@ local ShiftLeft ShiftRight AddList Pascal FastPascal Ints PascalList PascalList2
          end
       end
     end
-    OpList = proc {$ Op L1 L2 E6_ } in
+    OpList = proc {$ Op L1 L2 E6_}
       case L1 of '|'(1:H1 2:T1) then case L2 of '|'(1:H2 2:T2) then local E7_ E8_ in
         {Op H1 H2 E7_}
         {OpList Op T1 T2 E8_}
@@ -496,7 +496,7 @@ local ShiftLeft ShiftRight AddList Pascal FastPascal Ints PascalList PascalList2
        else E6_ = nil()
        end
     end
-    Add = proc {$ X Y E7_ } in
+    Add = proc {$ X Y E7_}
       {Plus_ X Y E7_}
     end
     local E8_ in
@@ -506,10 +506,10 @@ local ShiftLeft ShiftRight AddList Pascal FastPascal Ints PascalList PascalList2
       end
       {Browse E8_}
     end
-    FastPascal = proc {$ N E9_ } in
+    FastPascal = proc {$ N E9_}
       {GenericPascal Add N E9_}
     end
-    Xor = proc {$ X Y E10_ } in
+    Xor = proc {$ X Y E10_}
       local E11_ in
         {EQ_ X Y E11_}
         if E11_ then E10_ = 0
@@ -525,7 +525,7 @@ local ShiftLeft ShiftRight AddList Pascal FastPascal Ints PascalList PascalList2
       {Browse E11_}
     end
   end
-  thread in
+  thread
     local P in
       local E5_ in
         E5_ = 10
@@ -561,7 +561,7 @@ local ShiftLeft ShiftRight AddList Pascal FastPascal Ints PascalList PascalList2
     end
   end
   local C FastPascal GenericPascal OpList Add in
-    GenericPascal = proc {$ Op N E6_ } in
+    GenericPascal = proc {$ Op N E6_}
       local E7_ in
         local E8_ in
           E8_ = 1
@@ -591,7 +591,7 @@ local ShiftLeft ShiftRight AddList Pascal FastPascal Ints PascalList PascalList2
          end
       end
     end
-    OpList = proc {$ Op L1 L2 E7_ } in
+    OpList = proc {$ Op L1 L2 E7_}
       case L1 of '|'(1:H1 2:T1) then case L2 of '|'(1:H2 2:T2) then local E8_ E9_ in
         {Op H1 H2 E8_}
         {OpList Op T1 T2 E9_}
@@ -602,14 +602,14 @@ local ShiftLeft ShiftRight AddList Pascal FastPascal Ints PascalList PascalList2
        else E7_ = nil()
        end
     end
-    Add = proc {$ X Y E8_ } in
+    Add = proc {$ X Y E8_}
       {Plus_ X Y E8_}
     end
     local E9_ in
       E9_ = 0
       {NewCell E9_ C}
     end
-    FastPascal = proc {$ N E9_ } in
+    FastPascal = proc {$ N E9_}
       local C10_ G10_ in
         local E11_ E12_ in
           {Exchange C E11_ E11_}

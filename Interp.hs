@@ -272,7 +272,7 @@ sched n progress = do
           put s_with_stats
           if Map.null (suspended s_with_stats)
           then return SDone
-          else return $ SError "Deadlock"
+          else return $ SError (deadlockMsg s_with_stats)
       ([], b) -> 
           do
              -- Start next pass over runnable threads.
@@ -402,3 +402,22 @@ matchVal _ _ = Nothing
 hasDups :: PatLit -> Bool
 hasDups (LRec (_, fvs)) = dups (map snd fvs)
 hasDups _ = False
+
+deadlockMsg :: State -> String
+deadlockMsg s =
+  "Deadlock\n" ++
+  "Suspended threads:\n" ++
+  concatMap formatSuspended (Map.toList (suspended s))
+  where
+    formatSuspended (loc, threads) =
+      concatMap (formatThread loc) threads
+      
+    formatThread loc (tn, []) =
+      "  - Thread " ++ show tn ++ " is suspended on location " ++ show loc ++ " but stack is empty.\n"
+    formatThread loc (tn, (stm, env) : _) =
+      let names = [name | (name, l) <- env, l == loc]
+          varStr = if null names 
+                   then "location " ++ show loc
+                   else "variable(s) " ++ show names ++ " (location " ++ show loc ++ ")"
+      in "  - Thread " ++ show tn ++ " is suspended on " ++ varStr ++ ".\n" ++
+         "    Next statement: " ++ show stm ++ "\n"

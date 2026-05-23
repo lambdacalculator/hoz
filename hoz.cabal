@@ -1,6 +1,6 @@
 cabal-version:      2.4
 name:               hoz
-version:            0.2.0.0
+version:            0.1.0.0
 synopsis:           A Haskell implementation of the Oz programming language interpreter.
 description:        Hoz is an interpreter for a subset of the Oz programming language, supporting declarative, functional, stateful, and threaded paradigms.
 license:            BSD-3-Clause

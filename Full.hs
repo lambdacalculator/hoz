@@ -21,6 +21,7 @@ data FStmt
   | FCase Exp Patt (Maybe Exp) InStmt [(Patt, Maybe Exp, InStmt)] (Maybe InStmt)
   | FApply String [Exp]
   | FSetCell FVar Exp
+  | FDerefBind Exp Exp
   | FTryCatch InStmt [(Patt, InStmt)] (Maybe InStmt)
   | FRaise Exp
   | FBasicSkip
@@ -49,7 +50,7 @@ data Exp
   | EAndThen Exp Exp
   | EOrElse Exp Exp
   | EThread InExp
-  | EAtCell FVar
+  | EAtCell Exp
   | EFunApp String [Exp]
   | ERO Exp
   | ERaise Exp

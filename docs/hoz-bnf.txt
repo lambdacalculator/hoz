@@ -27,6 +27,7 @@ This document provides a Backus-Naur Form (BNF) grammar for the Hoz language (an
                     | <try_stmt>
                     | <raise_stmt>
                     | <set_cell_stmt>
+                    | <deref_bind_stmt>
 
 <directive_stmt>  ::= '%show' 'full'
                     | '%show' 'stack'
@@ -51,6 +52,7 @@ This document provides a Backus-Naur Form (BNF) grammar for the Hoz language (an
 
 <raise_stmt>      ::= 'raise' <expression> 'end'
 <set_cell_stmt>   ::= <identifier> ':=' <expression>
+<deref_bind_stmt> ::= '@' <expression> '=' <expression>
 
 ---
 ## Declarations (within a 'local' block)
@@ -131,7 +133,7 @@ This document provides a Backus-Naur Form (BNF) grammar for the Hoz language (an
 
 <thread_expr>     ::= 'thread' <in_expression> 'end'
 <raise_expr>      ::= 'raise' <expression> 'end'
-<at_cell_expr>    ::= '@' <identifier>
+<at_cell_expr>    ::= '@' <expression>
 
 <rel_op>          ::= '==' | '\=' | '<' | '>' | '=<' | '>=' 
 

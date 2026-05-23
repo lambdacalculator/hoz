@@ -55,6 +55,7 @@ data DirectiveType = Store                      -- Skip and display store
               | Stack                      -- Skip and display stack
               | Globals                    -- Skip and display globals
               | Mutable                    -- Skip and display mutable store
+              | Environ                    -- Skip and display current environment
 
 -- Free variables in program values and statements (without duplicates)
 -- Global primitives are included in free variables (captured from global env)
@@ -126,6 +127,7 @@ instance Show Stmt where
   show (Directive Stack) = "%show stack"
   show (Directive Globals) = "%show globals"
   show (Directive Mutable) = "%show mutable"
+  show (Directive Environ) = "%show env"
   show (Thread stmts) = "thread\n" ++ indent (showStmts stmts) ++ "end"
   show (Local vs stmts) = "local " ++ unwords vs ++ " in\n" ++ indent (showStmts stmts) ++ "end"
   show (EqVar v1 v2) = v1 ++ " = " ++ v2
